@@ -104,13 +104,40 @@ table.t td.num{text-align:right;font-variant-numeric:tabular-nums}
 .yes{color:var(--green);font-weight:700}.no{color:var(--ink-2)}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 16px;border-radius:999px;font-weight:600;font-size:13.5px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:50}
 .toast.on{opacity:1}
+
+/* clientes: fila clickeable y panel de pedidos */
+tr.crow{cursor:pointer}
+tr.crow:hover td,tr.crow:focus-visible td{background:var(--surface-2)}
+tr.crow:focus-visible{outline:3px solid var(--navy);outline-offset:-3px}
+.vp{display:block;font-size:12px;font-weight:600;color:var(--navy-2)}
+.cpov{position:fixed;inset:0;z-index:40;background:rgba(0,30,44,.5);display:flex;justify-content:flex-end}
+.cpanel{width:min(520px,100%);height:100%;overflow:auto;background:var(--bg);padding:20px 18px calc(24px + env(safe-area-inset-bottom,0px));display:grid;gap:14px;align-content:start;box-shadow:-12px 0 40px rgba(0,30,44,.25)}
+.cph{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.cph h2{margin:0;font-family:var(--f-d);font-weight:800;font-size:20px;color:var(--navy);text-transform:uppercase}
+.cph p{margin:4px 0 0;font-size:14px;color:var(--ink-2)}
+.cph a{color:var(--navy-2)}
+.cpstats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.cpstats div{background:var(--white);border-radius:12px;padding:10px;display:grid;gap:2px}
+.cpstats b{font-family:var(--f-d);font-weight:800;font-size:18px;color:var(--navy)}
+.cpstats span{font-size:11.5px;font-weight:600;color:var(--ink-2)}
+@media (max-width:480px){.cpstats{grid-template-columns:repeat(2,1fr)}}
+.cplist{display:grid;gap:10px}
+.cpo{background:var(--white);border-radius:12px;padding:12px 14px;display:grid;gap:8px;border-left:4px solid var(--navy)}
+.cpo.s-recibido{border-left-color:var(--red)}.cpo.s-preparacion{border-left-color:var(--amber)}.cpo.s-listo{border-left-color:var(--blue)}.cpo.s-entregado{border-left-color:var(--green)}.cpo.s-cancelado{border-left-color:var(--line);opacity:.75}
+.cpoh{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.cpoh b{font-family:var(--f-d);font-weight:800;color:var(--navy)}
+.cpoh span{font-size:13px;color:var(--ink-2)}
+.pill{margin-left:auto;font-style:normal;font-size:11.5px;font-weight:800;border-radius:10px;padding:2px 9px;border:1.5px solid var(--line);color:var(--navy)}
+.pill.s-recibido{color:var(--red);border-color:var(--red)}.pill.s-preparacion{color:var(--amber);border-color:var(--amber)}.pill.s-listo{color:var(--blue);border-color:var(--blue)}.pill.s-entregado{color:var(--green);border-color:var(--green)}
+.cpo ul{margin:6px 0 0;padding-left:18px;font-size:13.5px;display:grid;gap:3px}
+.cpo .btn{justify-self:start}
 </style>
 </head>
 <body>
 <header class="top">
   <div class="wrap hrow">
     <a href="/" title="Ir a la web de pedidos"><img src="/img/logo_color.png" alt="DonRoy"></a>
-    <span class="tag">Panel de pedidos</span>
+    <span class="tag">Panel de administración</span>
     <span class="sp"></span>
     <span class="who" id="who"></span>
     <button class="btn line sm" id="out" type="button" hidden>Cerrar sesión</button>
@@ -124,7 +151,7 @@ table.t td.num{text-align:right;font-variant-numeric:tabular-nums}
 
 <main class="wrap">
   <form class="login" id="login" hidden>
-    <h1>Panel DonRoy</h1>
+    <h1>Panel de administración Donroy</h1>
     <p>Ingresá con la cuenta de administrador.</p>
     <label class="f">Correo electrónico<input id="lEmail" type="email" autocomplete="email" required></label>
     <label class="f">Contraseña<input id="lPass" type="password" autocomplete="current-password" required></label>
@@ -175,6 +202,11 @@ table.t td.num{text-align:right;font-variant-numeric:tabular-nums}
   </section>
 </main>
 <input type="file" id="file" accept="application/pdf" hidden>
+<div class="cpov" id="cpov" hidden><aside class="cpanel" role="dialog" aria-modal="true" aria-labelledby="cpT">
+  <div class="cph"><div><h2 id="cpT"></h2><p id="cpSub"></p></div><button type="button" class="btn line sm" id="cpX" aria-label="Cerrar">✕</button></div>
+  <div class="cpstats" id="cpStats"></div>
+  <div class="cplist" id="cpList"></div>
+</aside></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -343,9 +375,43 @@ async function loadClientes() {
 function renderClientes() {
   const q = norm($('#qc').value.trim());
   const rows = clientes.filter(c => !q || norm([c.nombre, c.localidad, c.email].join(' ')).includes(q));
-  $('#ctb').innerHTML = rows.length ? rows.map(c => `<tr><td><b>${esc(c.nombre)}</b></td><td>${esc(c.localidad)}</td><td><a href="mailto:${esc(c.email)}">${esc(c.email)}</a></td><td class="num">${c.pedidos}</td><td class="num">${c.unidades}</td><td>${dia(c.ultimo_pedido)}</td><td>${c.tiene_cuenta ? '<span class="yes">Sí</span>' : '<span class="no">No</span>'}</td></tr>`).join('') : '<tr><td colspan="7" style="color:var(--ink-2)">Sin clientes todavía.</td></tr>';
+  $('#ctb').innerHTML = rows.length ? rows.map(c => `<tr class="crow" data-cli="${esc(c.email)}" tabindex="0" title="Ver los pedidos de ${esc(c.nombre)}"><td><b>${esc(c.nombre)}</b><span class="vp">Ver pedidos ›</span></td><td>${esc(c.localidad)}</td><td><a href="mailto:${esc(c.email)}">${esc(c.email)}</a></td><td class="num">${c.pedidos}</td><td class="num">${c.unidades}</td><td>${dia(c.ultimo_pedido)}</td><td>${c.tiene_cuenta ? '<span class="yes">Sí</span>' : '<span class="no">No</span>'}</td></tr>`).join('') : '<tr><td colspan="7" style="color:var(--ink-2)">Sin clientes todavía.</td></tr>';
 }
 $('#qc').addEventListener('input', renderClientes);
+
+// ---- pedidos de un cliente ----
+const EST_TXT = Object.fromEntries(ESTADOS);
+let cpFrom = null;
+async function openCliente(email) {
+  if (!pedidos.length) await loadPedidos(true);
+  const c = clientes.find(x => x.email === email) || {email, nombre: email, localidad: ''};
+  const ps = pedidos.filter(p => p.email.toLowerCase() === email);
+  const activos = ps.filter(p => p.estado !== 'cancelado');
+  $('#cpT').textContent = c.nombre;
+  $('#cpSub').innerHTML = `${esc(c.localidad)} · <a href="mailto:${esc(email)}">${esc(email)}</a>`;
+  $('#cpStats').innerHTML = [
+    [ps.length, 'pedidos'], [activos.reduce((a, p) => a + p.unidades, 0), 'unidades pedidas'],
+    [c.primer_pedido ? dia(c.primer_pedido) : '—', 'cliente desde'], [c.tiene_cuenta ? 'Sí' : 'No', 'tiene cuenta']
+  ].map(([v, l]) => `<div><b>${esc(v)}</b><span>${l}</span></div>`).join('');
+  $('#cpList').innerHTML = ps.length ? ps.map(p => {
+    const comps = (p.comprobantes || []).map(x => `${x.tipo === 'factura' ? 'Factura' + (x.datos && x.datos.letra ? ' ' + esc(x.datos.letra) : '') : 'Remito'} ${x.estado === 'enviado' ? (x.tipo === 'factura' ? 'enviada' : 'enviado') : (x.tipo === 'factura' ? 'solicitada' : 'solicitado')}`).join(' · ');
+    return `<article class="cpo s-${p.estado}"><div class="cpoh"><b>${esc(p.codigo)}</b><span>${fecha(p.created_at)}</span><em class="pill s-${p.estado}">${EST_TXT[p.estado] || p.estado}</em></div>
+      <div class="sum">${p.articulos} artículo${p.articulos === 1 ? '' : 's'} · ${p.unidades} unidades${comps ? ' · ' + comps : ''}</div>
+      <details><summary>Ver artículos</summary><ul>${(p.items || []).map(i => `<li><b>${esc(i.q)} ×</b> ${esc(i.c)} · ${esc(i.d)}</li>`).join('')}</ul></details>
+      <button type="button" class="btn sm line" data-goped="${esc(p.codigo)}">Gestionar este pedido</button></article>`;
+  }).join('') : '<p class="upd">Sin pedidos cargados para este cliente.</p>';
+  cpFrom = document.activeElement; $('#cpov').hidden = false; document.body.style.overflow = 'hidden'; $('#cpX').focus();
+}
+function closeCliente() { $('#cpov').hidden = true; document.body.style.overflow = ''; if (cpFrom) cpFrom.focus(); }
+$('#ctb').addEventListener('click', e => { if (e.target.closest('a')) return; const r = e.target.closest('[data-cli]'); if (r) openCliente(r.dataset.cli); });
+$('#ctb').addEventListener('keydown', e => { const r = e.target.closest('[data-cli]'); if (r && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openCliente(r.dataset.cli); } });
+$('#cpX').onclick = closeCliente;
+$('#cpov').addEventListener('click', e => { if (e.target === $('#cpov')) closeCliente(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#cpov').hidden) closeCliente(); });
+$('#cpList').addEventListener('click', e => {
+  const g = e.target.closest('[data-goped]'); if (!g) return;
+  closeCliente(); show('pedidos'); $('#q').value = g.dataset.goped; setFiltro('todos'); window.scrollTo({top: 0});
+});
 $('#csv').onclick = () => {
   const cols = ['nombre', 'localidad', 'email', 'pedidos', 'unidades', 'primer_pedido', 'ultimo_pedido', 'tiene_cuenta'];
   const q = v => `"${String(v == null ? '' : v).replace(/"/g, '""')}"`;
