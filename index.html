@@ -104,7 +104,7 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:va
 .add:hover{background:var(--navy);color:var(--white)}
 .step{display:inline-flex;align-items:center;height:44px;border-radius:22px;background:var(--navy);color:var(--white);overflow:hidden}
 .step button{width:40px;height:44px;border:0;background:transparent;color:inherit;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
-.step input{width:40px;height:32px;border:0;border-radius:6px;background:rgba(255,255,255,.14);color:inherit;text-align:center;font-family:var(--f-display);font-weight:800;font-size:15px;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+.step input{width:40px;height:32px;border:0;border-radius:6px;background:rgba(255,255,255,.14);color:inherit;text-align:center;font-family:var(--f-display);font-weight:800;font-size:15px;font-variant-numeric:tabular-nums;appearance:textfield;-moz-appearance:textfield}
 .step input::-webkit-outer-spin-button,.step input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 
 /* order panel */
@@ -124,7 +124,7 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:va
 .it .step{height:36px}.it .step button{width:34px;height:36px}.it .step input{width:36px;height:28px;font-size:14px}
 .form{display:grid;gap:10px;padding:14px 18px;border-top:1px solid var(--line);background:var(--surface-2)}
 .form label{display:grid;gap:4px;font-size:12px;font-weight:600;color:var(--ink-2)}
-.form input,.form textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);padding:10px 12px;font-size:14px}
+.form input,.form textarea{width:100%;borderZ:1.5px solid var(--line);border-radius:10px;background:var(--surface);padding:10px 12px;font-size:14px}
 .form textarea{resize:vertical;min-height:56px}
 .acts{display:grid;gap:8px;padding:14px 18px 18px}
 .send{display:flex;align-items:center;justify-content:center;gap:10px;height:52px;border-radius:26px;background:var(--green);color:var(--green-ink);font-family:var(--f-display);font-weight:800;font-size:15px;letter-spacing:.02em;text-decoration:none}
@@ -174,7 +174,7 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:va
   <div class="layout">
     <main>
       <div class="intro">
-        <h1>Catálogo de productos</h1>
+        <h1>CATÁLOGO DE PRODUCTOS</h1>
       </div>
       <p class="intro" style="margin:0"><span style="color:var(--ink-2);font-size:14px" id="count"></span></p>
       <div class="how" aria-label="Cómo hacer un pedido">
