@@ -55,8 +55,8 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:va
 .how span{display:inline-flex;align-items:center;gap:6px}
 .how b{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:11px;background:var(--surface);border:1px solid var(--line);font-size:12px;color:var(--ink)}
 
-.sec{scroll-margin-top:130px;margin-top:14px}
-.sech{margin:0}
+.sec{scroll-margin-top:80px;margin-top:14px}
+.sech{margin:0;position:sticky;top:calc(env(safe-area-inset-top,0px) + 66px);z-index:10}
 .sech button{width:100%;display:flex;align-items:center;gap:12px;flex-wrap:wrap;min-height:52px;padding:10px 16px;border:0;border-radius:10px;background:var(--navy);color:var(--white);text-align:left;cursor:pointer}
 .sech button:hover{filter:brightness(1.12)}
 .sech .nm{font-family:var(--f-display);font-weight:800;font-size:20px;text-transform:uppercase;letter-spacing:.02em}
@@ -109,7 +109,7 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:va
 
 /* order panel */
 .panel{background:var(--white);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);display:flex;flex-direction:column;min-height:0}
-@media (min-width:1080px){.panel{position:sticky;top:calc(env(safe-area-inset-top,0px) + 132px);max-height:calc(100vh - 152px)}}
+@media (min-width:1080px){.panel{position:sticky;top:calc(env(safe-area-inset-top,0px) + 86px);max-height:calc(100vh - 106px)}}
 .ph2{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid var(--line)}
 .ph2 h2{margin:0;font-family:var(--f-display);font-weight:800;font-size:16px;text-transform:uppercase;letter-spacing:.04em;flex:1}
 .ph2 .tot{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
@@ -124,7 +124,7 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:va
 .it .step{height:36px}.it .step button{width:34px;height:36px}.it .step input{width:36px;height:28px;font-size:14px}
 .form{display:grid;gap:10px;padding:14px 18px;border-top:1px solid var(--line);background:var(--surface-2)}
 .form label{display:grid;gap:4px;font-size:12px;font-weight:600;color:var(--ink-2)}
-.form input,.form textarea{width:100%;borderZ:1.5px solid var(--line);border-radius:10px;background:var(--surface);padding:10px 12px;font-size:14px}
+.form input,.form textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);padding:10px 12px;font-size:14px}
 .form textarea{resize:vertical;min-height:56px}
 .acts{display:grid;gap:8px;padding:14px 18px 18px}
 .send{display:flex;align-items:center;justify-content:center;gap:10px;height:52px;border-radius:26px;background:var(--green);color:var(--green-ink);font-family:var(--f-display);font-weight:800;font-size:15px;letter-spacing:.02em;text-decoration:none}
@@ -132,7 +132,7 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:va
 .sub{display:flex;gap:8px}
 .ghost{flex:1;height:40px;border-radius:20px;border:1.5px solid var(--line);background:transparent;font-size:13px;font-weight:600;cursor:pointer;color:var(--ink)}
 .note{font-size:12px;color:var(--ink-2);text-align:center;margin:0}
-.toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 124px);transform:translateX(-50%);background:var(--navy);color:var(--white);padding:10px 16px;border-radius:999px;font-size:13px;font-weight:600;z-index:60;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 78px);transform:translateX(-50%);background:var(--navy);color:var(--white);padding:10px 16px;border-radius:999px;font-size:13px;font-weight:600;z-index:60;opacity:0;transition:opacity .2s;pointer-events:none}
 .toast.show{opacity:1}
 
 /* phone: bottom bar + sheet */
@@ -166,7 +166,6 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:va
       </label>
       <button class="cartbtn" id="openCart" type="button" aria-label="Ver pedido"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6.2"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg><span class="lbl">Pedido</span><span class="badge" id="badge">0</span></button>
     </div>
-    <nav class="rail" id="rail" aria-label="Secciones"></nav>
   </div>
 </header>
 
@@ -272,7 +271,6 @@ function renderCatalog() {
     html += `</div></section>`;
   });
   $('#cat').innerHTML = html;
-  $('#rail').innerHTML = rail;
   const total = Object.keys(ITEMS).length;
   $('#count').textContent = `${total} artículos en ${DATA.sections.length} secciones. Elegí cantidades y enviá tu pedido por WhatsApp.`;
   Object.keys(cart).forEach(markRow);
@@ -344,7 +342,12 @@ document.addEventListener('click', e => {
     return;
   }
   const tg = e.target.closest('[data-tog]');
-  if (tg) { setOpen(tg.dataset.tog, tg.getAttribute('aria-expanded') !== 'true'); return; }
+  if (tg) {
+    const opening = tg.getAttribute('aria-expanded') !== 'true';
+    setOpen(tg.dataset.tog, opening);
+    if (!opening) { const sec = document.getElementById('s-' + tg.dataset.tog); if (sec.getBoundingClientRect().top < 70) sec.scrollIntoView({block: 'start'}); }
+    return;
+  }
   const go = e.target.closest('[data-go]');
   if (go) { setOpen(go.dataset.go, true); const el = document.getElementById('s-' + go.dataset.go); if (el) el.scrollIntoView({behavior: 'smooth', block: 'start'}); }
 });
@@ -403,13 +406,7 @@ $('#q').addEventListener('input', e => {
   $('#nores').classList.toggle('hide', any);
 });
 
-// highlight current section chip
-const obs = new IntersectionObserver(ents => ents.forEach(en => {
-  if (en.isIntersecting) document.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', c.dataset.go === en.target.dataset.sec));
-}), {rootMargin: '-140px 0px -70% 0px'});
-
 renderCatalog(); renderCart();
-document.querySelectorAll('.sec').forEach(s => obs.observe(s));
 </script>
 
 </body>
