@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Catálogo DonRoy: elegí artículos y enviá tu pedido por WhatsApp.">
+<meta name="theme-color" content="#E8E4E1">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Pedidos DonRoy</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: sticky header + section rail; product cards in a single column; order panel docked right on desktop, bottom sheet on phone */
+:root{
+  /* Catálogo DonRoy: fondo gris del catálogo, azul petróleo, rojo y verde WhatsApp. Un solo tema claro, como el PDF. */
+  --bg:#E8E4E1; --surface:rgba(255,255,255,.62); --surface-2:#F3F0ED; --ink:#003044; --ink-2:#5D7380; --line:rgba(0,48,68,.16);
+  --navy:#003044; --red:#DC1438; --red-soft:#FCE8EC; --green:#0A7B56; --green-ink:#FFFFFF; --chip:transparent; --shadow:none;
+  --head:#E8E4E1; --white:#FFFFFF; --show-light:block; --show-dark:none;
+  --f-display:'Montserrat',Arial,sans-serif; --f-body:'Inter',system-ui,-apple-system,Segoe UI,Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--head)}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.wrap{max-width:1320px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* header */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--head);border-bottom:1px solid var(--line)}
+.hrow{display:flex;align-items:center;gap:16px;padding-block:10px}
+.logo{height:34px;width:auto}
+.logo.l{display:var(--show-light)}.logo.d{display:var(--show-dark)}
+.htitle{font-family:var(--f-display);font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);white-space:nowrap}
+.search{flex:1;min-width:0;display:flex;align-items:center;gap:8px;background:var(--white);border:1.5px solid var(--line);border-radius:999px;padding:0 14px;height:44px}
+.search input{flex:1;min-width:0;border:0;background:transparent;outline:none;font-size:15px}
+.search svg{flex:none;color:var(--ink-2)}
+.cartbtn{position:relative;display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 16px;border-radius:999px;border:0;background:var(--navy);color:var(--white);font-family:var(--f-display);font-weight:800;font-size:13px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+.badge{min-width:22px;height:22px;border-radius:11px;background:var(--red);color:#fff;font-size:12px;display:inline-flex;align-items:center;justify-content:center;padding:0 6px;font-variant-numeric:tabular-nums}
+.rail{display:flex;gap:8px;overflow-x:auto;padding-block:0 10px;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.chip{flex:none;height:36px;padding:0 14px;border-radius:999px;border:2px solid var(--navy);background:var(--chip);font-family:var(--f-display);font-weight:700;font-size:12px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;color:var(--ink)}
+.chip.liq{border-color:var(--red);color:var(--red)}
+.chip.on{background:var(--navy);border-color:var(--navy);color:var(--white)}
+.chip.liq.on{background:var(--red);border-color:var(--red);color:var(--white)}
+
+/* layout */
+.layout{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;padding-block:20px 120px}
+@media (min-width:1080px){.layout{grid-template-columns:minmax(0,1fr) 380px;padding-bottom:40px}}
+.intro{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-bottom:6px}
+.intro h1{margin:0;font-family:var(--f-display);font-weight:800;font-size:clamp(22px,3vw,30px);letter-spacing:-.01em;text-wrap:balance}
+.intro p{margin:0;color:var(--ink-2);font-size:14px}
+.how{display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--ink-2);font-size:13px;margin:10px 0 4px}
+.how span{display:inline-flex;align-items:center;gap:6px}
+.how b{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:11px;background:var(--surface);border:1px solid var(--line);font-size:12px;color:var(--ink)}
+
+.sec{scroll-margin-top:130px;margin-top:28px}
+.sech{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px;padding:10px 16px;border-radius:10px;background:var(--navy);color:var(--white)}
+.sech small{color:rgba(255,255,255,.75)!important}
+.sech h2{margin:0;font-family:var(--f-display);font-weight:800;font-size:20px;text-transform:uppercase;letter-spacing:.02em}
+.sech small{color:var(--ink-2);font-size:13px;font-variant-numeric:tabular-nums}
+.sec.liq .sech{background:var(--red)}
+
+.card{display:grid;grid-template-columns:minmax(0,1fr);background:var(--surface);border:0;border-radius:14px;box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden}
+@media (min-width:640px){.card.hasimg{grid-template-columns:180px minmax(0,1fr)}}
+.card.liq{border:2px solid var(--red);background:var(--white)}
+.ph{background:var(--white);display:flex;align-items:center;justify-content:center;padding:12px;margin:12px;border-radius:10px;border:1.5px solid var(--line);aspect-ratio:16/10;max-width:100%}
+@media (min-width:640px){.ph{margin:14px 0 14px 14px;aspect-ratio:auto;align-self:start;min-height:150px}}
+.ph img{max-width:100%;max-height:150px;object-fit:contain}
+@media (min-width:640px){.ph{align-items:flex-start;padding-top:20px}}
+.body{padding:14px 16px 12px;min-width:0}
+.ct{display:flex;align-items:center;flex-wrap:wrap;gap:8px 10px;margin-bottom:8px}
+.ct h3{margin:0;font-family:var(--f-display);font-weight:800;font-size:16px;text-transform:uppercase;letter-spacing:.01em;flex:1 1 220px;min-width:0}
+.brand{display:inline-flex;align-items:center;height:28px;padding:3px 7px;background:#fff;border:1px solid var(--line);border-radius:6px}
+.brand.dk{background:#000;border-color:#000}
+.brand img{height:100%;width:auto}
+.tag{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 10px;border-radius:12px;background:var(--red);color:#fff;font-family:var(--f-display);font-weight:800;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase}
+
+.thd{display:grid;grid-template-columns:68px minmax(0,1fr) auto;gap:10px;background:var(--navy);color:var(--white);font-family:var(--f-display);font-weight:700;font-size:12.5px;padding:6px 8px;border-radius:4px 4px 0 0}
+.card.liq .thd{background:var(--red)}
+.row{display:grid;grid-template-columns:68px minmax(0,1fr) auto;align-items:center;gap:10px;padding:6px 8px;border-top:1px solid var(--line)}
+.row:nth-child(even){background:rgba(255,255,255,.55)}
+.row:first-child{border-top:0}
+.code{font-family:var(--f-display);font-weight:800;font-size:13px;font-variant-numeric:tabular-nums;color:var(--navy)}
+.det{min-width:0;font-size:14px;display:flex;align-items:center;gap:8px}
+.sw{flex:none;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--ink)}
+.row.inc{background:var(--red-soft)}
+.row.inc .code{color:var(--red)}
+
+/* stepper */
+.add{width:44px;height:44px;border-radius:22px;border:1.5px solid var(--navy);background:transparent;color:var(--navy);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.add:hover{background:var(--navy);color:var(--white)}
+.step{display:inline-flex;align-items:center;height:44px;border-radius:22px;background:var(--navy);color:var(--white);overflow:hidden}
+.step button{width:40px;height:44px;border:0;background:transparent;color:inherit;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.step input{width:40px;height:32px;border:0;border-radius:6px;background:rgba(255,255,255,.14);color:inherit;text-align:center;font-family:var(--f-display);font-weight:800;font-size:15px;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+.step input::-webkit-outer-spin-button,.step input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+
+/* order panel */
+.panel{background:var(--white);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);display:flex;flex-direction:column;min-height:0}
+@media (min-width:1080px){.panel{position:sticky;top:calc(env(safe-area-inset-top,0px) + 132px);max-height:calc(100vh - 152px)}}
+.ph2{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid var(--line)}
+.ph2 h2{margin:0;font-family:var(--f-display);font-weight:800;font-size:16px;text-transform:uppercase;letter-spacing:.04em;flex:1}
+.ph2 .tot{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.close{display:none;width:40px;height:40px;border-radius:20px;border:1px solid var(--line);background:var(--surface-2);cursor:pointer}
+.items{overflow:auto;padding:4px 18px;flex:1;min-height:80px}
+.empty{padding:28px 6px;text-align:center;color:var(--ink-2);font-size:14px}
+.empty .ill{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:28px;background:var(--surface-2);margin-bottom:10px;color:var(--ink-2)}
+.it{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.it .nm{font-size:13.5px;min-width:0}
+.it .nm b{font-family:var(--f-display);font-weight:800;color:var(--navy);margin-right:6px;font-variant-numeric:tabular-nums}
+.it .fam{display:block;font-size:12px;color:var(--ink-2);margin-top:2px}
+.it .step{height:36px}.it .step button{width:34px;height:36px}.it .step input{width:36px;height:28px;font-size:14px}
+.form{display:grid;gap:10px;padding:14px 18px;border-top:1px solid var(--line);background:var(--surface-2)}
+.form label{display:grid;gap:4px;font-size:12px;font-weight:600;color:var(--ink-2)}
+.form input,.form textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);padding:10px 12px;font-size:14px}
+.form textarea{resize:vertical;min-height:56px}
+.acts{display:grid;gap:8px;padding:14px 18px 18px}
+.send{display:flex;align-items:center;justify-content:center;gap:10px;height:52px;border-radius:26px;background:var(--green);color:var(--green-ink);font-family:var(--f-display);font-weight:800;font-size:15px;letter-spacing:.02em;text-decoration:none}
+.send[aria-disabled="true"]{opacity:.45;pointer-events:none}
+.sub{display:flex;gap:8px}
+.ghost{flex:1;height:40px;border-radius:20px;border:1.5px solid var(--line);background:transparent;font-size:13px;font-weight:600;cursor:pointer;color:var(--ink)}
+.note{font-size:12px;color:var(--ink-2);text-align:center;margin:0}
+.toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 124px);transform:translateX(-50%);background:var(--navy);color:var(--white);padding:10px 16px;border-radius:999px;font-size:13px;font-weight:600;z-index:60;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+
+/* phone: bottom bar + sheet */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:25;padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:var(--head);border-top:1px solid var(--line)}
+.bar button{width:100%;height:52px;border-radius:26px;border:0;background:var(--green);color:var(--green-ink);font-family:var(--f-display);font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer}
+@media (max-width:1079px){
+  .side{position:fixed;inset:0;z-index:40;background:rgba(0,20,30,.45);display:none;align-items:flex-end;padding-top:calc(env(safe-area-inset-top,0px) + 40px)}
+  .side.open{display:flex}
+  .panel{width:100%;max-height:100%;border-radius:18px 18px 0 0;padding-bottom:env(safe-area-inset-bottom,0px)}
+  .close{display:inline-flex;align-items:center;justify-content:center}
+  .htitle{display:none}
+}
+@media (min-width:1080px){.bar{display:none}.cartbtn{display:none}}
+@media (max-width:520px){.cartbtn .lbl{display:none}.logo{height:28px}.row,.thd{grid-template-columns:52px minmax(0,1fr) auto;gap:8px}.det{font-size:13.5px}.rows .step button{width:34px}.rows .step input{width:32px}.body{padding:12px 12px 4px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+.hide{display:none!important}
+.noresult{padding:40px 10px;text-align:center;color:var(--ink-2)}
+</style>
+
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="hrow">
+      <img class="logo l" src="img/logo_color.png" alt="DonRoy">
+      <img class="logo d" src="img/logo_dark.png" alt="DonRoy">
+      <span class="htitle">Pedidos online</span>
+      <label class="search" for="q">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="Buscar por código, producto o marca" autocomplete="off">
+      </label>
+      <button class="cartbtn" id="openCart" type="button" aria-label="Ver pedido"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6.2"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg><span class="lbl">Pedido</span><span class="badge" id="badge">0</span></button>
+    </div>
+    <nav class="rail" id="rail" aria-label="Secciones"></nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <main>
+      <div class="intro">
+        <h1>Catálogo de productos · Lista Nº 37</h1>
+      </div>
+      <p class="intro" style="margin:0"><span style="color:var(--ink-2);font-size:14px" id="count"></span></p>
+      <div class="how" aria-label="Cómo hacer un pedido">
+        <span><b>1</b>Tocá + en cada artículo</span>
+        <span><b>2</b>Ajustá las cantidades</span>
+        <span><b>3</b>Enviá el pedido por WhatsApp</span>
+      </div>
+      <div id="cat"></div>
+      <div class="noresult hide" id="nores">No encontramos artículos con esa búsqueda. Probá con el código o una palabra más corta.</div>
+    </main>
+    <aside class="side" id="side" aria-label="Tu pedido">
+      <div class="panel" role="dialog" aria-labelledby="pt">
+        <div class="ph2"><h2 id="pt">Tu pedido</h2><span class="tot" id="tot">0 artículos</span><button class="close" id="closeCart" type="button" aria-label="Cerrar pedido"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+        <div class="items" id="items"></div>
+        <form class="form" id="form" autocomplete="on">
+          <label for="nombre">Nombre y comercio<input id="nombre" name="nombre" placeholder="Ej.: Juan Pérez · Ferretería El Tornillo"></label>
+          <label for="loc">Localidad<input id="loc" name="loc" placeholder="Ej.: Paraná"></label>
+          <label for="nota">Nota para el vendedor (opcional)<textarea id="nota" name="nota" placeholder="Ej.: entregar el jueves, consultar precio por bulto"></textarea></label>
+        </form>
+        <div class="acts">
+          <a class="send" id="send" href="#" target="_blank" rel="noopener noreferrer" aria-disabled="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.6-4.8A9 9 0 1 1 8 19.4zM9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.4-2-1-.8.8c-1-.4-1.8-1.2-2.2-2.2l.8-.8-1-2z"/></svg>Enviar pedido por WhatsApp</a>
+          <div class="sub"><button class="ghost" id="copy" type="button">Copiar pedido</button><button class="ghost" id="clear" type="button">Vaciar</button></div>
+          <p class="note">Se abre WhatsApp con el pedido escrito al 343 405-2237. Revisalo y tocá enviar.</p>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div class="bar" id="bar"><button type="button" id="barBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6.2"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg><span id="barTxt">Ver pedido</span></button></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const DATA = {"sections":[{"k":"liquidacion","name":"Liquidación / Oportunidades (hasta agotar stock)","short":"Liquidación"},{"k":"ferreteria","name":"Ferretería y Fijaciones","short":"Ferretería"},{"k":"construccion","name":"Construcción y Maquinaria","short":"Construcción"},{"k":"corte","name":"Herramientas de Corte, Desbaste y Manuales","short":"Corte y Desbaste"},{"k":"toolmak","name":"Línea Toolmak y Braco","short":"Toolmak y Braco"},{"k":"pintureria","name":"Pinturería y Accesorios","short":"Pinturería"},{"k":"quimicos","name":"Químicos e Impermeabilizantes","short":"Químicos"},{"k":"brogas","name":"Línea Brogas (Gas Butano)","short":"Brogas"},{"k":"aguagas","name":"Agua y Gas","short":"Agua y Gas"}],"blocks":[{"s":"liquidacion","t":"Correas para hormigonera","img":"94_9603","br":[],"rows":[{"c":"40566","d":"Correas para Hormigonera n°30","sw":null},{"c":"40577","d":"Correas para Hormigonera n°31","sw":null},{"c":"40579","d":"Correas para Hormigonera n°33","sw":null},{"c":"40580","d":"Correas para Hormigonera n°34","sw":null},{"c":"40581","d":"Correas para Hormigonera n°35","sw":null},{"c":"40583","d":"Correas para Hormigonera n°37","sw":null},{"c":"40584","d":"Correas para Hormigonera n°38","sw":null},{"c":"40585","d":"Correas para Hormigonera n°39","sw":null}],"liq":true},{"s":"liquidacion","t":"EXHIBIDORES","img":null,"br":[],"rows":[{"c":"40391","d":"Exhibidor de Pala","sw":null},{"c":"40392","d":"Exhibidor de Cadena","sw":null},{"c":"40393","d":"Exhibidor de Media Sombra","sw":null},{"c":"40395","d":"Exhibidor de Varilla Roscada","sw":null},{"c":"40396","d":"Exhibidor de Tejido","sw":null}],"liq":true},{"s":"liquidacion","t":"FRATACHOS VOSS 2000","img":"90_9208","br":[["Voss","95_9706"]],"rows":[{"c":"40008","d":"Fratacho Plastico VOSS 2000 p/Grueso 35cm","sw":null}],"liq":true},{"s":"liquidacion","t":"PALAS FORJADAS HORWING","img":null,"br":[],"rows":[{"c":"60081","d":"Pala Punta Cabo Madera","sw":null},{"c":"60074","d":"Pala Punta Pocera Cabo Madera","sw":null}],"liq":true},{"s":"liquidacion","t":"VARILLA ROSCADA","img":"94_9602","br":[],"rows":[{"c":"40478","d":"Varilla Roscada Zincada 5/32","sw":null},{"c":"40474","d":"Varilla Roscada Natura 1/4","sw":null}],"liq":true},{"s":"liquidacion","t":"BOMBA","img":"94_9601","br":[],"rows":[{"c":"02151","d":"Bomba Periferica 1/2","sw":null}],"liq":true},{"s":"ferreteria","t":"Abrazadera Cremallera","img":"8_1461","br":[],"rows":[{"c":"20001","d":"Abrazadera 9mm x 25 Unidades 8 - 16 (5/8)","sw":null},{"c":"20003","d":"Abrazadera 9mm x 25 Unidades 12 - 22 (3/4)","sw":null},{"c":"20004","d":"Abrazadera 9mm x 25 Unidades 16 - 27 ( 1 )","sw":null},{"c":"20005","d":"Abrazadera 9mm x 25 Unidades 20 - 32 (1.4/4)","sw":null},{"c":"20006","d":"Abrazadera 9mm x 25 Unidades 30 - 45 (1.4/4)","sw":null},{"c":"20007","d":"Abrazadera 9mm x 25 Unidades 32 - 50 ( 2 )","sw":null},{"c":"20008","d":"Abrazadera 9mm x 25 Unidades 40 - 60 ( 2.1/4)","sw":null},{"c":"20009","d":"Abrazadera 9mm x 25 Unidades 50 - 70 (2.1/2 )","sw":null},{"c":"20010","d":"Abrazadera 9mm x 25 Unidades 60 - 80 ( 2.3/4)","sw":null},{"c":"20011","d":"Abrazadera 9mm x 25 Unidades 70 - 90 ( 3 )","sw":null},{"c":"20012","d":"Abrazadera 9mm x 25 Unidades 80 - 100 (3.1/2)","sw":null},{"c":"20014","d":"Abrazadera 9mm x 25 Unidades 100 - 120 (4.1/2)","sw":null},{"c":"20015","d":"Abrazadera 9mm x 25 Unidades 110 - 130 ( 5 )","sw":null},{"c":"20016","d":"Abrazadera 9mm x 25 Unidades 120 - 140 (5.1/2)","sw":null}],"liq":false},{"s":"ferreteria","t":"ARCO DE SIERRA","img":"5_1380","br":[],"rows":[{"c":"20028","d":"Arco de Sierra Nacional","sw":null}],"liq":false},{"s":"ferreteria","t":"Cable de acero","img":"8_1459","br":[],"rows":[{"c":"00320","d":"Cable de Acero 1.5mm x 200mts 1 x 19","sw":null},{"c":"00321","d":"Cable de Acero 2mm x 200mts 1 x 19","sw":null},{"c":"00322","d":"Cable de Acero 2,5mm x 200mts 1 x 19","sw":null},{"c":"00323","d":"Cable de Acero 3mm x 100mts 6 x 19","sw":null},{"c":"00324","d":"Cable de Acero 4mm x 100mts 6 x 19","sw":null},{"c":"00325","d":"Cable de Acero 5mm x 100mts 6 x 19","sw":null},{"c":"00326","d":"Cable de Acero 6mm x 100mts 6 x 19","sw":null},{"c":"00327","d":"Cable de Acero 8mm x 100mts 6 x 19","sw":null},{"c":"00328","d":"Cable de Acero 10mm x 50mts 6 x 19","sw":null},{"c":"00329","d":"Cable de Acero 13mm x 50mts 6 x 19","sw":null}],"liq":false},{"s":"ferreteria","t":"Cable para gimnasio","img":"90_9203","br":[],"rows":[{"c":"100236","d":"Cable Gym 6x19 3 a 5 mm Negro","sw":null},{"c":"100237","d":"Cable Gym 6x19 4 a 6 mm Negro","sw":null}],"liq":false},{"s":"ferreteria","t":"CADENA DERECHA GALVANIZADA","img":"7_1421","br":[],"rows":[{"c":"00221","d":"Cadena Galvanizada Nº25 12.5 kg.","sw":null},{"c":"00222","d":"Cadena Galvanizada Nº30 12.5 kg.","sw":null},{"c":"00223","d":"Cadena Galvanizada Nº35 12.5 kg.","sw":null},{"c":"00224","d":"Cadena Galvanizada Nº40 25 kg","sw":null},{"c":"00304","d":"Cadena Galvanizada Nº45 25 kg","sw":null},{"c":"00226","d":"Cadena Galvanizada Nº50 25 kg.","sw":null},{"c":"00305","d":"Cadena Galvanizada Nº55 25 kg.","sw":null},{"c":"00227","d":"Cadena Galvanizada Nº60 25 kg.","sw":null},{"c":"00228","d":"Cadena Galvanizada Nº70 25 kg.","sw":null},{"c":"00229","d":"Cadena Galvanizada Nº80 25 kg.","sw":null},{"c":"00230","d":"Cadena Galvanizada Nº90 25 kg.","sw":null},{"c":"00231","d":"Cadena Galvanizada Nº100 50 kg.","sw":null},{"c":"00232","d":"Cadena Galvanizada Nº120 50 kg.","sw":null},{"c":"00233","d":"Cadena Galvanizada Nº130 50 kg.","sw":null},{"c":"00234","d":"Cadena Galvanizada Nº140 50 kg.","sw":null}],"liq":false},{"s":"ferreteria","t":"CADENA TRANQUERA","img":"5_1384","br":[],"rows":[{"c":"00301","d":"Cadena Tranquera Nº60 x 1.10 mts","sw":null},{"c":"00302","d":"Cadena Tranquera Nº70 x 1.20 mts","sw":null},{"c":"00303","d":"Cadena Tranquera Nº80 x 1.40 mts","sw":null}],"liq":false},{"s":"ferreteria","t":"CANDADOS","img":"10_1503","br":[["Toolmak","95_9702"]],"rows":[{"c":"00601","d":"Bronceado Pesado c/3 llaves 25mm 6 Unidades (TMK20078)","sw":null},{"c":"00602","d":"Bronceado Pesado c/3 llaves 32mm 6 Unidades (TMK19229)","sw":null},{"c":"00603","d":"Bronceado Pesado c/3 llaves 38mm 6 Unidades (TMK19230)","sw":null},{"c":"00604","d":"Bronceado Pesado c/3 llaves 50mm 6 Unidades (TMK19231)","sw":null},{"c":"00605","d":"Bronceado Pesado c/3 llaves 63mm 6 Unidades (TMK19232)","sw":null}],"liq":false},{"s":"ferreteria","t":"CINTA CON CATRACAS","img":"96_9802","br":[],"rows":[{"c":"21400","d":"Cinta c/Hevilla Gancho S 25mm x 3 mts 600 kg","sw":null},{"c":"00620","d":"Catraca Gancho Garfio 25mm x 3 mts 1000 kg (TMK19521)","sw":null},{"c":"00621","d":"Catraca Gancho Garfio 50mm x 9 mts 3.000 kg (BR25037)","sw":null}],"liq":false},{"s":"ferreteria","t":"Mosqueton pera","img":"9_1483","br":[],"rows":[{"c":"00700","d":"Mosqueton Pera 4 x 40 mm Galvanizado x 10 U.","sw":null},{"c":"00701","d":"Mosqueton Pera 5 x 50 mm Galvanizado x 10 U.","sw":null},{"c":"00702","d":"Mosqueton Pera 6 x 60 mm Galvanizado x 10 U.","sw":null},{"c":"00703","d":"Mosqueton Pera 7 x 70 mm Galvanizado x 10 U.","sw":null},{"c":"00704","d":"Mosqueton Pera 8 x 80 mm Galvanizado x 10 U.","sw":null},{"c":"00705","d":"Mosqueton Pera 9 x 90 mm Galvanizado x 10 U.","sw":null},{"c":"00706","d":"Mosqueton Pera 10 x100 mm Galvanizado x 10 U.","sw":null}],"liq":false},{"s":"ferreteria","t":"Mosqueton de seguridad","img":"9_1484","br":[],"rows":[{"c":"00707","d":"Mosqueton Nº00 5 mm . Largo 85mm Galvanizado x 10 U.","sw":null},{"c":"00708","d":"Mosqueton Nº0 6.5 mm Largo 120mm Galvanizado x 10 U.","sw":null},{"c":"00709","d":"Mosqueton Nº1 8 mm Largo 150mm Galvanizado x 10 U.","sw":null},{"c":"00710","d":"Mosqueton Nº3 10 mm Largo180mm Galvanizado x 10 U.","sw":null}],"liq":false},{"s":"ferreteria","t":"Mosqueton a lengüeta","img":"9_1481","br":[],"rows":[{"c":"00711","d":"Mosqueton Nº 3 95 mm Galvanizado x 10 U.","sw":null},{"c":"00712","d":"Mosqueton Nº 4 113 mm Galvanizado x 10 U.","sw":null},{"c":"00713","d":"Mosqueton Nº 5 122 mm Galvanizado x 10 U.","sw":null}],"liq":false},{"s":"ferreteria","t":"Mosqueton gatillo cromado","img":"90_9206","br":[],"rows":[{"c":"00717","d":"Mosqueton Nº0 3/8 45 mm Cromado x 10 U.","sw":null},{"c":"00718","d":"Mosqueton Nº1 1/2 65 mm Cromado x 10 U.","sw":null},{"c":"00719","d":"Mosqueton Nº2 5/8 80 mm Cromado x 10 U.","sw":null},{"c":"00720","d":"Mosqueton Nº3 3/4 90 mm Cromado x 10 U.","sw":null},{"c":"00721","d":"Mosqueton Nº4 1 100 mm Cromado x 10 U.","sw":null}],"liq":false},{"s":"ferreteria","t":"Destorcedor","img":"9_1482","br":[],"rows":[{"c":"00715","d":"Destorcedor Giratorio Nº1 58 mm Cromado x 10 U.","sw":null},{"c":"00716","d":"Destorcedor Giratorio Nº2 68 mm Cromado x 10 U.","sw":null},{"c":"00714","d":"Destorcedor Giratorio Nº3 72 mm Cromado x 10 U.","sw":null}],"liq":false},{"s":"ferreteria","t":"PERNOS","img":"3_1326","br":[],"rows":[{"c":"00207","d":"Perno Enganche 16 mm con Chaveta","sw":null},{"c":"00208","d":"Perno Enganche 19 mm con Chaveta","sw":null},{"c":"00209","d":"Perno Enganche 22 mm con Chaveta","sw":null},{"c":"00210","d":"Perno Enganche 25 mm con Chaveta","sw":null}],"liq":false},{"s":"ferreteria","t":"Precintos DonRoy","img":"3_1327","br":[],"rows":[{"c":"50220","d":"Precinto Nylon 100 x 2,5 mm Negro Tension 8 Kg Precio x 100 U.","sw":null},{"c":"50221","d":"Precinto Nylon 150 x 3.6 mm Negro Tension 18 Kg Precio x 100 U.","sw":null},{"c":"50222","d":"Precinto Nylon 200 x 3,6 mm Negro Tension 18 Kg Precio x 100 U.","sw":null},{"c":"50232","d":"Precinto Nylon 200 x 4,8 mm Negro Tension 22.20 Kg Precio x 100 U.","sw":null},{"c":"50223","d":"Precinto Nylon 250 x 3,6 mm Negro Tension 18Kg Precio x 100 U.","sw":null},{"c":"50233","d":"Precinto Nylon 250 x 4,8 mm Negro Tension 22.20Kg Precio x 100 U.","sw":null},{"c":"50224","d":"Precinto Nylon 300 x 4,8 mm Negro Tension 22 Kg Precio x 100 U.","sw":null},{"c":"50234","d":"Precinto Nylon 300 x 7,6 mm Negro Tension 54 Kg Precio x 100 U.","sw":null},{"c":"50236","d":"Precinto Nylon 390 x 4.8 mm Negro Tension 54 Kg Precio x 100 U.","sw":null},{"c":"50225","d":"Precinto Nylon 400 x 7,6 mm Negro Tension 55 Kg Precio x 100 U.","sw":null},{"c":"50226","d":"Precinto Nylon 550 x 9,0 mm Negro Tension 75 Kg Precio x 100 U.","sw":null},{"c":"50227","d":"Precinto Nylon 700 x 9,0 mm Negro Tension 75 Kg Precio x 100 U.","sw":null},{"c":"50231","d":"Precinto Nylon 760 x 9.0 mm Negro Tension 75 Kg Precio x 100 U.","sw":null}],"liq":false},{"s":"ferreteria","t":"Precintos DonRoy de color","img":"4_1345","br":[],"rows":[{"c":"50237","d":"Precinto Nylon 300 x 4,8 mm Gris Tension 22 Kg Precio x 100 U.","sw":null},{"c":"50238","d":"Precinto Nylon 300 x 4,8 mm Blanco Tension 22 Kg Precio x 100 U.","sw":null},{"c":"50239","d":"Precinto Nylon 300 x 4,8 mm Rojo Tension 22 Kg Precio x 100 U.","sw":null},{"c":"50240","d":"Precinto Nylon 300 x 4,8 mm Azul Tension 22 Kg Precio x 100 U.","sw":null},{"c":"50241","d":"Precinto Nylon 300 x 4,8 mm Verde Tension 22 Kg Precio x 100 U.","sw":null},{"c":"50242","d":"Precinto Nylon 300 x 4,8 mm Amarillo Tension 22 Kg Precio x 100 U.","sw":null}],"liq":false},{"s":"ferreteria","t":"SOGA TRENZADA POLIPROPILENO","img":"6_1397","br":[],"rows":[{"c":"60029","d":"SOGA DonRoy 2 mm 400 Mts. Aprox.","sw":null},{"c":"60030","d":"SOGA DonRoy 3 mm 200 Mts. Aprox.","sw":null},{"c":"60031","d":"SOGA DonRoy 4 mm 200 Mts. Aprox","sw":null},{"c":"60032","d":"SOGA DonRoy 5 mm 150 Mts. Aprox.","sw":null},{"c":"60033","d":"SOGA DonRoy 6 mm 100 Mts. Aprox.","sw":null},{"c":"60035","d":"SOGA DonRoy 8 mm 100 Mts. Aprox.","sw":null},{"c":"60036","d":"SOGA DonRoy 10 mm 100 Mts. Aprox.","sw":null},{"c":"60037","d":"SOGA DonRoy 12 mm 100 Mts. Aprox","sw":null},{"c":"60038","d":"SOGA DonRoy 14 mm 100 Mts. Aprox.","sw":null},{"c":"60039","d":"SOGA DonRoy 16 mm 100 Mts. Aprox.","sw":null}],"liq":false},{"s":"ferreteria","t":"SOGA ELASTICA","img":"96_9803","br":[["Toolmak","95_9702"]],"rows":[{"c":"00650","d":"Con Gancho 10mm x 1.2 (TMK19417)","sw":null},{"c":"00651","d":"Con Gancho 12mm x 1.2 (TMK19418)","sw":null}],"liq":false},{"s":"ferreteria","t":"ZOCALOS","img":"4_1359","br":[],"rows":[{"c":"21900","d":"Zocalo Doble 0.80 cm","sw":null},{"c":"22000","d":"Zocalo Doble 0.90 cm","sw":null}],"liq":false},{"s":"construccion","t":"ANDAMIO","img":"93_9501","br":[],"rows":[{"c":"20375","d":"Andamio Tubular c/ Riendas 2.00 Mts Alto x 1.30 Mts. Ancho","sw":null}],"liq":false},{"s":"construccion","t":"CABO","img":"20_1700","br":[],"rows":[{"c":"20062","d":"Cabo Pala de Caño 0.70 cm","sw":null},{"c":"20060","d":"Cabo Pala de Madera 0.70 cm con empuñadura Metalica","sw":null}],"liq":false},{"s":"construccion","t":"Con rueda neumática","img":"15_9106","br":[],"rows":[{"c":"40029","d":"Carretilla Estampada Zincada 90 lts","sw":null},{"c":"40105","d":"Carretilla Chapa 85 L Reforzada","sw":null},{"c":"40111","d":"Carretilla Plástica BULL 85 lts","sw":null},{"c":"40113","d":"Carretilla PVC 90 lts Chasis Zincado (Batea Negra)","sw":null},{"c":"40618","d":"Carretilla PVC 90 lts Chasis Zincado (Batea Color ) Material Virgen","sw":null}],"liq":false},{"s":"construccion","t":"Con rueda maciza","img":"15_9107","br":[],"rows":[{"c":"40616","d":"Carretilla Chapa 70 lts Eco","sw":null},{"c":"40104","d":"Carretilla Chapa 85 lts Reforzada","sw":null},{"c":"40110","d":"Carretilla PVC 90 lts Chasis Zincado (Batea Negra)","sw":null},{"c":"40617","d":"Carretilla PVC 90 lts Chasis Zincado (Batea Color ) Material Virgen","sw":null}],"liq":false},{"s":"construccion","t":"Repuestos para carretilla","img":"16_9108","br":[],"rows":[{"c":"20153","d":"Batea PVC Negra 90 lts","sw":null},{"c":"20154","d":"Batea PVC Color 90 lts (Material Virgen)","sw":null},{"c":"40095","d":"Chasis Zincado 90 lts","sw":null},{"c":"40334","d":"Chasis Epoxi 75 lts","sw":null}],"liq":false},{"s":"construccion","t":"RUEDAS","img":"16_9109","br":[],"rows":[{"c":"00510","d":"Carretilla Neumática REF. 6 Telas 350 mm","sw":null},{"c":"00512","d":"Rep. Cubierta p/Carretilla 3.50-8\"","sw":null},{"c":"00511","d":"Rep. Camara p/Rueda Carretilla 3.50-8\"","sw":null},{"c":"40109","d":"Carretilla Neumática REF. 2 Telas 400 mm","sw":null},{"c":"00219","d":"Cubierta p/Carretilla 4.00-8\"","sw":null},{"c":"00220","d":"Rep. Camara p/ Rueda Carretilla 4.00-8\"","sw":null},{"c":"11400","d":"Carretilla Maciza REF. 360 mm","sw":null},{"c":"11402","d":"Hormigonera Maciza REF. 360 mm","sw":null}],"liq":false},{"s":"construccion","t":"ESTRIBERA","img":"10_1501","br":[],"rows":[{"c":"40088","d":"Estribera DonRoy","sw":null}],"liq":false},{"s":"construccion","t":"HORMIGONERAS","img":"18_9110","br":[],"rows":[{"c":"40500","d":"130 lts Motor de 3/4","sw":null},{"c":"40457","d":"135 lts Motor de 1 HP","sw":null}],"liq":false},{"s":"construccion","t":"Repuestos para hormigonera","img":"19_9129","br":[],"rows":[{"c":"40586","d":"Corona Recta 105 Dientes","sw":null},{"c":"40587","d":"Corona Helicoidal 100 Dientes","sw":null},{"c":"40576","d":"Eje de Piñon","sw":null},{"c":"00403","d":"Rep. Piñon Helicoidal 10 Dientes (T)","sw":null},{"c":"00404","d":"Rep. Piñon Helicoidal 11 Dientes (T)","sw":null},{"c":"00405","d":"Rep. Piñon Recto 10 Dientes (T)","sw":null},{"c":"00406","d":"Rep. Piñon Recto 11 Dientes (T)","sw":null},{"c":"00407","d":"Rep. Piñon Recto 12 Dientes (T)","sw":null},{"c":"00408","d":"Rep. Piñon Recto 13 Dientes (T)","sw":null},{"c":"40568","d":"Polea Hormigonera (Motor) 50 mm x 16 mm","sw":null},{"c":"40569","d":"Polea Hormigonera 230 mm x 16 mm","sw":null},{"c":"40567","d":"Tacho para Hormigonera c/Riendas 135 lts","sw":null}],"liq":false},{"s":"construccion","t":"MOTORES","img":"13_1542","br":[],"rows":[{"c":"40588","d":"Motor Hormigonera 3/4 Pesado","sw":null},{"c":"40590","d":"Motor Hormigonera 1HP Reforzado","sw":null},{"c":"30014","d":"Motor para Sin Fin 1HP","sw":null}],"liq":false},{"s":"construccion","t":"NIVELADORES PARA PORCELANATO","img":"4_1346","br":[],"rows":[{"c":"10011","d":"Tornillo (Bolsa x 125 unidades) (Bolzon x 1000) Precio x U.","sw":null},{"c":"10012","d":"Tuerca (Bolsa x 40 unidades) (Bolzon x 400) Precio x U.","sw":null}],"liq":false},{"s":"construccion","t":"Pala estampada","img":"20_9104","br":[],"rows":[{"c":"60086","d":"Pala Ancha Cabo Caño","sw":null},{"c":"40097","d":"Pala Punta Cabo Caño","sw":null}],"liq":false},{"s":"construccion","t":"Pala forjada","img":"20_1693","br":[],"rows":[{"c":"60080","d":"Pala Ancha Cabo Caño","sw":null},{"c":"60075","d":"Pala Punta Cabo Caño","sw":null}],"liq":false},{"s":"construccion","t":"Pala de hierro","img":"20_9105","br":[],"rows":[{"c":"60071","d":"Pala Punta Cabo Hierro Ref. Corta 1.00 mto","sw":null},{"c":"60071","d":"Pala Punta Cabo Hierro Ref. Larga 1.10 mts","sw":null},{"c":"60076","d":"Pala Hoyera Fija 1.16 mts","sw":null},{"c":"60077","d":"Pala Hoyera Movil 1.16 mts","sw":null},{"c":"60078","d":"Pala Hoyera Tijera 1.75 mts","sw":null},{"c":"60073","d":"Pala Dientes Cabo Caño 4 Puas ByE 1.05 mts","sw":null}],"liq":false},{"s":"corte","t":"DISCOS","img":"5_1371","br":[["Tyrolit","95_9704"]],"rows":[{"c":"11219","d":"Disco Oxido Alum Tyrolit 115 x 1.0 x 22.23 Caja x 50 U.","sw":null},{"c":"11220","d":"Disco Oxido Alum Tyrolit 115 x 1.6 x 22.23 Caja x 50 U.","sw":null},{"c":"11221","d":"Disco Oxido Alum Tyrolit 180 x 1.6 x 22.23 Caja x 25 U.","sw":null}],"liq":false},{"s":"corte","t":"LIMA PARA CADENA DE MOTOSIERRA BYE","img":"7_9114","br":[["BYB","95_9703"]],"rows":[{"c":"00083","d":"Lima BYE Motosierra 3/16 (4.8mm) Caja x 12 U.","sw":null},{"c":"00085","d":"Lima BYE Motosierra 5/32 (4mm) Caja x 12 U.","sw":null},{"c":"00084","d":"Lima BYE Motosierra 7/32 (5.5mm) Caja x 12 U.","sw":null},{"c":"22001","d":"Lima BYE Media Caña Entrefina 6\" x Unidad","sw":null},{"c":"22002","d":"Lima BYE Media Caña Entrefina 8\" x Unidad","sw":null},{"c":"22003","d":"Lima BYE Media Caña Entrefina 10\" x Unidad","sw":null},{"c":"22004","d":"Lima BYE Triangular Entrefina 6\" con Cabo x Unidad","sw":null},{"c":"22005","d":"Lima BYE Triangular Entrefina 8\" con Cabo x Unidad","sw":null},{"c":"22006","d":"Lima BYE Triangular Entrefina 10\" con Cabo x Unidad","sw":null},{"c":"22007","d":"Lima BYE Paralela Entrefina 6\" con Cabo x Unidad","sw":null},{"c":"22008","d":"Lima BYE Paralela Entrefina 8\" con Cabo x Unidad","sw":null},{"c":"22009","d":"Lima BYE Paralela Entrefina 10\" con Cabo x Unidad","sw":null},{"c":"22010","d":"Lima BYE Cuadrada Entrefina 6\" con Cabo x Unidad","sw":null},{"c":"22011","d":"Lima BYE Cuadrada Entrefina 8\" con Cabo x Unidad","sw":null},{"c":"22012","d":"Lima BYE Cuadrada Entrefina 10\" con Cabo x Unidad","sw":null},{"c":"22013","d":"Lima BYE Redonda Entrefina 6\" con Cabo x Unidad","sw":null},{"c":"22014","d":"Lima BYE Redonda Entrefina 8\" con Cabo x Unidad","sw":null},{"c":"22015","d":"Lima BYE Redonda Entrefina 10\" con Cabo x Unidad","sw":null},{"c":"22023","d":"Lima BYE Plana Entrefina 6\" con Cabo x Unidad","sw":null},{"c":"22024","d":"Lima BYE Romboidal x Unidad","sw":null},{"c":"22020","d":"Lima BYE Slim Taper Triangular 4\" para Afilar x Unidad","sw":null},{"c":"22021","d":"Lima BYE Slim Taper Triangular 5\" para Afilar x Unidad","sw":null},{"c":"22022","d":"Lima BYE Slim Taper Triangular 6\" para Afilar x Unidad","sw":null},{"c":"22025","d":"Lima BYE Regular Taper Triangular 6\" x Unidad","sw":null},{"c":"22016","d":"Escofina BYE Bastarda Media Caña 8\" Caja x 12 U.","sw":null},{"c":"22017","d":"Escofina BYE Bastarda Media Caña 10\" Caja x 12 U.","sw":null}],"liq":false},{"s":"corte","t":"MÁQUINA PARA ESTIRAR ALAMBRE ByE","img":"3_9113","br":[["BYB","95_9703"]],"rows":[{"c":"30060","d":"Estirador de Alambre BYE","sw":null},{"c":"40600","d":"Repuesto sin Cadena BYE","sw":null},{"c":"40601","d":"Repuesto con Cadena BYE","sw":null}],"liq":false},{"s":"corte","t":"Mechas para madera - taladro pecho BYB","img":"11_9125","br":[["BYB","95_9703"]],"rows":[{"c":"20158","d":"Mechas 1/4\" Corta 250 mm Caja x 12 U.","sw":null},{"c":"20159","d":"Mechas 5/16\" Corta 250 mm Caja x 12 U.","sw":null},{"c":"20160","d":"Mechas 3/8\" Corta 250 mm Caja x 12 U.","sw":null},{"c":"20161","d":"Mechas 7/16\" Corta 250 mm Caja x 12 U.","sw":null},{"c":"20162","d":"Mechas 1/2\" Corta 250 mm Caja x 12 U.","sw":null},{"c":"20163","d":"Mechas 9/16\" Corta 250 mm Caja x 6 U.","sw":null},{"c":"20164","d":"Mechas 5/8\" Corta 250 mm Caja x 6 U.","sw":null},{"c":"20165","d":"Mechas 11/16\" Corta 250 mm Caja x 6 U.","sw":null},{"c":"20166","d":"Mechas 3/4\" Corta 250 mm Caja x 6 U.","sw":null},{"c":"20167","d":"Mechas 13/16\" Corta 250 mm Caja x 6 U.","sw":null},{"c":"20168","d":"Mechas 7/8\" Corta 250 mm Caja x 6 U.","sw":null},{"c":"20169","d":"Mechas 1\" Corta 250 mm Caja x 6 U.","sw":null},{"c":"20170","d":"Mechas 1/4\" Larga 300 mm Caja x 12 U.","sw":null},{"c":"20171","d":"Mechas 5/16\" Larga 300 mm Caja x 12 U.","sw":null},{"c":"20172","d":"Mechas 3/8\" Larga 300 mm Caja x 12 U.","sw":null},{"c":"20173","d":"Mechas 7/16\" Larga 300 mm Caja x 12 U.","sw":null},{"c":"20174","d":"Mechas 1/2\" Larga 300 mm Caja x 12 U.","sw":null},{"c":"20175","d":"Mechas 9/16\"  Larga 300 mm Caja x 6 U.","sw":null},{"c":"20176","d":"Mechas 5/8\"  Larga 300 mm Caja x 6 U.","sw":null},{"c":"20177","d":"Mechas 11/16\" Larga 300 mm Caja x 6 U.","sw":null},{"c":"20178","d":"Mechas 3/4\" Larga 300 mm Caja x 6 U.","sw":null},{"c":"20179","d":"Mechas 13/16\" Larga 300 mm Caja x 6 U.","sw":null},{"c":"20180","d":"Mechas 7/8\" Larga 300 mm Caja x 6 U.","sw":null},{"c":"20181","d":"Mechas 1\" Larga 300 mm Caja x 6 U.","sw":null}],"liq":false},{"s":"corte","t":"Mechas para madera - taladro eléctrico BYB","img":"12_9126","br":[["BYB","95_9703"]],"rows":[{"c":"20182","d":"Mechas 1/4\" Corta 250 mm Caja x 12 U.","sw":null},{"c":"20183","d":"Mechas 5/16\" Corta 250 mm Caja x 12 U.","sw":null},{"c":"20184","d":"Mechas 3/8\" Corta 250 mm Caja x 12 U.","sw":null},{"c":"20185","d":"Mechas 7/16\" Corta 250 mm Caja x 12 U.","sw":null},{"c":"20186","d":"Mechas 1/2\" Corta 250 mm Caja x 12 U.","sw":null},{"c":"20187","d":"Mechas 9/16\" Corta 250 mm Caja x 6 U.","sw":null},{"c":"20189","d":"Mecha 5/8\" Corta 250mm Caja x 6 U.","sw":null},{"c":"20188","d":"Mechas 11/16\" Corta 250mm Caja x 6 U.","sw":null},{"c":"20190","d":"Mechas 3/4\" Corta 250mm Caja x 6 U.","sw":null},{"c":"20191","d":"Mechas 1/4\" Larga 300 mm Caja x 12 U.","sw":null},{"c":"20192","d":"Mechas 5/16\" Larga 300 mm Caja x 12 U.","sw":null},{"c":"20193","d":"Mechas 3/8 Larga 300 mm Caja x 12 U.","sw":null},{"c":"20194","d":"Mechas 7/16\" Larga 300 mm Caja x 12 U.","sw":null},{"c":"20195","d":"Mechas 1/2\" Larga 300 mm Caja x 12 U.","sw":null},{"c":"20196","d":"Mechas 9/16\" Larga 300 mm Caja x 6 U.","sw":null},{"c":"20197","d":"Mechas 5/8\" Larga 300 mm Caja x 6 U.","sw":null},{"c":"20198","d":"Mechas 11/16\" Larga 300 mm Caja x 6 U.","sw":null},{"c":"20199","d":"Mechas 3/4\" Larga 300 mm Caja x 6 U.","sw":null}],"liq":false},{"s":"corte","t":"Extra cortas (varillera)","img":"12_9126","br":[["BYB","95_9703"]],"rows":[{"c":"20200","d":"Mechas 1/4 Corta 127 mm Caja x 12 U.","sw":null},{"c":"20201","d":"Mechas 5/16 Corta 127 mm Caja x 12 U.","sw":null},{"c":"20202","d":"Mechas 3/8 Corta 127 mm Caja x 12 U.","sw":null}],"liq":false},{"s":"corte","t":"MECHA ESCALONADA","img":"27_1823","br":[["Toolmak","95_9702"]],"rows":[{"c":"21417","d":"Mecha Escalonada de Titanio 4mm a 20mm (TMK19641)","sw":null}],"liq":false},{"s":"corte","t":"Sierras sin fin","img":"13_9111","br":[],"rows":[{"c":"30001","d":"Sierra Sin Fin 240","sw":null},{"c":"30002","d":"Sierra Sin Fin 300","sw":null},{"c":"40468","d":"Sierra Sin Fin 350","sw":null}],"liq":false},{"s":"corte","t":"Repuestos para sierras sin fin","img":"13_1543","br":[],"rows":[{"c":"30005","d":"Rep. Hoja 230 (157,5 cm)","sw":null},{"c":"30006","d":"Rep. Hoja 240 (174 cm)","sw":null},{"c":"30007","d":"Rep. Hoja 300 (182 cm)","sw":null},{"c":"30008","d":"Rep. Hoja 350 (248 cm)","sw":null},{"c":"30009","d":"Rep. Hoja 350 (254 cm)","sw":null},{"c":"30010","d":"Rep. Hoja 400 (283 cm)","sw":null},{"c":"30011","d":"Rep. Hoja 300 (2.06 cm)","sw":null},{"c":"30014","d":"Motor para Sin Fin 1 hp","sw":null}],"liq":false},{"s":"corte","t":"TALADROS MANUALES ByE","img":"6_9127","br":[["BYB","95_9703"]],"rows":[{"c":"20203","d":"Taladro Carpintero S/Criquet Negro","sw":null},{"c":"20204","d":"Taladro Carpintero c/Criquet Negro","sw":null}],"liq":false},{"s":"corte","t":"Repuesto para taladro","img":"6_9128","br":[],"rows":[{"c":"20207","d":"Boquilla p/ taladro negro","sw":null},{"c":"20209","d":"Cabo partido centrales","sw":null},{"c":"20208","d":"Conjunto galleta (madera)","sw":null},{"c":"20206","d":"Mordaza p/ taladro","sw":null}],"liq":false},{"s":"toolmak","t":"BOCALLAVE","img":"91_9301","br":[["Braco","95_9701"]],"rows":[{"c":"21408","d":"Bocallave Magnetica 3/8 - Blister x 5 (BRBM002)","sw":null}],"liq":false},{"s":"toolmak","t":"CEPILLO ACERO","img":"26_9118","br":[],"rows":[{"c":"21409","d":"Cepillo Naranja Cabo Plastico c/Mango 6x15mm Caja x 12 U. (BRCO33)","sw":null},{"c":"21411","d":"Cepillo Bronceado Cabo Plastico c/Mango Caja x 12 U. (TMK19095)","sw":null},{"c":"21412","d":"Cepillo Acero de Madera c/Cabo 6 x16mm Caja x 12 U. (TMK19094)","sw":null},{"c":"21413","d":"Cepillo Acero de Madera s/Cabo 6 x 19mm Caja x 12 U. (TMK19093)","sw":null}],"liq":false},{"s":"toolmak","t":"CUTTER","img":"26_1793","br":[["Toolmak","95_9702"]],"rows":[{"c":"21415","d":"Cutter Guia Metalica 18mm Caja x 12 U. (TMK19123)","sw":null},{"c":"21414","d":"Cutter Profesional Pesado 18mm Caja x 12 U. (TMK19120)","sw":null}],"liq":false},{"s":"toolmak","t":"JUEGO DE LLAVE","img":"26_1787","br":[["Toolmak","95_9702"]],"rows":[{"c":"21416","d":"Juego Llave Allen Cabeza Bola 9 pcs Larga mm (TMK19033)","sw":null}],"liq":false},{"s":"toolmak","t":"LAPIZ CARPINTERO","img":"26_1809","br":[["Toolmak","95_9702"]],"rows":[{"c":"20606","d":"Lapiz Carpintero Profesional (x12 Unidades) (TMK19586)","sw":null}],"liq":false},{"s":"toolmak","t":"LLAVE CALIFORNIA","img":"90_9201","br":[],"rows":[{"c":"201","d":"Llave California Chica 13 cm","sw":null},{"c":"219","d":"Llave California Grande 24.5 cm","sw":null}],"liq":false},{"s":"toolmak","t":"MASCARA PARA SOLDAR FOTOSENSIBLE","img":"5_9112","br":[],"rows":[{"c":"00315","d":"Masacara p/Soldar Fotosensible","sw":null},{"c":"00506","d":"Masacara p/Soldar Fotosensible (TOOLMAK) (TMK19784)","sw":null},{"c":"00800","d":"Gafas p/Soldar Fotosensible (BR25057)","sw":null}],"liq":false},{"s":"toolmak","t":"PINZA PORTA ELECTRODO","img":"26_9119","br":[["Toolmak","95_9702"]],"rows":[{"c":"21419","d":"Pinza 600 Amp. Eco. (TMK19721)","sw":null},{"c":"21418","d":"Pinza 600 Amp. Reforzada (TMK19211)","sw":null}],"liq":false},{"s":"toolmak","t":"PISTOLA APLICADORA","img":"91_9302","br":[],"rows":[{"c":"20619","d":"Pistola Aplicadora Nacional","sw":null}],"liq":false},{"s":"toolmak","t":"PISTOLA DE SOPLETEAR","img":"27_1824","br":[["Toolmak","95_9702"]],"rows":[{"c":"21420","d":"Pistola de Sopletear Pico Corto-Largo","sw":null}],"liq":false},{"s":"toolmak","t":"REMACHADORA","img":"27_1837","br":[["Toolmak","95_9702"]],"rows":[{"c":"200218","d":"Remachadora Profesional","sw":null}],"liq":false},{"s":"toolmak","t":"TENAZA","img":"27_9120","br":[["Toolmak","95_9702"]],"rows":[{"c":"21422","d":"Tenaza Carpintero 8\" x 6 U.","sw":null},{"c":"21421","d":"Tenaza Armador 10\" x 6 U.","sw":null}],"liq":false},{"s":"toolmak","t":"Tijera","img":"27_9121","br":[],"rows":[{"c":"21423","d":"Tijera Corta Cerco 12\" Mango Madera (TMK19329)","sw":null},{"c":"21424","d":"Tijera Corta Cerco 12\" Mango Metalico (TMK19339)","sw":null},{"c":"21425","d":"Tijera Multiuso 8 1/2 (T8)","sw":null}],"liq":false},{"s":"pintureria","t":"PINTURA AEROSOL 160 GR","img":"23_1736","br":[],"rows":[{"c":"50300","d":"Pintura en Aerosol (160gr/240ml) NEGRO BRILLANTE","sw":null},{"c":"50303","d":"Pintura en Aerosol (160gr/240ml) BLANCO BRILLANTE","sw":null},{"c":"50305","d":"Pintura en Aerosol (160gr/240ml) BLANCO SATINADO","sw":null},{"c":"50304","d":"Pintura en Aerosol (160gr/240ml) BLANCO MATE","sw":null}],"liq":false},{"s":"pintureria","t":"CINTA ENMASCARAR PROTECTORA CON FILM NYLON","img":"92_9401","br":[],"rows":[{"c":"22030","d":"550mm x 20mts","sw":null},{"c":"22031","d":"1500mm x 20mts","sw":null},{"c":"22032","d":"2400mm x 20mts","sw":null},{"c":"22033","d":"3200mm x 20mts","sw":null}],"liq":false},{"s":"pintureria","t":"ESCALERAS DE MADERA","img":"22_9122","br":[],"rows":[{"c":"00049","d":"Familiar N°3 x 0.80 mts","sw":null},{"c":"00050","d":"Familiar N°4 x 1.10 mts","sw":null},{"c":"00051","d":"Familiar N°5 x 1.40 mts","sw":null},{"c":"00052","d":"Familiar N°6 x 1.70 mts","sw":null},{"c":"00053","d":"Familiar N°7 x 2.00 mts","sw":null},{"c":"00054","d":"Familiar N°8 x 2.30 mts","sw":null},{"c":"00055","d":"Familiar N°9 x 2.60 mts","sw":null},{"c":"00056","d":"Familiar N°10 x 2.90 mts","sw":null},{"c":"00057","d":"Pintor N°6 x 2.00 mts","sw":null},{"c":"00058","d":"Pintor N°7 x 2.30 mts","sw":null},{"c":"00059","d":"Pintor N°8 x 2.60 mts","sw":null},{"c":"00060","d":"Pintor N°9 x 2.90 mts","sw":null},{"c":"00061","d":"Pintor N°10 x 3.20 mts","sw":null},{"c":"00062","d":"Pintor N°12 x 3.80 mts","sw":null}],"liq":false},{"s":"pintureria","t":"ESTOPA","img":"13_9115","br":[],"rows":[{"c":"40017","d":"Estopa Limpieza 300 gr. Bolson x 30 U.","sw":null},{"c":"40018","d":"Estopa Lustre 300 gr. Bolson x 30 U.","sw":null},{"c":"40453","d":"Trapo Industrial 400 gr. Bolson x 30 U.","sw":null},{"c":"40603","d":"Trapo Algodón Blanco 500 gr. Bolson x 30 U.","sw":null}],"liq":false},{"s":"pintureria","t":"PINTURA AEROSOL MOTA","img":"90_9207","br":[],"rows":[{"c":"850","d":"Aerosol 450cc Negro Brillante","sw":"#0b0b0c"},{"c":"851","d":"Aerosol 450cc Negro Mate","sw":"#2b2b2b"},{"c":"852","d":"Aerosol 450cc Negro Satinado","sw":"#1a1a1a"},{"c":"853","d":"Aerosol 450cc Blanco Brillante","sw":"#ffffff"},{"c":"854","d":"Aerosol 450cc Blanco Mate","sw":"#efede6"},{"c":"855","d":"Aerosol 450cc Blanco Satinado","sw":"#f7f6f1"},{"c":"856","d":"Aerosol 450cc Rojo Diablo","sw":"#c8102e"},{"c":"857","d":"Aerosol 450cc Amarillo Mota","sw":"#ffd100"},{"c":"858","d":"Aerosol 450cc Azul Francia","sw":"#1f4fa3"},{"c":"859","d":"Aerosol 450cc Amarillo Oceano","sw":"#f4c20d"},{"c":"860","d":"Aerosol 450cc Celeste Cielo","sw":"#7ec8e8"},{"c":"861","d":"Aerosol 450cc Naranja Tarde","sw":"#f28a1d"},{"c":"862","d":"Aerosol 450cc Verde Mota","sw":"#2e8b3d"},{"c":"863","d":"Aerosol 450cc Verde Lima","sw":"#9acd32"},{"c":"864","d":"Aerosol 450cc Rosa Pantera","sw":"#f06ba8"},{"c":"865","d":"Aerosol 450cc Marron Café","sw":"#5a3825"},{"c":"866","d":"Aerosol 450cc Gris Acero","sw":"#7d8187"},{"c":"867","d":"Aerosol 450cc Dorado Sol","sw":"#c9a227"},{"c":"868","d":"Aerosol 450cc Plateado Luna","sw":"#c0c0c0"},{"c":"869","d":"Aerosol 450cc Alta Temp. Plata","sw":"#b0b3b8"},{"c":"870","d":"Aerosol 450cc Alta Temp. Negro","sw":"#202020"},{"c":"871","d":"Aerosol 450cc Amarillo Fluo","sw":"#e8ff1a"},{"c":"872","d":"Aerosol 450cc Naranja Fluo","sw":"#ff7a00"},{"c":"873","d":"Aerosol 450cc Rojo Fluo","sw":"#ff2a2a"},{"c":"874","d":"Aerosol 450cc Laca Brillante","sw":"#f2f2f2"}],"liq":false},{"s":"quimicos","t":"CARBURO de Calcio","img":"25_9116","br":[],"rows":[{"c":"20601","d":"Carburo Tacho x 20 kg (Precio x kg)","sw":null},{"c":"20614","d":"Carburo Tacho x 50 kg (Precio x kg)","sw":null}],"liq":false},{"s":"quimicos","t":"MEMBRANA en FRÍO (PREMIUM)","img":"6_1398","br":[],"rows":[{"c":"206","d":"10 cm x 10 mts Autoadhesiva Smartfix Caja x 18 U.","sw":null},{"c":"207","d":"15 cm x 10 mts Autoadhesiva Smartfix Caja x 12 U.","sw":null},{"c":"208","d":"25 cm x 10 mts Autoadhesiva Smartfix Caja x 6 U.","sw":null},{"c":"212","d":"50 cm x 10 mts Autoadhesiva Smartfix x U.","sw":null}],"liq":false},{"s":"quimicos","t":"QUÍMICOS","img":"25_9130","br":[],"rows":[{"c":"40180","d":"Ácido Muriático x 1 lts Caja x 12 U.","sw":null},{"c":"40901","d":"Ácido Muriático x 5 lts Caja x 4 U.","sw":null},{"c":"40182","d":"Soda Cáustica x 1 kg Caja x 12 U.","sw":null},{"c":"00080","d":"Removedor Gel x 1/2 kg Caja x 12 U.","sw":null}],"liq":false},{"s":"quimicos","t":"SOLVENTES","img":"23_9131","br":[["JMG","95_9707"]],"rows":[{"c":"00086","d":"Thinner Estandar x 900 cc Caja x 30 U.","sw":null},{"c":"00087","d":"Aguarrás x 900 cc Caja x 30 U.","sw":null}],"liq":false},{"s":"brogas","t":"ANAFES PARA GAS BUTANO","img":"28_1847","br":[],"rows":[{"c":"100221","d":"Anafe BROGAS 1 Hornalla","sw":null},{"c":"00238","d":"Anafe Color Azul 1 Hornalla","sw":null},{"c":"00239","d":"Anafe Color Negra 1 Hornalla","sw":null}],"liq":false},{"s":"brogas","t":"CARTUCHO GAS BUTANO","img":"28_1851","br":[],"rows":[{"c":"00237","d":"Cartucho Gas Butano 227gr. BROGAS - Blister x 4 U. (Caja x 28 U.)","sw":null},{"c":"70032","d":"Cartucho Gas Butano 227gr. BRACO - Blister x 4 U. (Caja x 28 U.)","sw":null}],"liq":false},{"s":"brogas","t":"SOPLETES para GAS BUTANO","img":"28_9101","br":[],"rows":[{"c":"100220","d":"Soplete BROGAS c/ Encendido Electronico 360º","sw":null},{"c":"100219","d":"Soplete BROGAS c/ Encendido Electronico","sw":null},{"c":"100218","d":"Soplete BROGAS Boca Ancha","sw":null},{"c":"00246","d":"Soplete BRACO c/Encendido Electronico (BR25006)","sw":null}],"liq":false},{"s":"aguagas","t":"Antisarro","img":"29_9102","br":[],"rows":[{"c":"500221","d":"Antisarro p/Artefacto Rosca 3/4\" COD AF01","sw":null},{"c":"500222","d":"Antisarro p/Tanque ( rosca 1\")(Tamaño 10\") COD AF30+AF50G","sw":null},{"c":"500223","d":"Repuesto Cartucho Antisarro","sw":null}],"liq":false},{"s":"aguagas","t":"Submarino antisarro","img":"29_1870","br":[],"rows":[{"c":"500218","d":"Submarino p/Tanque 500 Litros","sw":null},{"c":"500219","d":"Submarino p/Tanque 1000 Litros","sw":null},{"c":"500220","d":"Submarino p/Tanque 2400 Litros","sw":null}],"liq":false},{"s":"aguagas","t":"Calefones lavarmin","img":"3_9001","br":[],"rows":[{"c":"30035","d":"Ducha Eléctrica","sw":null},{"c":"30036","d":"Canilla p/Cocina","sw":null}],"liq":false},{"s":"aguagas","t":"Repuestos para calefones lavarmin","img":"3_9124","br":[],"rows":[{"c":"00111","d":"Rep. Resistencia 10 amp.","sw":null},{"c":"00112","d":"Rep. Resistencia 20 amp.","sw":null},{"c":"37","d":"Rep. Gomita Diafragma","sw":null},{"c":"213","d":"Rep. Brazo 3/4 Calefon 3 Tº","sw":null},{"c":"214","d":"Rep. Flor Articulada","sw":null}],"liq":false},{"s":"aguagas","t":"REGULADORES de GAS","img":"30_9103","br":[],"rows":[{"c":"40411","d":"Regulador s/Manguera","sw":null},{"c":"20262","d":"Regulador c/Manguera de 1,00 mto","sw":null}],"liq":false}]};
+const WA = '5493434052237';
+const KEY = 'donroy-pedido-v1';
+const $ = s => document.querySelector(s);
+const PLUS = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
+const MINUS = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/></svg>';
+const TAGI = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12V4h8l10 10-8 8L3 12zM7.5 8h.01"/></svg>';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const DARK_BRANDS = new Set(['Braco','Brogas']);
+
+// item index: id = block.row
+const ITEMS = {};
+DATA.blocks.forEach((b, bi) => b.rows.forEach((r, ri) => { ITEMS[bi + '.' + ri] = {b: bi, c: r.c, d: r.d, sw: r.sw, t: b.t, s: b.s}; }));
+const SECNAME = Object.fromEntries(DATA.sections.map(s => [s.k, s]));
+
+let cart = {};
+try { cart = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { cart = {}; }
+Object.keys(cart).forEach(k => { if (!ITEMS[k] || !(cart[k] > 0)) delete cart[k]; });
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(cart)); } catch (e) {} };
+
+function stepper(id, q, small) {
+  if (!q) return `<button class="add" type="button" data-act="inc" data-id="${id}" aria-label="Agregar ${esc(ITEMS[id].c)}">${PLUS}</button>`;
+  return `<span class="step"><button type="button" data-act="dec" data-id="${id}" aria-label="Restar 1 de ${esc(ITEMS[id].c)}">${MINUS}</button>` +
+    `<input id="q-${small ? 'c' : 'p'}-${id.replace('.', '-')}" type="number" inputmode="numeric" min="0" max="9999" value="${q}" data-id="${id}" aria-label="Cantidad de ${esc(ITEMS[id].c)}">` +
+    `<button type="button" data-act="inc" data-id="${id}" aria-label="Sumar 1 de ${esc(ITEMS[id].c)}">${PLUS}</button></span>`;
+}
+
+// render catalog
+function renderCatalog() {
+  const bySec = {};
+  DATA.blocks.forEach((b, bi) => (bySec[b.s] = bySec[b.s] || []).push(bi));
+  let html = '', rail = '';
+  DATA.sections.forEach(s => {
+    const list = bySec[s.k] || [];
+    const n = list.reduce((a, bi) => a + DATA.blocks[bi].rows.length, 0);
+    rail += `<button class="chip${s.k === 'liquidacion' ? ' liq' : ''}" type="button" data-go="${s.k}">${esc(s.short)}</button>`;
+    html += `<section class="sec${s.k === 'liquidacion' ? ' liq' : ''}" id="s-${s.k}" data-sec="${s.k}"><div class="sech"><h2>${esc(s.name)}</h2><small>${n} artículos</small></div>`;
+    list.forEach(bi => {
+      const b = DATA.blocks[bi];
+      const brands = b.br.map(([alt, im]) => `<span class="brand${DARK_BRANDS.has(alt) ? ' dk' : ''}"><img src="img/img_${im}.webp" alt="${esc(alt)}" loading="lazy"></span>`).join('');
+      const img = b.img ? `<div class="ph"><img src="img/img_${b.img}.webp" alt="${esc(b.t)}" loading="lazy"></div>` : '';
+      html += `<article class="card${b.img ? ' hasimg' : ''}${b.liq ? ' liq' : ''}" data-b="${bi}">${img}<div class="body"><div class="ct"><h3>${esc(b.t)}</h3>${b.liq ? `<span class="tag">${TAGI}Hasta agotar stock</span>` : ''}${brands}</div><div class="thd"><span>Código</span><span>Detalle</span><span>Cantidad</span></div><div class="rows">` +
+        b.rows.map((r, ri) => {
+          const id = bi + '.' + ri;
+          return `<div class="row" data-id="${id}"><span class="code">${esc(r.c)}</span><span class="det">${r.sw ? `<span class="sw" style="background:${r.sw}"></span>` : ''}${esc(r.d)}</span><span class="ctl">${stepper(id, cart[id] || 0)}</span></div>`;
+        }).join('') + `</div></div></article>`;
+    });
+    html += `</section>`;
+  });
+  $('#cat').innerHTML = html;
+  $('#rail').innerHTML = rail;
+  const total = Object.keys(ITEMS).length;
+  $('#count').textContent = `${total} artículos en ${DATA.sections.length} secciones. Elegí cantidades y enviá tu pedido por WhatsApp.`;
+  Object.keys(cart).forEach(markRow);
+}
+
+function markRow(id) {
+  const row = document.querySelector(`.row[data-id="${id}"]`);
+  if (!row) return;
+  row.classList.toggle('inc', (cart[id] || 0) > 0);
+  row.querySelector('.ctl').innerHTML = stepper(id, cart[id] || 0);
+}
+
+function setQty(id, q, focusSel) {
+  q = Math.max(0, Math.min(9999, Math.floor(Number(q) || 0)));
+  if (q) cart[id] = q; else delete cart[id];
+  save(); markRow(id); renderCart();
+  if (focusSel) { const el = document.querySelector(focusSel); if (el) el.focus(); }
+}
+
+// order panel
+function units() { return Object.values(cart).reduce((a, b) => a + b, 0); }
+function orderedIds() {
+  return Object.keys(cart).sort((a, b) => { const [ab, ar] = a.split('.').map(Number), [bb, br] = b.split('.').map(Number); return ab - bb || ar - br; });
+}
+function message() {
+  const ids = orderedIds();
+  const name = $('#nombre').value.trim(), loc = $('#loc').value.trim(), nota = $('#nota').value.trim();
+  let m = 'Hola Don Roy, quiero hacer este pedido desde el catálogo web:\n';
+  let lastSec = '';
+  ids.forEach(id => {
+    const it = ITEMS[id];
+    if (it.s !== lastSec) { m += `\n*${SECNAME[it.s].short.toUpperCase()}*\n`; lastSec = it.s; }
+    m += `• ${cart[id]} × ${it.c} · ${it.d}\n`;
+  });
+  m += `\nTotal: ${ids.length} artículo${ids.length === 1 ? '' : 's'} · ${units()} unidad${units() === 1 ? '' : 'es'}\n`;
+  if (name) m += `Nombre / comercio: ${name}\n`;
+  if (loc) m += `Localidad: ${loc}\n`;
+  if (nota) m += `Nota: ${nota}\n`;
+  m += '\n¿Me confirman precio y disponibilidad? Gracias.';
+  return m;
+}
+function renderCart() {
+  const ids = orderedIds(), u = units();
+  $('#badge').textContent = u;
+  $('#tot').textContent = `${ids.length} artículo${ids.length === 1 ? '' : 's'} · ${u} u.`;
+  $('#barTxt').textContent = ids.length ? `Ver pedido · ${ids.length} artículo${ids.length === 1 ? '' : 's'} · ${u} u.` : 'Ver pedido';
+  $('#items').innerHTML = ids.length ? ids.map(id => {
+    const it = ITEMS[id];
+    return `<div class="it"><div class="nm"><b>${esc(it.c)}</b>${esc(it.d)}<span class="fam">${esc(SECNAME[it.s].short)} · ${esc(it.t)}</span></div><div>${stepper(id, cart[id], true)}</div></div>`;
+  }).join('') : `<div class="empty"><div class="ill">${PLUS}</div><div>Tu pedido está vacío.<br>Tocá + junto a cualquier artículo para sumarlo.</div></div>`;
+  const send = $('#send');
+  if (ids.length) { send.href = `https://wa.me/${WA}?text=${encodeURIComponent(message())}`; send.setAttribute('aria-disabled', 'false'); }
+  else { send.href = '#'; send.setAttribute('aria-disabled', 'true'); }
+}
+
+function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.add('show'); clearTimeout(toast.h); toast.h = setTimeout(() => el.classList.remove('show'), 1800); }
+
+// events
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-act]');
+  if (btn) {
+    const id = btn.dataset.id, q = cart[id] || 0;
+    const inCart = !!btn.closest('.items');
+    const next = btn.dataset.act === 'inc' ? q + 1 : q - 1;
+    const sel = next > 0 ? `${inCart ? '.items' : '.rows'} [data-act="${btn.dataset.act}"][data-id="${id}"]` : (inCart ? null : `.rows [data-act="inc"][data-id="${id}"]`);
+    setQty(id, next, sel);
+    if (q === 0 && next === 1) toast(`Agregado: ${ITEMS[id].c}`);
+    return;
+  }
+  const go = e.target.closest('[data-go]');
+  if (go) { const el = document.getElementById('s-' + go.dataset.go); if (el) el.scrollIntoView({behavior: 'smooth', block: 'start'}); }
+});
+document.addEventListener('change', e => { if (e.target.matches('.step input')) setQty(e.target.dataset.id, e.target.value); });
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('.step input')) { e.preventDefault(); e.target.blur(); } });
+['nombre', 'loc', 'nota'].forEach(id => $('#' + id).addEventListener('input', renderCart));
+$('#form').addEventListener('submit', e => e.preventDefault());
+
+const side = $('#side');
+const openCart = () => { side.classList.add('open'); };
+const closeCart = () => { side.classList.remove('open'); };
+$('#openCart').addEventListener('click', () => { if (matchMedia('(min-width:1080px)').matches) $('#pt').scrollIntoView({behavior: 'smooth'}); else openCart(); });
+$('#barBtn').addEventListener('click', openCart);
+$('#closeCart').addEventListener('click', closeCart);
+side.addEventListener('click', e => { if (e.target === side) closeCart(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
+
+let clearArmed = false;
+$('#clear').addEventListener('click', e => {
+  if (!Object.keys(cart).length) return;
+  if (!clearArmed) { clearArmed = true; e.target.textContent = 'Tocá de nuevo para vaciar'; setTimeout(() => { clearArmed = false; e.target.textContent = 'Vaciar'; }, 2500); return; }
+  const ids = Object.keys(cart); cart = {}; save(); ids.forEach(markRow); renderCart(); clearArmed = false; e.target.textContent = 'Vaciar'; toast('Pedido vaciado');
+});
+$('#copy').addEventListener('click', () => {
+  if (!Object.keys(cart).length) { toast('Agregá artículos primero'); return; }
+  const txt = message();
+  const fallback = () => { const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); toast('Pedido copiado'); } catch (err) { toast('No se pudo copiar'); } ta.remove(); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(() => toast('Pedido copiado'), fallback); else fallback();
+});
+
+// search
+$('#q').addEventListener('input', e => {
+  const q = e.target.value.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  let any = false;
+  document.querySelectorAll('.card').forEach(card => {
+    const b = DATA.blocks[card.dataset.b];
+    const head = norm(b.t + ' ' + b.br.map(x => x[0]).join(' ') + ' ' + SECNAME[b.s].name);
+    let vis = 0;
+    card.querySelectorAll('.row').forEach(r => {
+      const it = ITEMS[r.dataset.id];
+      const ok = !q || head.includes(q) || norm(it.c + ' ' + it.d).includes(q);
+      r.classList.toggle('hide', !ok); if (ok) vis++;
+    });
+    card.classList.toggle('hide', !vis); if (vis) any = true;
+  });
+  document.querySelectorAll('.sec').forEach(s => s.classList.toggle('hide', !s.querySelector('.card:not(.hide)')));
+  $('#nores').classList.toggle('hide', any);
+});
+
+// highlight current section chip
+const obs = new IntersectionObserver(ents => ents.forEach(en => {
+  if (en.isIntersecting) document.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', c.dataset.go === en.target.dataset.sec));
+}), {rootMargin: '-140px 0px -70% 0px'});
+
+renderCatalog(); renderCart();
+document.querySelectorAll('.sec').forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>
