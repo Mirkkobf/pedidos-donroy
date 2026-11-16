@@ -308,6 +308,7 @@ body.mdlopen{overflow:hidden}
 .chipb.wait{background:var(--surface-2);color:var(--ink-2);cursor:default}
 .mform.fact{padding:12px;border-radius:10px;background:var(--surface-2)}
 @media (max-width:520px){.hrow .cartbtn{display:none}.hrow{gap:10px}}
+.mdet{font-size:12px;color:var(--ink-2);word-break:break-word}
 </style>
 
 </head>
@@ -900,7 +901,7 @@ function submitOrder() {
     if (!user && !post.known) {
       post.otp = 'sending';
       sb.auth.signInWithOtp({email, options: {shouldCreateUser: true, emailRedirectTo: location.origin + location.pathname + '?cuenta=1'}})
-        .then(({error}) => { post.otp = error ? 'error' : 'ok'; renderPost(); }, () => { post.otp = 'error'; renderPost(); });
+        .then(({error}) => { post.otp = error ? 'error' : 'ok'; post.otpMsg = error ? error.message : ''; renderPost(); }, e => { post.otp = 'error'; post.otpMsg = String(e && e.message || e); renderPost(); });
     }
   }
   // the WhatsApp link already carries this code: change it only after the link has opened
@@ -920,7 +921,7 @@ function renderPost() {
   } else if (sb) {
     h += `<div class="mcard"><b>Creá tu cuenta (opcional)</b><span>Para ver tus pedidos anteriores y pedir la factura o el remito.</span>`;
     if (P.otp === 'sending') h += `<span class="mline">Enviando un código a ${esc(P.email)}…</span>`;
-    else if (P.otp === 'error') h += `<span class="mline warn">No pudimos enviar el código ahora. Podés crear tu cuenta más tarde desde el ícono de cuenta, arriba a la derecha.</span>`;
+    else if (P.otp === 'error') h += `<span class="mline warn">No pudimos enviar el código ahora. Podés crear tu cuenta más tarde desde el ícono de cuenta, arriba a la derecha.</span>${P.otpMsg ? `<small class="mdet">Detalle: ${esc(P.otpMsg)}</small>` : ''}`;
     else if (P.otp === 'ok') h += `<span class="mline">Te enviamos un <b>código de 6 dígitos</b> a ${esc(P.email)}. Si ahora no podés, el correo también trae un enlace para crear tu contraseña después.</span>
       <form class="mform" id="postForm"><label>Código del correo<input id="pCode" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="123456"></label>
       <label>Elegí una contraseña<input id="pPass" type="password" autocomplete="new-password" minlength="8" placeholder="Mínimo 8 caracteres"></label>
@@ -1034,7 +1035,7 @@ function bindAccForms() {
     if (!EMAIL_RE.test(em)) return err('Escribí tu correo para enviarte el código.');
     accEmail = em;
     const r = await sb.auth.signInWithOtp({email: em, options: {shouldCreateUser: true, emailRedirectTo: location.origin + location.pathname + '?cuenta=1'}});
-    if (r.error) return err(/rate|seconds/i.test(r.error.message) ? 'Ya te enviamos un código hace instantes. Esperá un minuto y probá de nuevo.' : 'No pudimos enviar el código ahora. Probá de nuevo en un rato.');
+    if (r.error) return err((/seconds/i.test(r.error.message) ? 'Ya te enviamos un código hace instantes. Esperá un minuto y probá de nuevo.' : 'No pudimos enviar el código ahora. Probá de nuevo en un rato.') + ' (Detalle: ' + r.error.message + ')');
     accView = 'code'; renderAcc(); toast('Código enviado');
   };
   if ($('#aSend')) $('#aSend').addEventListener('click', sendCode);
