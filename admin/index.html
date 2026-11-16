@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel DonRoy · Pedidos</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E8E4E1;--white:#FFFFFF;--surface-2:#F5F3F1;--navy:#003044;--navy-2:#0B4560;--red:#DC1438;--red-soft:#FBE7EA;--green:#0A7B56;--green-soft:#E6F4EE;--amber:#B26A00;--amber-soft:#FFF3DF;--blue:#1F5FA8;--blue-soft:#E7F0FA;--ink:#14303D;--ink-2:#5D7380;--line:#D6D0CB;--f-d:'Montserrat',Arial,sans-serif;--f-b:'Inter',system-ui,-apple-system,'Segoe UI',Arial,sans-serif}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-b);font-size:15px;line-height:1.4}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+[hidden]{display:none!important}
+.wrap{max-width:1240px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left,0px))}
+header.top{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.hrow{display:flex;align-items:center;gap:12px;height:64px}
+.hrow img{height:30px;width:auto;display:block}
+.tag{font-family:var(--f-d);font-weight:800;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2)}
+.sp{flex:1}
+.who{font-size:13px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40vw}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px;border-radius:20px;border:0;background:var(--navy);color:#fff;font-family:var(--f-d);font-weight:800;font-size:13px;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn:hover{background:var(--navy-2)}
+.btn.line{background:var(--white);color:var(--navy);border:1.5px solid var(--line)}
+.btn.line:hover{border-color:var(--navy)}
+.btn.sm{height:34px;padding:0 12px;font-size:12.5px}
+.btn.green{background:var(--green)}
+.btn:disabled{opacity:.55;cursor:default}
+.tabs{display:flex;gap:4px;padding:8px 0 10px;overflow-x:auto}
+.tab{height:38px;padding:0 16px;border-radius:19px;border:0;background:transparent;color:var(--navy);font-family:var(--f-d);font-weight:800;font-size:13px;cursor:pointer;white-space:nowrap}
+.tab[aria-selected="true"]{background:var(--navy);color:#fff}
+.tab .n{display:inline-block;min-width:20px;margin-left:6px;padding:0 6px;border-radius:10px;background:var(--red);color:#fff;font-size:11px;line-height:18px}
+main{padding:18px 0 60px}
+/* login */
+.login{max-width:420px;margin:8vh auto 0;background:var(--white);border-radius:18px;padding:28px 24px;display:grid;gap:14px;box-shadow:0 14px 40px rgba(0,48,68,.12)}
+.login h1{margin:0;font-family:var(--f-d);font-weight:800;font-size:22px;color:var(--navy);text-transform:uppercase}
+.login p{margin:0;color:var(--ink-2);font-size:14px}
+label.f{display:grid;gap:5px;font-size:12px;font-weight:600;color:var(--ink-2)}
+label.f input,select.f{height:44px;border:1.5px solid var(--line);border-radius:10px;background:var(--white);padding:0 12px;font-size:15px;color:var(--navy)}
+label.f input:focus,select.f:focus{border-color:var(--navy);outline:none}
+.err{margin:0;color:var(--red);font-weight:600;font-size:13.5px}
+/* KPIs */
+.hrow .tag,.who{}
+@media (max-width:640px){.hrow .tag,.who{display:none}}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.kpi{background:var(--white);border-radius:14px;padding:14px 16px;display:grid;gap:2px;border:1.5px solid transparent;cursor:pointer;text-align:left}
+.kpi:hover{border-color:var(--line)}
+.kpi b{font-family:var(--f-d);font-weight:800;font-size:30px;line-height:1.1;color:var(--navy)}
+.kpi span{font-size:12.5px;font-weight:600;color:var(--ink-2)}
+.kpi.warn b{color:var(--red)}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}}
+/* toolbar */
+.tool{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{height:34px;padding:0 13px;border-radius:17px;border:1.5px solid var(--line);background:var(--white);color:var(--navy);font-weight:600;font-size:13px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.q{flex:1;min-width:200px;height:40px;border:1.5px solid var(--line);border-radius:20px;background:var(--white);padding:0 16px;font-size:14px}
+.q:focus{border-color:var(--navy);outline:none}
+.upd{font-size:12px;color:var(--ink-2)}
+/* orders */
+.list{display:grid;gap:12px}
+.ord{background:var(--white);border-radius:14px;padding:16px;display:grid;gap:12px;border-left:5px solid var(--navy)}
+.ord.s-recibido{border-left-color:var(--red)}.ord.s-preparacion{border-left-color:var(--amber)}.ord.s-listo{border-left-color:var(--blue)}.ord.s-entregado{border-left-color:var(--green)}.ord.s-cancelado{border-left-color:var(--line);opacity:.75}
+.oh{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.oh .code{font-family:var(--f-d);font-weight:800;font-size:17px;color:var(--navy)}
+.oh .when{font-size:13px;color:var(--ink-2)}
+.new{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--red);border-radius:10px;padding:2px 8px}
+.oh .sp{flex:1}
+.est{height:36px;border-radius:18px;border:1.5px solid var(--line);padding:0 12px;font-weight:700;font-size:13px;background:var(--white);color:var(--navy);cursor:pointer}
+.est.s-recibido{background:var(--red-soft);border-color:var(--red);color:var(--red)}
+.est.s-preparacion{background:var(--amber-soft);border-color:var(--amber);color:var(--amber)}
+.est.s-listo{background:var(--blue-soft);border-color:var(--blue);color:var(--blue)}
+.est.s-entregado{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+.cli{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:14px}
+.cli b{color:var(--navy)}
+.cli a{color:var(--navy-2)}
+.sum{font-size:13.5px;color:var(--ink-2)}
+.nota{font-size:13.5px;background:var(--surface-2);border-radius:10px;padding:8px 12px;color:var(--ink)}
+details summary{cursor:pointer;font-weight:700;color:var(--navy);font-size:13.5px}
+table.items{width:100%;border-collapse:collapse;margin-top:8px;font-size:13.5px}
+table.items th{text-align:left;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);padding:6px 8px;border-bottom:1.5px solid var(--line)}
+table.items td{padding:7px 8px;border-bottom:1px solid #ECE8E4;vertical-align:top}
+table.items td.qty{font-weight:800;color:var(--navy);text-align:right;white-space:nowrap;width:60px}
+table.items td.cod{font-weight:700;white-space:nowrap;width:90px}
+.comps{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:640px){.comps{grid-template-columns:1fr}}
+.comp{border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;display:grid;gap:6px}
+.comp.pend{border-color:var(--red);background:var(--red-soft)}
+.comp.ok{border-color:var(--green);background:var(--green-soft)}
+.comp .t{display:flex;align-items:center;gap:8px;font-weight:800;font-size:13px;color:var(--navy);font-family:var(--f-d);text-transform:uppercase;letter-spacing:.03em}
+.comp .d{font-size:13px;color:var(--ink)}
+.comp .acts{display:flex;flex-wrap:wrap;gap:6px}
+.empty{background:var(--white);border-radius:14px;padding:28px;text-align:center;color:var(--ink-2)}
+/* tables */
+.card{background:var(--white);border-radius:14px;padding:6px 4px;overflow-x:auto}
+table.t{width:100%;border-collapse:collapse;font-size:14px;min-width:640px}
+table.t th{text-align:left;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);padding:10px 12px;border-bottom:1.5px solid var(--line)}
+table.t td{padding:10px 12px;border-bottom:1px solid #ECE8E4}
+table.t td.num{text-align:right;font-variant-numeric:tabular-nums}
+.yes{color:var(--green);font-weight:700}.no{color:var(--ink-2)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 16px;border-radius:999px;font-weight:600;font-size:13.5px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:50}
+.toast.on{opacity:1}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap hrow">
+    <a href="/" title="Ir a la web de pedidos"><img src="/img/logo_color.png" alt="DonRoy"></a>
+    <span class="tag">Panel de pedidos</span>
+    <span class="sp"></span>
+    <span class="who" id="who"></span>
+    <button class="btn line sm" id="out" type="button" hidden>Cerrar sesión</button>
+  </div>
+  <div class="wrap tabs" id="tabs" role="tablist" hidden>
+    <button class="tab" role="tab" aria-selected="true" data-tab="pedidos">Pedidos<span class="n" id="nPend" hidden></span></button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="clientes">Clientes</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="busquedas">Búsquedas sin resultado</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <form class="login" id="login" hidden>
+    <h1>Panel DonRoy</h1>
+    <p>Ingresá con la cuenta de administrador.</p>
+    <label class="f">Correo electrónico<input id="lEmail" type="email" autocomplete="email" required></label>
+    <label class="f">Contraseña<input id="lPass" type="password" autocomplete="current-password" required></label>
+    <p class="err" id="lErr" hidden></p>
+    <button class="btn" type="submit">Ingresar</button>
+  </form>
+  <div class="login" id="noacc" hidden>
+    <h1>Sin acceso</h1>
+    <p id="noaccMsg">Esta cuenta no tiene permisos de administrador.</p>
+    <button class="btn line" type="button" id="out2">Cerrar sesión</button>
+  </div>
+
+  <section id="v-pedidos" hidden>
+    <div class="kpis">
+      <button class="kpi warn" type="button" data-go="recibido"><b id="kNew">0</b><span>Pedidos nuevos sin atender</span></button>
+      <button class="kpi" type="button" data-go="activos"><b id="kAct">0</b><span>En preparación o listos</span></button>
+      <button class="kpi warn" type="button" data-go="comp"><b id="kComp">0</b><span>Facturas o remitos pendientes</span></button>
+      <button class="kpi" type="button" data-go="hoy"><b id="kHoy">0</b><span>Pedidos de hoy</span></button>
+    </div>
+    <div class="tool">
+      <div class="chips" id="chips">
+        <button class="chip" type="button" data-f="gestion" aria-pressed="true">Para gestionar</button>
+        <button class="chip" type="button" data-f="recibido" aria-pressed="false">Nuevos</button>
+        <button class="chip" type="button" data-f="preparacion" aria-pressed="false">En preparación</button>
+        <button class="chip" type="button" data-f="listo" aria-pressed="false">Listos</button>
+        <button class="chip" type="button" data-f="comp" aria-pressed="false">Con comprobante pendiente</button>
+        <button class="chip" type="button" data-f="entregado" aria-pressed="false">Entregados</button>
+        <button class="chip" type="button" data-f="cancelado" aria-pressed="false">Cancelados</button>
+        <button class="chip" type="button" data-f="todos" aria-pressed="false">Todos</button>
+      </div>
+      <input class="q" id="q" type="search" placeholder="Buscar por código, cliente, localidad o correo" autocomplete="off">
+      <button class="btn line sm" type="button" id="refresh">Actualizar</button>
+      <span class="upd" id="upd"></span>
+    </div>
+    <div class="list" id="list"></div>
+  </section>
+
+  <section id="v-clientes" hidden>
+    <div class="tool"><input class="q" id="qc" type="search" placeholder="Buscar cliente" autocomplete="off"><button class="btn line sm" type="button" id="csv">Descargar CSV</button></div>
+    <div class="card"><table class="t"><thead><tr><th>Cliente</th><th>Localidad</th><th>Correo</th><th class="num">Pedidos</th><th class="num">Unidades</th><th>Último pedido</th><th>Cuenta</th></tr></thead><tbody id="ctb"></tbody></table></div>
+  </section>
+
+  <section id="v-busquedas" hidden>
+    <p class="upd" style="margin:0 0 12px">Lo que los clientes buscaron en la web y no encontraron. Sirve para decidir qué productos sumar al catálogo.</p>
+    <div class="card"><table class="t"><thead><tr><th>Búsqueda</th><th class="num">Veces</th><th>Última vez</th></tr></thead><tbody id="btb"></tbody></table></div>
+  </section>
+</main>
+<input type="file" id="file" accept="application/pdf" hidden>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const SUPA_URL = 'https://egjhfipqzwvizqnodggw.supabase.co';
+const SUPA_KEY = 'sb_publishable_1kO0JyJzuksMIU31_v8qag__C4eiRtJ';
+const SUPA_JS = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js';
+const ESTADOS = [['recibido', 'Nuevo'], ['preparacion', 'En preparación'], ['listo', 'Listo para entregar'], ['entregado', 'Entregado'], ['cancelado', 'Cancelado']];
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+const fecha = d => new Date(d).toLocaleString('es-AR', {day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'});
+const dia = d => new Date(d).toLocaleDateString('es-AR', {day: '2-digit', month: '2-digit', year: 'numeric'});
+let sb, pedidos = [], filtro = 'gestion', upTarget = null, timer = null;
+let tt; const toast = m => { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 2400); };
+
+function show(view) {
+  ['login', 'noacc'].forEach(id => $('#' + id).hidden = view !== id);
+  const inPanel = !['login', 'noacc'].includes(view);
+  $('#tabs').hidden = !inPanel; $('#out').hidden = !inPanel && view !== 'noacc';
+  ['pedidos', 'clientes', 'busquedas'].forEach(v => $('#v-' + v).hidden = view !== v);
+  document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', String(t.dataset.tab === view)));
+}
+
+async function boot() {
+  sb = window.supabase.createClient(SUPA_URL, SUPA_KEY, {auth: {persistSession: true, autoRefreshToken: true, storageKey: 'donroy-admin'}});
+  const {data} = await sb.auth.getSession();
+  if (data.session) await enter(data.session.user); else show('login');
+}
+async function enter(user) {
+  $('#who').textContent = user.email;
+  const r = await sb.rpc('es_admin');
+  if (r.error || !r.data) { $('#noaccMsg').textContent = `La cuenta ${user.email} no tiene permisos de administrador.`; show('noacc'); return; }
+  show('pedidos'); await loadPedidos();
+  clearInterval(timer); timer = setInterval(() => { if (!document.hidden && !$('#v-pedidos').hidden) loadPedidos(true); }, 60000);
+}
+$('#login').addEventListener('submit', async e => {
+  e.preventDefault(); const b = e.target.querySelector('button'); b.disabled = true;
+  const r = await sb.auth.signInWithPassword({email: $('#lEmail').value.trim().toLowerCase(), password: $('#lPass').value});
+  b.disabled = false;
+  if (r.error) { $('#lErr').textContent = 'Correo o contraseña incorrectos.'; $('#lErr').hidden = false; return; }
+  enter(r.data.user);
+});
+const logout = async () => { await sb.auth.signOut(); clearInterval(timer); $('#who').textContent = ''; show('login'); };
+$('#out').onclick = logout; $('#out2').onclick = logout;
+
+// ---- pedidos ----
+async function loadPedidos(quiet) {
+  const r = await sb.from('pedidos').select('id,codigo,created_at,email,nombre,localidad,nota,items,articulos,unidades,estado,estado_at,comprobantes(id,tipo,estado,datos,archivo,created_at,enviado_at)').order('created_at', {ascending: false}).limit(500);
+  if (r.error) { if (!quiet) toast('No pudimos cargar los pedidos'); return; }
+  const prevIds = new Set(pedidos.map(p => p.id)), hadData = pedidos.length > 0;
+  pedidos = r.data;
+  const nuevos = pedidos.filter(p => !prevIds.has(p.id)).length;
+  if (quiet && hadData && nuevos) toast(nuevos === 1 ? 'Llegó un pedido nuevo' : `Llegaron ${nuevos} pedidos nuevos`);
+  $('#upd').textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-AR', {hour: '2-digit', minute: '2-digit'});
+  render();
+}
+const compPend = p => (p.comprobantes || []).some(c => c.estado === 'pendiente');
+function kpis() {
+  const hoy = new Date().toDateString();
+  const nNew = pedidos.filter(p => p.estado === 'recibido').length;
+  $('#kNew').textContent = nNew;
+  $('#kAct').textContent = pedidos.filter(p => p.estado === 'preparacion' || p.estado === 'listo').length;
+  $('#kComp').textContent = pedidos.filter(p => p.estado !== 'cancelado' && compPend(p)).length;
+  $('#kHoy').textContent = pedidos.filter(p => new Date(p.created_at).toDateString() === hoy).length;
+  $('#nPend').textContent = nNew; $('#nPend').hidden = !nNew;
+}
+function pasa(p) {
+  switch (filtro) {
+    case 'gestion': return ['recibido', 'preparacion', 'listo'].includes(p.estado) || (p.estado !== 'cancelado' && compPend(p));
+    case 'comp': return p.estado !== 'cancelado' && compPend(p);
+    case 'hoy': return new Date(p.created_at).toDateString() === new Date().toDateString();
+    case 'activos': return p.estado === 'preparacion' || p.estado === 'listo';
+    case 'todos': return true;
+    default: return p.estado === filtro;
+  }
+}
+function compHTML(p, tipo) {
+  const c = (p.comprobantes || []).find(x => x.tipo === tipo), name = tipo === 'factura' ? 'Factura' : 'Remito';
+  const up = `<button type="button" class="btn sm${c && c.estado === 'pendiente' ? '' : ' line'}" data-up="${tipo}" data-id="${p.id}">${c && c.estado === 'enviado' ? 'Reemplazar PDF' : 'Subir PDF'}</button>`;
+  if (!c) return `<div class="comp"><div class="t">${name}</div><div class="d" style="color:var(--ink-2)">${tipo === 'factura' ? 'El cliente no la pidió.' : 'El cliente no lo pidió.'}</div><div class="acts">${p.estado === 'cancelado' ? '' : up}</div></div>`;
+  const d = c.datos || {};
+  const datos = tipo === 'factura' && (d.cuit || d.razon) ? `<div class="d">${esc(d.iva || '')}<br>${(d.cuit || '').length > 10 ? 'CUIT' : 'DNI'} ${esc(d.cuit || '')} · ${esc(d.razon || '')}</div>` : '';
+  if (c.estado === 'enviado') return `<div class="comp ok"><div class="t">${name} ✓ ${tipo === 'factura' ? 'enviada' : 'enviado'}</div>${datos}<div class="d">Disponible para el cliente desde el ${dia(c.enviado_at || c.created_at)}.</div><div class="acts"><button type="button" class="btn sm line" data-ver="${esc(c.archivo)}">Ver PDF</button>${up}</div></div>`;
+  return `<div class="comp pend"><div class="t">${name}${d.letra ? ' ' + esc(d.letra) : ''} · ${tipo === 'factura' ? 'solicitada' : 'solicitado'}</div>${datos}<div class="d">Pedida el ${dia(c.created_at)}.</div><div class="acts">${up}</div></div>`;
+}
+function ordHTML(p) {
+  const nuevo = p.estado === 'recibido' && Date.now() - new Date(p.created_at) < 6 * 3600e3;
+  const sel = `<select class="est s-${p.estado}" data-est="${p.id}" aria-label="Estado del pedido ${esc(p.codigo)}">${ESTADOS.map(([k, l]) => `<option value="${k}"${k === p.estado ? ' selected' : ''}>${l}</option>`).join('')}</select>`;
+  return `<article class="ord s-${p.estado}" data-id="${p.id}">
+    <div class="oh"><span class="code">${esc(p.codigo)}</span><span class="when">${fecha(p.created_at)}</span>${nuevo ? '<span class="new">Nuevo</span>' : ''}<span class="sp"></span>${sel}</div>
+    <div class="cli"><b>${esc(p.nombre)}</b><span>${esc(p.localidad)}</span><a href="mailto:${esc(p.email)}?subject=${encodeURIComponent('Tu pedido ' + p.codigo + ' en DonRoy')}">${esc(p.email)}</a></div>
+    <div class="sum">${p.articulos} artículo${p.articulos === 1 ? '' : 's'} · ${p.unidades} unidades</div>
+    ${p.nota ? `<div class="nota"><b>Nota del cliente:</b> ${esc(p.nota)}</div>` : ''}
+    <details><summary>Ver artículos</summary><table class="items"><thead><tr><th>Código</th><th>Detalle</th><th>Sección</th><th style="text-align:right">Cant.</th></tr></thead><tbody>${(p.items || []).map(i => `<tr><td class="cod">${esc(i.c)}</td><td>${esc(i.d)}</td><td>${esc(i.s || '')}</td><td class="qty">${esc(i.q)}</td></tr>`).join('')}</tbody></table>
+      <p style="margin:8px 0 0"><button type="button" class="btn sm line" data-copy="${p.id}">Copiar lista para preparar</button></p></details>
+    <div class="comps">${compHTML(p, 'factura')}${compHTML(p, 'remito')}</div>
+  </article>`;
+}
+function render() {
+  kpis();
+  const q = norm($('#q').value.trim());
+  const rows = pedidos.filter(pasa).filter(p => !q || norm([p.codigo, p.nombre, p.localidad, p.email].join(' ')).includes(q));
+  $('#list').innerHTML = rows.length ? rows.map(ordHTML).join('') : `<div class="empty">${pedidos.length ? 'No hay pedidos con este filtro.' : 'Todavía no hay pedidos.'}</div>`;
+}
+function setFiltro(f) { filtro = f; document.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', String(c.dataset.f === f))); render(); }
+$('#chips').addEventListener('click', e => { const c = e.target.closest('.chip'); if (c) setFiltro(c.dataset.f); });
+document.querySelectorAll('.kpi').forEach(k => k.addEventListener('click', () => { show('pedidos'); setFiltro(k.dataset.go); }));
+$('#q').addEventListener('input', render);
+$('#refresh').onclick = () => loadPedidos();
+
+document.addEventListener('change', async e => {
+  const s = e.target.closest('[data-est]'); if (!s) return;
+  const id = Number(s.dataset.est), p = pedidos.find(x => x.id === id), prev = p.estado, nuevo = s.value;
+  if (nuevo === 'cancelado' && !confirm(`¿Cancelar el pedido ${p.codigo}?`)) { s.value = prev; return; }
+  s.disabled = true;
+  const r = await sb.rpc('admin_estado_pedido', {p_pedido: id, p_estado: nuevo});
+  if (r.error) { toast('No se pudo cambiar el estado'); s.value = prev; s.disabled = false; return; }
+  p.estado = nuevo; render(); toast(`${p.codigo}: ${ESTADOS.find(x => x[0] === nuevo)[1]}`);
+});
+document.addEventListener('click', async e => {
+  const u = e.target.closest('[data-up]');
+  if (u) { upTarget = {id: Number(u.dataset.id), tipo: u.dataset.up}; $('#file').value = ''; $('#file').click(); return; }
+  const v = e.target.closest('[data-ver]');
+  if (v) {
+    const w = window.open('', '_blank');
+    const r = await sb.storage.from('comprobantes').createSignedUrl(v.dataset.ver, 600);
+    if (r.error) { if (w) w.close(); toast('No se pudo abrir el archivo'); return; }
+    if (w) w.location = r.data.signedUrl; else location.href = r.data.signedUrl;
+    return;
+  }
+  const cp = e.target.closest('[data-copy]');
+  if (cp) {
+    const p = pedidos.find(x => x.id === Number(cp.dataset.copy));
+    const txt = `Pedido ${p.codigo} · ${p.nombre} (${p.localidad})\n` + (p.items || []).map(i => `${i.q} × ${i.c} · ${i.d}`).join('\n') + (p.nota ? `\nNota: ${p.nota}` : '');
+    try { await navigator.clipboard.writeText(txt); toast('Lista copiada'); } catch (er) { toast('No se pudo copiar'); }
+  }
+  const tb = e.target.closest('[data-tab]');
+  if (tb) { const t = tb.dataset.tab; show(t); if (t === 'pedidos') render(); if (t === 'clientes') loadClientes(); if (t === 'busquedas') loadBusquedas(); }
+});
+$('#file').addEventListener('change', async () => {
+  const f = $('#file').files[0]; if (!f || !upTarget) return;
+  if (f.type !== 'application/pdf') { toast('Elegí un archivo PDF'); return; }
+  if (f.size > 10 * 1024 * 1024) { toast('El PDF supera los 10 MB'); return; }
+  const p = pedidos.find(x => x.id === upTarget.id);
+  // name = folder of the order + type + order code: the database links it on its own
+  const path = `${p.id}/${upTarget.tipo}-${p.codigo}-${Date.now()}.pdf`;
+  toast('Subiendo…');
+  const r = await sb.storage.from('comprobantes').upload(path, f, {contentType: 'application/pdf', upsert: false});
+  if (r.error) { toast('No se pudo subir: ' + r.error.message); return; }
+  toast(`${upTarget.tipo === 'factura' ? 'Factura' : 'Remito'} de ${p.codigo} enviada al cliente`);
+  upTarget = null; loadPedidos(true);
+});
+
+// ---- clientes ----
+let clientes = [];
+async function loadClientes() {
+  const r = await sb.from('clientes').select('*').order('ultimo_pedido', {ascending: false});
+  if (r.error) { toast('No pudimos cargar los clientes'); return; }
+  clientes = r.data; renderClientes();
+}
+function renderClientes() {
+  const q = norm($('#qc').value.trim());
+  const rows = clientes.filter(c => !q || norm([c.nombre, c.localidad, c.email].join(' ')).includes(q));
+  $('#ctb').innerHTML = rows.length ? rows.map(c => `<tr><td><b>${esc(c.nombre)}</b></td><td>${esc(c.localidad)}</td><td><a href="mailto:${esc(c.email)}">${esc(c.email)}</a></td><td class="num">${c.pedidos}</td><td class="num">${c.unidades}</td><td>${dia(c.ultimo_pedido)}</td><td>${c.tiene_cuenta ? '<span class="yes">Sí</span>' : '<span class="no">No</span>'}</td></tr>`).join('') : '<tr><td colspan="7" style="color:var(--ink-2)">Sin clientes todavía.</td></tr>';
+}
+$('#qc').addEventListener('input', renderClientes);
+$('#csv').onclick = () => {
+  const cols = ['nombre', 'localidad', 'email', 'pedidos', 'unidades', 'primer_pedido', 'ultimo_pedido', 'tiene_cuenta'];
+  const q = v => `"${String(v == null ? '' : v).replace(/"/g, '""')}"`;
+  const csv = '﻿' + cols.join(';') + '\n' + clientes.map(c => cols.map(k => q(c[k])).join(';')).join('\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], {type: 'text/csv;charset=utf-8'}));
+  a.download = `clientes-donroy-${new Date().toISOString().slice(0, 10)}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+};
+
+// ---- búsquedas ----
+async function loadBusquedas() {
+  const r = await sb.from('busquedas_sin_resultado').select('termino,created_at').order('created_at', {ascending: false}).limit(2000);
+  if (r.error) { toast('No pudimos cargar las búsquedas'); return; }
+  const m = new Map();
+  r.data.forEach(b => { const k = norm(b.termino).trim(); const e = m.get(k) || {t: b.termino, n: 0, last: b.created_at}; e.n++; m.set(k, e); });
+  const rows = [...m.values()].sort((a, b) => b.n - a.n).slice(0, 100);
+  $('#btb').innerHTML = rows.length ? rows.map(x => `<tr><td>${esc(x.t)}</td><td class="num">${x.n}</td><td>${dia(x.last)}</td></tr>`).join('') : '<tr><td colspan="3" style="color:var(--ink-2)">Todavía no hay búsquedas sin resultado.</td></tr>';
+}
+
+const s = document.createElement('script'); s.src = SUPA_JS;
+s.onload = boot; s.onerror = () => { show('noacc'); $('#noaccMsg').textContent = 'No se pudo conectar. Revisá la conexión y recargá la página.'; };
+document.head.appendChild(s);
+</script>
+</body>
+</html>

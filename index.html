@@ -316,6 +316,10 @@ body.mdlopen{overflow:hidden}
 .ped.cancel{background:var(--surface-2)}.ped.cancel .pedh b{text-decoration:line-through;color:var(--ink-2)}
 .ptag{font-style:normal;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--red);border:1.5px solid var(--red);border-radius:10px;padding:1px 8px}
 .letra{margin:0;font-size:14px;color:var(--navy);background:#fff;border:1.5px dashed var(--line);border-radius:10px;padding:8px 12px}
+.ptag.st-recibido{color:var(--navy);border-color:var(--line)}
+.ptag.st-preparacion{color:#B26A00;border-color:#B26A00}
+.ptag.st-listo{color:#1F5FA8;border-color:#1F5FA8}
+.ptag.st-entregado{color:var(--green);border-color:var(--green)}
 </style>
 
 </head>
@@ -410,7 +414,7 @@ const CODE_KEY = 'donroy-codigo';
 // Condición de DonRoy frente al IVA: 'RI' (Responsable Inscripto) o 'MONO' (Monotributo). Define la letra de la factura.
 const EMISOR_IVA = 'RI';
 const letraFactura = iva => EMISOR_IVA === 'MONO' ? 'C' : (iva === 'Responsable inscripto' || iva === 'Monotributista' ? 'A' : 'B');
-let sb = null, user = null;
+let sb = null, user = null, isAdmin = false;
 const newCode = () => { const a = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let s = ''; crypto.getRandomValues(new Uint8Array(6)).forEach(x => { s += a[x % a.length]; }); return 'DR-' + s; };
 let orderCode = ''; try { orderCode = localStorage.getItem(CODE_KEY) || ''; } catch (e) {}
 if (!/^DR-[A-Z0-9]{6}$/.test(orderCode)) { orderCode = newCode(); try { localStorage.setItem(CODE_KEY, orderCode); } catch (e) {} }
@@ -872,7 +876,7 @@ function loadSupabase() {
     sb.auth.onAuthStateChange((ev, session) => {
       const was = user;
       user = session ? session.user : null;
-      if ((was && was.id) !== (user && user.id)) pedidosCache = null;
+      if ((was && was.id) !== (user && user.id)) { pedidosCache = null; isAdmin = false; if (user) sb.rpc('es_admin').then(r => { isAdmin = !!r.data; if (!$('#acc').hidden) renderAcc(); }, () => {}); }
       if (user) { try { localStorage.setItem(ACC_KEY, user.email.toLowerCase()); } catch (e) {} }
       applyUser();
       // came back from the email link, or just verified a code without a password yet
@@ -994,6 +998,7 @@ function renderAcc() {
     bindAccForms(); return;
   }
   let h = `<div class="ahead"><div><h2 id="accT">Mis pedidos</h2><p class="msub">${esc(user.email)}</p></div><button type="button" class="lnk" id="aOut">Cerrar sesión</button></div>`;
+  if (isAdmin) h += `<a class="mbtn line" href="/admin/">Ir al panel de administración</a>`;
   if (!hasPassword() || accView === 'pass') h += `<form class="mcard soft" id="passForm"><b>Creá tu contraseña</b><span>Así la próxima vez entrás con tu correo y tu contraseña.</span>
       <label class="mfield">Contraseña<input id="aNew" type="password" autocomplete="new-password" minlength="8" placeholder="Mínimo 8 caracteres"></label><p class="merr" id="aErr" hidden></p><button class="mbtn" type="submit">Guardar contraseña</button></form>`;
   if (lastNotice) h += `<div class="mcard ok"><b>${esc(lastNotice.title)}</b><span>${esc(lastNotice.text || 'Avisale a ventas para que lo preparen:')}</span><a class="mbtn wa" href="${lastNotice.href}" target="_blank" rel="noopener noreferrer">${WAI}Avisar por WhatsApp</a></div>`;
@@ -1020,12 +1025,13 @@ function pedidosHTML() {
       <label><span class="lraz">Razón social</span><input name="razon" maxlength="120" placeholder="Como figura en ARCA"></label>
       <p class="merr" hidden></p><div class="mrow"><button class="mbtn" type="submit">Solicitar factura</button><button type="button" class="lnk" data-factx="1">Cancelar</button></div></form>` : '';
     const canc = p.estado === 'cancelado', emitido = (p.comprobantes || []).some(c => c.estado === 'enviado');
+    const EST = {recibido: 'Recibido', preparacion: 'En preparación', listo: 'Listo para entregar', entregado: 'Entregado'};
     const acts = canc ? `<button type="button" class="chipb line" data-repeat="${p.id}">Repetir pedido</button>`
-      : `${btn('factura')}${btn('remito')}<button type="button" class="chipb line" data-repeat="${p.id}">Repetir pedido</button>${emitido ? '' : `<button type="button" class="chipb red" data-cancel="${p.id}">Cancelar pedido</button>`}`;
+      : `${btn('factura')}${btn('remito')}<button type="button" class="chipb line" data-repeat="${p.id}">Repetir pedido</button>${emitido || p.estado !== 'recibido' ? '' : `<button type="button" class="chipb red" data-cancel="${p.id}">Cancelar pedido</button>`}`;
     const cbox = !canc && cancelFor === p.id ? `<div class="cbox" role="alertdialog" aria-labelledby="cq${p.id}"><b id="cq${p.id}">¿Seguro que querés cancelar el pedido ${esc(p.codigo)}?</b>
       <span>Ventas va a dejar de prepararlo y se anulan las solicitudes de factura o remito pendientes. No se puede deshacer.</span>
       <div class="mrow"><button type="button" class="mbtn redb" data-cancelyes="${p.id}">Sí, cancelar pedido</button><button type="button" class="lnk" data-cancelno="1">No, volver</button></div></div>` : '';
-    return `<article class="ped${canc ? ' cancel' : ''}"><div class="pedh"><b>${esc(p.codigo)}</b><span>${fmtFecha(p.created_at)} · ${plural(p.articulos, 'artículo', 'artículos')} · ${p.unidades} u.</span>${canc ? '<em class="ptag">Cancelado</em>' : ''}</div>
+    return `<article class="ped${canc ? ' cancel' : ''}"><div class="pedh"><b>${esc(p.codigo)}</b><span>${fmtFecha(p.created_at)} · ${plural(p.articulos, 'artículo', 'artículos')} · ${p.unidades} u.</span>${canc ? '<em class="ptag">Cancelado</em>' : `<em class="ptag st-${esc(p.estado || 'recibido')}">${EST[p.estado] || 'Recibido'}</em>`}</div>
       <details><summary>Ver detalle</summary><ul>${(p.items || []).map(i => `<li><b>${esc(i.q)} ×</b> ${esc(i.c)} · ${esc(i.d)}</li>`).join('')}</ul></details>
       <div class="pacts">${acts}</div>${ff}${cbox}</article>`;
   }).join('');
@@ -1102,7 +1108,7 @@ document.addEventListener('click', async e => {
     const pid = Number(cy.dataset.cancelyes), p = pedidosCache.find(x => x.id === pid);
     cy.disabled = true; cy.textContent = 'Cancelando…';
     const r = await sb.rpc('cancelar_pedido', {p_pedido: pid});
-    if (r.error) { toast(/emitido/.test(r.error.message) ? 'Ya tiene factura o remito: comunicate con ventas' : 'No pudimos cancelar el pedido'); cancelFor = null; pedidosCache = null; renderAcc(); return; }
+    if (r.error) { toast(/emitido|preparación/.test(r.error.message) ? 'Ya está en preparación o facturado: comunicate con ventas' : 'No pudimos cancelar el pedido'); cancelFor = null; pedidosCache = null; renderAcc(); return; }
     lastNotice = {title: `Pedido ${p.codigo} cancelado`, text: 'Avisale a ventas para que no lo preparen:', href: `https://wa.me/${WA}?text=${encodeURIComponent(`Hola Don Roy, cancelé el pedido ${p.codigo} desde mi cuenta web (${user.email}). Por favor no lo preparen. Gracias.`)}`};
     cancelFor = null; pedidosCache = null; renderAcc(); toast('Pedido cancelado'); return;
   }
