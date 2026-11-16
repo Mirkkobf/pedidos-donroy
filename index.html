@@ -259,6 +259,55 @@ body.lbopen{overflow:hidden}
 .flip:hover{border-color:var(--navy);background:#fff}
 .flip svg{flex:none}.flip .ext{opacity:.55}
 @media (max-width:520px){.flip{height:34px;font-size:13px}}
+
+/* v12: cuenta del cliente (Supabase) */
+.accbtn{flex:none;position:relative;width:44px;height:44px;border-radius:22px;border:1.5px solid var(--line);background:var(--white);color:var(--navy);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.accbtn:hover{border-color:var(--navy)}
+.accbtn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.accbtn.on::after{content:"";position:absolute;right:1px;top:1px;width:11px;height:11px;border-radius:6px;background:#2BB673;border:2px solid var(--bg)}
+.form .hint{font-size:12px;font-weight:500;color:var(--ink-2)}
+.form label.bad .hint{display:none}
+.form input[readonly]{background:var(--surface-2);color:var(--ink-2)}
+body.mdlopen{overflow:hidden}
+.mdl{position:fixed;inset:0;z-index:85;background:rgba(0,30,44,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+.mbox{position:relative;width:min(480px,100%);max-height:calc(100dvh - 32px);overflow:auto;background:#fff;border-radius:18px;padding:26px 22px 20px;box-shadow:0 20px 60px rgba(0,30,44,.3);display:grid;gap:12px}
+#accBody,#postBody{display:grid;gap:12px}
+@media (max-width:560px){.mdl{align-items:flex-end;padding:0}.mbox{width:100%;border-radius:18px 18px 0 0;max-height:92dvh;padding-bottom:calc(20px + env(safe-area-inset-bottom,0px))}}
+.mcl{position:absolute;right:12px;top:12px;width:36px;height:36px;border-radius:18px;border:1px solid var(--line);background:var(--surface-2);color:var(--navy);font-size:15px;cursor:pointer}
+.mbox h2{margin:0;padding-right:40px;font-family:var(--f-display);font-weight:800;font-size:20px;text-transform:uppercase;letter-spacing:.02em;color:var(--navy)}
+.msub{margin:0;font-size:14px;line-height:1.45;color:var(--ink-2)}
+.mok{width:52px;height:52px;border-radius:26px;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center}
+.mline{margin:0;font-size:13.5px;line-height:1.45;color:var(--ink-2)}
+.mline.ok{color:var(--green);font-weight:600}.mline.warn{color:var(--red);font-weight:600}
+.mcard{display:grid;gap:8px;padding:14px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface-2)}
+.mcard>b{font-size:15px;color:var(--navy)}.mcard>span{font-size:13.5px;line-height:1.45;color:var(--ink-2)}
+.mcard.ok{border-color:var(--green);background:#EAF6F0}
+.mform{display:grid;gap:10px}
+.mform label,.mfield{display:grid;gap:4px;font-size:12px;font-weight:600;color:var(--ink-2)}
+.mform input,.mform select,.mfield input{width:100%;height:44px;border:1.5px solid var(--line);border-radius:10px;background:#fff;padding:0 12px;font-size:15px;color:var(--navy)}
+.mform input:focus,.mfield input:focus{border-color:var(--navy);outline:none}
+.merr{margin:0;font-size:13px;font-weight:600;color:var(--red)}
+.mbtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;padding:0 18px;border-radius:23px;border:0;background:var(--navy);color:#fff;font-family:var(--f-display);font-weight:800;font-size:13.5px;letter-spacing:.02em;cursor:pointer;text-decoration:none}
+.mbtn:disabled{opacity:.6;cursor:default}
+.mbtn.line{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
+.mbtn.wa{background:var(--green)}
+.mfoot{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.mlinks{display:flex;justify-content:space-between;margin:0}
+.lnk{border:0;background:none;padding:6px 0;font-size:13.5px;font-weight:600;color:var(--navy);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.mrow{display:flex;align-items:center;gap:14px}
+.ahead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding-right:40px}
+.ped{display:grid;gap:8px;padding:14px;border:1.5px solid var(--line);border-radius:12px}
+.pedh{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.pedh b{font-family:var(--f-display);font-weight:800;color:var(--navy)}.pedh span{font-size:13px;color:var(--ink-2)}
+.ped details{font-size:13.5px}.ped summary{cursor:pointer;font-weight:600;color:var(--navy)}
+.ped ul{margin:8px 0 0;padding-left:18px;display:grid;gap:4px;color:var(--ink)}
+.pacts{display:flex;flex-wrap:wrap;gap:6px}
+.chipb{display:inline-flex;align-items:center;height:34px;padding:0 12px;border-radius:17px;border:0;background:var(--navy);color:#fff;font-size:12.5px;font-weight:700;cursor:pointer}
+.chipb.line{background:#fff;color:var(--navy);border:1.5px solid var(--line)}
+.chipb.dl{background:var(--green)}
+.chipb.wait{background:var(--surface-2);color:var(--ink-2);cursor:default}
+.mform.fact{padding:12px;border-radius:10px;background:var(--surface-2)}
+@media (max-width:520px){.hrow .cartbtn{display:none}.hrow{gap:10px}}
 </style>
 
 </head>
@@ -274,6 +323,7 @@ body.lbopen{overflow:hidden}
         <input id="q" type="search" placeholder="Buscá un producto, código o marca" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="sugg" aria-expanded="false">
         <button type="button" class="qx" id="qx" aria-label="Borrar búsqueda" title="Borrar búsqueda" hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       </label><div class="sugg" id="sugg" role="listbox" aria-label="Sugerencias" hidden></div></div>
+      <button class="accbtn" id="accBtn" type="button" aria-label="Ingresar o crear cuenta" title="Ingresar o crear cuenta" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></button>
       <button class="cartbtn" id="openCart" type="button" aria-label="Ver pedido"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6.2"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg><span class="lbl">Pedido</span><span class="badge" id="badge">0</span></button>
     </div>
   </div>
@@ -300,12 +350,13 @@ body.lbopen{overflow:hidden}
         <div class="ph2"><h2 id="pt">Tu pedido</h2><span class="tot" id="tot">0 artículos</span><button class="close" id="closeCart" type="button" aria-label="Cerrar pedido"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
         <div class="items" id="items"></div>
         <form class="form" id="form" autocomplete="on">
+          <label for="email"><span>Correo electrónico <em class="req" aria-hidden="true">*</em></span><input id="email" name="email" type="email" inputmode="email" placeholder="Ej.: compras@ferreteria.com" required aria-required="true" autocomplete="email" aria-describedby="emailHint"><small class="hint" id="emailHint">Para guardar tu pedido. Después podés crear tu cuenta y ver tus pedidos.</small><small class="err">Revisá tu correo electrónico</small></label>
           <label for="nombre"><span>Nombre y comercio <em class="req" aria-hidden="true">*</em></span><input id="nombre" name="nombre" placeholder="Ej.: Juan Pérez · Ferretería El Tornillo" required aria-required="true" autocomplete="organization"><small class="err">Completá tu nombre y comercio</small></label>
           <label for="loc"><span>Localidad <em class="req" aria-hidden="true">*</em></span><input id="loc" name="loc" placeholder="Ej.: Paraná" required aria-required="true" autocomplete="address-level2"><small class="err">Completá tu localidad</small></label>
           <label for="nota">Nota para el vendedor (opcional)<textarea id="nota" name="nota" placeholder="Ej.: entregar el jueves, consultar precio por bulto"></textarea></label>
         </form>
         <div class="acts">
-          <p class="need" id="need" hidden>Completá <b>nombre y comercio</b> y <b>localidad</b> para enviar el pedido.</p>
+          <p class="need" id="need" hidden>Completá <b>correo</b>, <b>nombre y comercio</b> y <b>localidad</b> para enviar el pedido.</p>
           <a class="send" id="send" href="#" target="_blank" rel="noopener noreferrer" aria-disabled="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.6-4.8A9 9 0 1 1 8 19.4zM9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.4-2-1-.8.8c-1-.4-1.8-1.2-2.2-2.2l.8-.8-1-2z"/></svg>Enviar pedido por WhatsApp</a>
           <div class="sub"><button class="ghost" id="copy" type="button">Copiar pedido</button><button class="ghost" id="clear" type="button">Vaciar</button></div>
           <p class="note">Se abre WhatsApp con el pedido escrito al 343 405-2237. Revisalo y tocá enviar.</p>
@@ -333,12 +384,25 @@ body.lbopen{overflow:hidden}
   <figure class="lbf"><button type="button" class="lbx" id="lbx" aria-label="Cerrar imagen"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   <div class="lbi"><img id="lbimg" src="" alt=""></div><figcaption><b id="lbt"></b><span id="lbs"></span></figcaption></figure>
 </div>
+<div class="mdl" id="post" role="dialog" aria-modal="true" aria-labelledby="postT" hidden><div class="mbox"><button type="button" class="mcl" data-close="post" aria-label="Cerrar">✕</button><div id="postBody"></div></div></div>
+<div class="mdl" id="acc" role="dialog" aria-modal="true" aria-labelledby="accT" hidden><div class="mbox"><button type="button" class="mcl" data-close="acc" aria-label="Cerrar">✕</button><div id="accBody"></div></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 const DATA = {"sections":[{"k":"liquidacion","name":"Liquidación / Oportunidades (hasta agotar stock)","short":"Liquidación"},{"k":"ferreteria","name":"Ferretería y Fijaciones","short":"Ferretería"},{"k":"construccion","name":"Construcción y Maquinaria","short":"Construcción"},{"k":"corte","name":"Herramientas de Corte, Desbaste y Manuales","short":"Corte y Desbaste"},{"k":"toolmak","name":"Línea Toolmak y Braco","short":"Toolmak y Braco"},{"k":"pintureria","name":"Pinturería y Accesorios","short":"Pinturería"},{"k":"quimicos","name":"Químicos e Impermeabilizantes","short":"Químicos"},{"k":"brogas","name":"Línea Brogas (Gas Butano)","short":"Brogas"},{"k":"aguagas","name":"Agua y Gas","short":"Agua y Gas"}],"blocks":[{"s":"liquidacion","t":"Correas para hormigonera","img":"94_9603","br":[],"rows":[{"c":"40566","d":"Correas para Hormigonera n°30","sw":null},{"c":"40577","d":"Correas para Hormigonera n°31","sw":null},{"c":"40579","d":"Correas para Hormigonera n°33","sw":null},{"c":"40580","d":"Correas para Hormigonera n°34","sw":null},{"c":"40581","d":"Correas para Hormigonera n°35","sw":null},{"c":"40583","d":"Correas para Hormigonera n°37","sw":null},{"c":"40584","d":"Correas para Hormigonera n°38","sw":null},{"c":"40585","d":"Correas para Hormigonera n°39","sw":null}],"liq":true},{"s":"liquidacion","t":"EXHIBIDORES","img":null,"br":[],"rows":[{"c":"40391","d":"Exhibidor de Pala","sw":null},{"c":"40392","d":"Exhibidor de Cadena","sw":null},{"c":"40393","d":"Exhibidor de Media Sombra","sw":null},{"c":"40395","d":"Exhibidor de Varilla Roscada","sw":null},{"c":"40396","d":"Exhibidor de Tejido","sw":null}],"liq":true},{"s":"liquidacion","t":"FRATACHOS VOSS 2000","img":"90_9208","br":[["Voss","95_9706"]],"rows":[{"c":"40008","d":"Fratacho Plastico VOSS 2000 p/Grueso 35cm","sw":null}],"liq":true},{"s":"liquidacion","t":"PALAS FORJADAS HORWING","img":null,"br":[],"rows":[{"c":"60081","d":"Pala Punta Cabo Madera","sw":null},{"c":"60074","d":"Pala Punta Pocera Cabo Madera","sw":null}],"liq":true},{"s":"liquidacion","t":"VARILLA ROSCADA","img":"94_9602","br":[],"rows":[{"c":"40478","d":"Varilla Roscada Zincada 5/32","sw":null},{"c":"40474","d":"Varilla Roscada Natura 1/4","sw":null}],"liq":true},{"s":"liquidacion","t":"BOMBA","img":"94_9601","br":[],"rows":[{"c":"02151","d":"Bomba Periferica 1/2","sw":null}],"liq":true},{"s":"ferreteria","t":"Abrazadera Cremallera","img":"8_1461","br":[],"rows":[{"c":"20001","d":"Abrazadera 9mm x 25 Unidades 8 - 16 (5/8)","sw":null},{"c":"20003","d":"Abrazadera 9mm x 25 Unidades 12 - 22 (3/4)","sw":null},{"c":"20004","d":"Abrazadera 9mm x 25 Unidades 16 - 27 ( 1 )","sw":null},{"c":"20005","d":"Abrazadera 9mm x 25 Unidades 20 - 32 (1.4/4)","sw":null},{"c":"20006","d":"Abrazadera 9mm x 25 Unidades 30 - 45 (1.4/4)","sw":null},{"c":"20007","d":"Abrazadera 9mm x 25 Unidades 32 - 50 ( 2 )","sw":null},{"c":"20008","d":"Abrazadera 9mm x 25 Unidades 40 - 60 ( 2.1/4)","sw":null},{"c":"20009","d":"Abrazadera 9mm x 25 Unidades 50 - 70 (2.1/2 )","sw":null},{"c":"20010","d":"Abrazadera 9mm x 25 Unidades 60 - 80 ( 2.3/4)","sw":null},{"c":"20011","d":"Abrazadera 9mm x 25 Unidades 70 - 90 ( 3 )","sw":null},{"c":"20012","d":"Abrazadera 9mm x 25 Unidades 80 - 100 (3.1/2)","sw":null},{"c":"20014","d":"Abrazadera 9mm x 25 Unidades 100 - 120 (4.1/2)","sw":null},{"c":"20015","d":"Abrazadera 9mm x 25 Unidades 110 - 130 ( 5 )","sw":null},{"c":"20016","d":"Abrazadera 9mm x 25 Unidades 120 - 140 (5.1/2)","sw":null}],"liq":false},{"s":"ferreteria","t":"ARCO DE SIERRA","img":"5_1380","br":[],"rows":[{"c":"20028","d":"Arco de Sierra Nacional","sw":null}],"liq":false},{"s":"ferreteria","t":"Cable de acero","img":"8_1459","br":[],"rows":[{"c":"00320","d":"Cable de Acero 1.5mm x 200mts 1 x 19","sw":null},{"c":"00321","d":"Cable de Acero 2mm x 200mts 1 x 19","sw":null},{"c":"00322","d":"Cable de Acero 2,5mm x 200mts 1 x 19","sw":null},{"c":"00323","d":"Cable de Acero 3mm x 100mts 6 x 19","sw":null},{"c":"00324","d":"Cable de Acero 4mm x 100mts 6 x 19","sw":null},{"c":"00325","d":"Cable de Acero 5mm x 100mts 6 x 19","sw":null},{"c":"00326","d":"Cable de Acero 6mm x 100mts 6 x 19","sw":null},{"c":"00327","d":"Cable de Acero 8mm x 100mts 6 x 19","sw":null},{"c":"00328","d":"Cable de Acero 10mm x 50mts 6 x 19","sw":null},{"c":"00329","d":"Cable de Acero 13mm x 50mts 6 x 19","sw":null}],"liq":false},{"s":"ferreteria","t":"Cable para gimnasio","img":"90_9203","br":[],"rows":[{"c":"100236","d":"Cable Gym 6x19 3 a 5 mm Negro","sw":null},{"c":"100237","d":"Cable Gym 6x19 4 a 6 mm Negro","sw":null}],"liq":false},{"s":"ferreteria","t":"CADENA DERECHA GALVANIZADA","img":"7_1421","br":[],"rows":[{"c":"00221","d":"Cadena Galvanizada Nº25 12.5 kg.","sw":null},{"c":"00222","d":"Cadena Galvanizada Nº30 12.5 kg.","sw":null},{"c":"00223","d":"Cadena Galvanizada Nº35 12.5 kg.","sw":null},{"c":"00224","d":"Cadena Galvanizada Nº40 25 kg","sw":null},{"c":"00304","d":"Cadena Galvanizada Nº45 25 kg","sw":null},{"c":"00226","d":"Cadena Galvanizada Nº50 25 kg.","sw":null},{"c":"00305","d":"Cadena Galvanizada Nº55 25 kg.","sw":null},{"c":"00227","d":"Cadena Galvanizada Nº60 25 kg.","sw":null},{"c":"00228","d":"Cadena Galvanizada Nº70 25 kg.","sw":null},{"c":"00229","d":"Cadena Galvanizada Nº80 25 kg.","sw":null},{"c":"00230","d":"Cadena Galvanizada Nº90 25 kg.","sw":null},{"c":"00231","d":"Cadena Galvanizada Nº100 50 kg.","sw":null},{"c":"00232","d":"Cadena Galvanizada Nº120 50 kg.","sw":null},{"c":"00233","d":"Cadena Galvanizada Nº130 50 kg.","sw":null},{"c":"00234","d":"Cadena Galvanizada Nº140 50 kg.","sw":null}],"liq":false},{"s":"ferreteria","t":"CADENA TRANQUERA","img":"5_1384","br":[],"rows":[{"c":"00301","d":"Cadena Tranquera Nº60 x 1.10 mts","sw":null},{"c":"00302","d":"Cadena Tranquera Nº70 x 1.20 mts","sw":null},{"c":"00303","d":"Cadena Tranquera Nº80 x 1.40 mts","sw":null}],"liq":false},{"s":"ferreteria","t":"CANDADOS","img":"10_1503","br":[["Toolmak","95_9702"]],"rows":[{"c":"00601","d":"Bronceado Pesado c/3 llaves 25mm 6 Unidades (TMK20078)","sw":null},{"c":"00602","d":"Bronceado Pesado c/3 llaves 32mm 6 Unidades (TMK19229)","sw":null},{"c":"00603","d":"Bronceado Pesado c/3 llaves 38mm 6 Unidades (TMK19230)","sw":null},{"c":"00604","d":"Bronceado Pesado c/3 llaves 50mm 6 Unidades (TMK19231)","sw":null},{"c":"00605","d":"Bronceado Pesado c/3 llaves 63mm 6 Unidades (TMK19232)","sw":null}],"liq":false},{"s":"ferreteria","t":"CINTA CON CATRACAS","img":"96_9802","br":[],"rows":[{"c":"21400","d":"Cinta c/Hevilla Gancho S 25mm x 3 mts 600 kg","sw":null},{"c":"00620","d":"Catraca Gancho Garfio 25mm x 3 mts 1000 kg (TMK19521)","sw":null},{"c":"00621","d":"Catraca Gancho Garfio 50mm x 9 mts 3.000 kg (BR25037)","sw":null}],"liq":false},{"s":"ferreteria","t":"Mosqueton pera","img":"9_1483","br":[],"rows":[{"c":"00700","d":"Mosqueton Pera 4 x 40 mm Galvanizado x 10 U.","sw":null},{"c":"00701","d":"Mosqueton Pera 5 x 50 mm Galvanizado x 10 U.","sw":null},{"c":"00702","d":"Mosqueton Pera 6 x 60 mm Galvanizado x 10 U.","sw":null},{"c":"00703","d":"Mosqueton Pera 7 x 70 mm Galvanizado x 10 U.","sw":null},{"c":"00704","d":"Mosqueton Pera 8 x 80 mm Galvanizado x 10 U.","sw":null},{"c":"00705","d":"Mosqueton Pera 9 x 90 mm Galvanizado x 10 U.","sw":null},{"c":"00706","d":"Mosqueton Pera 10 x100 mm Galvanizado x 10 U.","sw":null}],"liq":false},{"s":"ferreteria","t":"Mosqueton de seguridad","img":"9_1484","br":[],"rows":[{"c":"00707","d":"Mosqueton Nº00 5 mm . Largo 85mm Galvanizado x 10 U.","sw":null},{"c":"00708","d":"Mosqueton Nº0 6.5 mm Largo 120mm Galvanizado x 10 U.","sw":null},{"c":"00709","d":"Mosqueton Nº1 8 mm Largo 150mm Galvanizado x 10 U.","sw":null},{"c":"00710","d":"Mosqueton Nº3 10 mm Largo180mm Galvanizado x 10 U.","sw":null}],"liq":false},{"s":"ferreteria","t":"Mosqueton a lengüeta","img":"9_1481","br":[],"rows":[{"c":"00711","d":"Mosqueton Nº 3 95 mm Galvanizado x 10 U.","sw":null},{"c":"00712","d":"Mosqueton Nº 4 113 mm Galvanizado x 10 U.","sw":null},{"c":"00713","d":"Mosqueton Nº 5 122 mm Galvanizado x 10 U.","sw":null}],"liq":false},{"s":"ferreteria","t":"Mosqueton gatillo cromado","img":"90_9206","br":[],"rows":[{"c":"00717","d":"Mosqueton Nº0 3/8 45 mm Cromado x 10 U.","sw":null},{"c":"00718","d":"Mosqueton Nº1 1/2 65 mm Cromado x 10 U.","sw":null},{"c":"00719","d":"Mosqueton Nº2 5/8 80 mm Cromado x 10 U.","sw":null},{"c":"00720","d":"Mosqueton Nº3 3/4 90 mm Cromado x 10 U.","sw":null},{"c":"00721","d":"Mosqueton Nº4 1 100 mm Cromado x 10 U.","sw":null}],"liq":false},{"s":"ferreteria","t":"Destorcedor","img":"9_1482","br":[],"rows":[{"c":"00715","d":"Destorcedor Giratorio Nº1 58 mm Cromado x 10 U.","sw":null},{"c":"00716","d":"Destorcedor Giratorio Nº2 68 mm Cromado x 10 U.","sw":null},{"c":"00714","d":"Destorcedor Giratorio Nº3 72 mm Cromado x 10 U.","sw":null}],"liq":false},{"s":"ferreteria","t":"PERNOS","img":"3_1326","br":[],"rows":[{"c":"00207","d":"Perno Enganche 16 mm con Chaveta","sw":null},{"c":"00208","d":"Perno Enganche 19 mm con Chaveta","sw":null},{"c":"00209","d":"Perno Enganche 22 mm con Chaveta","sw":null},{"c":"00210","d":"Perno Enganche 25 mm con Chaveta","sw":null}],"liq":false},{"s":"ferreteria","t":"Precintos DonRoy","img":"3_1327","br":[],"rows":[{"c":"50220","d":"Precinto Nylon 100 x 2,5 mm Negro Tension 8 Kg Precio x 100 U.","sw":null},{"c":"50221","d":"Precinto Nylon 150 x 3.6 mm Negro Tension 18 Kg Precio x 100 U.","sw":null},{"c":"50222","d":"Precinto Nylon 200 x 3,6 mm Negro Tension 18 Kg Precio x 100 U.","sw":null},{"c":"50232","d":"Precinto Nylon 200 x 4,8 mm Negro Tension 22.20 Kg Precio x 100 U.","sw":null},{"c":"50223","d":"Precinto Nylon 250 x 3,6 mm Negro Tension 18Kg Precio x 100 U.","sw":null},{"c":"50233","d":"Precinto Nylon 250 x 4,8 mm Negro Tension 22.20Kg Precio x 100 U.","sw":null},{"c":"50224","d":"Precinto Nylon 300 x 4,8 mm Negro Tension 22 Kg Precio x 100 U.","sw":null},{"c":"50234","d":"Precinto Nylon 300 x 7,6 mm Negro Tension 54 Kg Precio x 100 U.","sw":null},{"c":"50236","d":"Precinto Nylon 390 x 4.8 mm Negro Tension 54 Kg Precio x 100 U.","sw":null},{"c":"50225","d":"Precinto Nylon 400 x 7,6 mm Negro Tension 55 Kg Precio x 100 U.","sw":null},{"c":"50226","d":"Precinto Nylon 550 x 9,0 mm Negro Tension 75 Kg Precio x 100 U.","sw":null},{"c":"50227","d":"Precinto Nylon 700 x 9,0 mm Negro Tension 75 Kg Precio x 100 U.","sw":null},{"c":"50231","d":"Precinto Nylon 760 x 9.0 mm Negro Tension 75 Kg Precio x 100 U.","sw":null}],"liq":false},{"s":"ferreteria","t":"Precintos DonRoy de color","img":"4_1345","br":[],"rows":[{"c":"50237","d":"Precinto Nylon 300 x 4,8 mm Gris Tension 22 Kg Precio x 100 U.","sw":null},{"c":"50238","d":"Precinto Nylon 300 x 4,8 mm Blanco Tension 22 Kg Precio x 100 U.","sw":null},{"c":"50239","d":"Precinto Nylon 300 x 4,8 mm Rojo Tension 22 Kg Precio x 100 U.","sw":null},{"c":"50240","d":"Precinto Nylon 300 x 4,8 mm Azul Tension 22 Kg Precio x 100 U.","sw":null},{"c":"50241","d":"Precinto Nylon 300 x 4,8 mm Verde Tension 22 Kg Precio x 100 U.","sw":null},{"c":"50242","d":"Precinto Nylon 300 x 4,8 mm Amarillo Tension 22 Kg Precio x 100 U.","sw":null}],"liq":false},{"s":"ferreteria","t":"SOGA TRENZADA POLIPROPILENO","img":"6_1397","br":[],"rows":[{"c":"60029","d":"SOGA DonRoy 2 mm 400 Mts. Aprox.","sw":null},{"c":"60030","d":"SOGA DonRoy 3 mm 200 Mts. Aprox.","sw":null},{"c":"60031","d":"SOGA DonRoy 4 mm 200 Mts. Aprox","sw":null},{"c":"60032","d":"SOGA DonRoy 5 mm 150 Mts. Aprox.","sw":null},{"c":"60033","d":"SOGA DonRoy 6 mm 100 Mts. Aprox.","sw":null},{"c":"60035","d":"SOGA DonRoy 8 mm 100 Mts. Aprox.","sw":null},{"c":"60036","d":"SOGA DonRoy 10 mm 100 Mts. Aprox.","sw":null},{"c":"60037","d":"SOGA DonRoy 12 mm 100 Mts. Aprox","sw":null},{"c":"60038","d":"SOGA DonRoy 14 mm 100 Mts. Aprox.","sw":null},{"c":"60039","d":"SOGA DonRoy 16 mm 100 Mts. Aprox.","sw":null}],"liq":false},{"s":"ferreteria","t":"SOGA ELASTICA","img":"96_9803","br":[["Toolmak","95_9702"]],"rows":[{"c":"00650","d":"Con Gancho 10mm x 1.2 (TMK19417)","sw":null},{"c":"00651","d":"Con Gancho 12mm x 1.2 (TMK19418)","sw":null}],"liq":false},{"s":"ferreteria","t":"ZOCALOS","img":"4_1359","br":[],"rows":[{"c":"21900","d":"Zocalo Doble 0.80 cm","sw":null},{"c":"22000","d":"Zocalo Doble 0.90 cm","sw":null}],"liq":false},{"s":"construccion","t":"ANDAMIO","img":"93_9501","br":[],"rows":[{"c":"20375","d":"Andamio Tubular c/ Riendas 2.00 Mts Alto x 1.30 Mts. Ancho","sw":null}],"liq":false},{"s":"construccion","t":"CABO","img":"20_1700","br":[],"rows":[{"c":"20062","d":"Cabo Pala de Caño 0.70 cm","sw":null},{"c":"20060","d":"Cabo Pala de Madera 0.70 cm con empuñadura Metalica","sw":null}],"liq":false},{"s":"construccion","t":"Con rueda neumática","img":"15_9106","br":[],"rows":[{"c":"40029","d":"Carretilla Estampada Zincada 90 lts","sw":null},{"c":"40105","d":"Carretilla Chapa 85 L Reforzada","sw":null},{"c":"40111","d":"Carretilla Plástica BULL 85 lts","sw":null},{"c":"40113","d":"Carretilla PVC 90 lts Chasis Zincado (Batea Negra)","sw":null},{"c":"40618","d":"Carretilla PVC 90 lts Chasis Zincado (Batea Color ) Material Virgen","sw":null}],"liq":false},{"s":"construccion","t":"Con rueda maciza","img":"15_9107","br":[],"rows":[{"c":"40616","d":"Carretilla Chapa 70 lts Eco","sw":null},{"c":"40104","d":"Carretilla Chapa 85 lts Reforzada","sw":null},{"c":"40110","d":"Carretilla PVC 90 lts Chasis Zincado (Batea Negra)","sw":null},{"c":"40617","d":"Carretilla PVC 90 lts Chasis Zincado (Batea Color ) Material Virgen","sw":null}],"liq":false},{"s":"construccion","t":"Repuestos para carretilla","img":"16_9108","br":[],"rows":[{"c":"20153","d":"Batea PVC Negra 90 lts","sw":null},{"c":"20154","d":"Batea PVC Color 90 lts (Material Virgen)","sw":null},{"c":"40095","d":"Chasis Zincado 90 lts","sw":null},{"c":"40334","d":"Chasis Epoxi 75 lts","sw":null}],"liq":false},{"s":"construccion","t":"RUEDAS","img":"16_9109","br":[],"rows":[{"c":"00510","d":"Carretilla Neumática REF. 6 Telas 350 mm","sw":null},{"c":"00512","d":"Rep. Cubierta p/Carretilla 3.50-8\"","sw":null},{"c":"00511","d":"Rep. Camara p/Rueda Carretilla 3.50-8\"","sw":null},{"c":"40109","d":"Carretilla Neumática REF. 2 Telas 400 mm","sw":null},{"c":"00219","d":"Cubierta p/Carretilla 4.00-8\"","sw":null},{"c":"00220","d":"Rep. Camara p/ Rueda Carretilla 4.00-8\"","sw":null},{"c":"11400","d":"Carretilla Maciza REF. 360 mm","sw":null},{"c":"11402","d":"Hormigonera Maciza REF. 360 mm","sw":null}],"liq":false},{"s":"construccion","t":"ESTRIBERA","img":"10_1501","br":[],"rows":[{"c":"40088","d":"Estribera DonRoy","sw":null}],"liq":false},{"s":"construccion","t":"HORMIGONERAS","img":"18_9110","br":[],"rows":[{"c":"40500","d":"130 lts Motor de 3/4","sw":null},{"c":"40457","d":"135 lts Motor de 1 HP","sw":null}],"liq":false},{"s":"construccion","t":"Repuestos para hormigonera","img":"19_9129","br":[],"rows":[{"c":"40586","d":"Corona Recta 105 Dientes","sw":null},{"c":"40587","d":"Corona Helicoidal 100 Dientes","sw":null},{"c":"40576","d":"Eje de Piñon","sw":null},{"c":"00403","d":"Rep. Piñon Helicoidal 10 Dientes (T)","sw":null},{"c":"00404","d":"Rep. Piñon Helicoidal 11 Dientes (T)","sw":null},{"c":"00405","d":"Rep. Piñon Recto 10 Dientes (T)","sw":null},{"c":"00406","d":"Rep. Piñon Recto 11 Dientes (T)","sw":null},{"c":"00407","d":"Rep. Piñon Recto 12 Dientes (T)","sw":null},{"c":"00408","d":"Rep. Piñon Recto 13 Dientes (T)","sw":null},{"c":"40568","d":"Polea Hormigonera (Motor) 50 mm x 16 mm","sw":null},{"c":"40569","d":"Polea Hormigonera 230 mm x 16 mm","sw":null},{"c":"40567","d":"Tacho para Hormigonera c/Riendas 135 lts","sw":null}],"liq":false},{"s":"construccion","t":"MOTORES","img":"13_1542","br":[],"rows":[{"c":"40588","d":"Motor Hormigonera 3/4 Pesado","sw":null},{"c":"40590","d":"Motor Hormigonera 1HP Reforzado","sw":null},{"c":"30014","d":"Motor para Sin Fin 1HP","sw":null}],"liq":false},{"s":"construccion","t":"NIVELADORES PARA PORCELANATO","img":"4_1346","br":[],"rows":[{"c":"10011","d":"Tornillo (Bolsa x 125 unidades) (Bolzon x 1000) Precio x U.","sw":null},{"c":"10012","d":"Tuerca (Bolsa x 40 unidades) (Bolzon x 400) Precio x U.","sw":null}],"liq":false},{"s":"construccion","t":"Pala estampada","img":"20_9104","br":[],"rows":[{"c":"60086","d":"Pala Ancha Cabo Caño","sw":null},{"c":"40097","d":"Pala Punta Cabo Caño","sw":null}],"liq":false},{"s":"construccion","t":"Pala forjada","img":"20_1693","br":[],"rows":[{"c":"60080","d":"Pala Ancha Cabo Caño","sw":null},{"c":"60075","d":"Pala Punta Cabo Caño","sw":null}],"liq":false},{"s":"construccion","t":"Pala de hierro","img":"20_9105","br":[],"rows":[{"c":"60071","d":"Pala Punta Cabo Hierro Ref. Corta 1.00 mto","sw":null},{"c":"60071","d":"Pala Punta Cabo Hierro Ref. Larga 1.10 mts","sw":null},{"c":"60076","d":"Pala Hoyera Fija 1.16 mts","sw":null},{"c":"60077","d":"Pala Hoyera Movil 1.16 mts","sw":null},{"c":"60078","d":"Pala Hoyera Tijera 1.75 mts","sw":null},{"c":"60073","d":"Pala Dientes Cabo Caño 4 Puas ByE 1.05 mts","sw":null}],"liq":false},{"s":"corte","t":"DISCOS","img":"5_1371","br":[["Tyrolit","95_9704"]],"rows":[{"c":"11219","d":"Disco Oxido Alum Tyrolit 115 x 1.0 x 22.23 Caja x 50 U.","sw":null},{"c":"11220","d":"Disco Oxido Alum Tyrolit 115 x 1.6 x 22.23 Caja x 50 U.","sw":null},{"c":"11221","d":"Disco Oxido Alum Tyrolit 180 x 1.6 x 22.23 Caja x 25 U.","sw":null}],"liq":false},{"s":"corte","t":"LIMA PARA CADENA DE MOTOSIERRA BYE","img":"7_9114","br":[["BYB","95_9703"]],"rows":[{"c":"00083","d":"Lima BYE Motosierra 3/16 (4.8mm) Caja x 12 U.","sw":null},{"c":"00085","d":"Lima BYE Motosierra 5/32 (4mm) Caja x 12 U.","sw":null},{"c":"00084","d":"Lima BYE Motosierra 7/32 (5.5mm) Caja x 12 U.","sw":null},{"c":"22001","d":"Lima BYE Media Caña Entrefina 6\" x Unidad","sw":null},{"c":"22002","d":"Lima BYE Media Caña Entrefina 8\" x Unidad","sw":null},{"c":"22003","d":"Lima BYE Media Caña Entrefina 10\" x Unidad","sw":null},{"c":"22004","d":"Lima BYE Triangular Entrefina 6\" con Cabo x Unidad","sw":null},{"c":"22005","d":"Lima BYE Triangular Entrefina 8\" con Cabo x Unidad","sw":null},{"c":"22006","d":"Lima BYE Triangular Entrefina 10\" con Cabo x Unidad","sw":null},{"c":"22007","d":"Lima BYE Paralela Entrefina 6\" con Cabo x Unidad","sw":null},{"c":"22008","d":"Lima BYE Paralela Entrefina 8\" con Cabo x Unidad","sw":null},{"c":"22009","d":"Lima BYE Paralela Entrefina 10\" con Cabo x Unidad","sw":null},{"c":"22010","d":"Lima BYE Cuadrada Entrefina 6\" con Cabo x Unidad","sw":null},{"c":"22011","d":"Lima BYE Cuadrada Entrefina 8\" con Cabo x Unidad","sw":null},{"c":"22012","d":"Lima BYE Cuadrada Entrefina 10\" con Cabo x Unidad","sw":null},{"c":"22013","d":"Lima BYE Redonda Entrefina 6\" con Cabo x Unidad","sw":null},{"c":"22014","d":"Lima BYE Redonda Entrefina 8\" con Cabo x Unidad","sw":null},{"c":"22015","d":"Lima BYE Redonda Entrefina 10\" con Cabo x Unidad","sw":null},{"c":"22023","d":"Lima BYE Plana Entrefina 6\" con Cabo x Unidad","sw":null},{"c":"22024","d":"Lima BYE Romboidal x Unidad","sw":null},{"c":"22020","d":"Lima BYE Slim Taper Triangular 4\" para Afilar x Unidad","sw":null},{"c":"22021","d":"Lima BYE Slim Taper Triangular 5\" para Afilar x Unidad","sw":null},{"c":"22022","d":"Lima BYE Slim Taper Triangular 6\" para Afilar x Unidad","sw":null},{"c":"22025","d":"Lima BYE Regular Taper Triangular 6\" x Unidad","sw":null},{"c":"22016","d":"Escofina BYE Bastarda Media Caña 8\" Caja x 12 U.","sw":null},{"c":"22017","d":"Escofina BYE Bastarda Media Caña 10\" Caja x 12 U.","sw":null}],"liq":false},{"s":"corte","t":"MÁQUINA PARA ESTIRAR ALAMBRE ByE","img":"3_9113","br":[["BYB","95_9703"]],"rows":[{"c":"30060","d":"Estirador de Alambre BYE","sw":null},{"c":"40600","d":"Repuesto sin Cadena BYE","sw":null},{"c":"40601","d":"Repuesto con Cadena BYE","sw":null}],"liq":false},{"s":"corte","t":"Mechas para madera - taladro pecho BYB","img":"11_9125","br":[["BYB","95_9703"]],"rows":[{"c":"20158","d":"Mechas 1/4\" Corta 250 mm Caja x 12 U.","sw":null},{"c":"20159","d":"Mechas 5/16\" Corta 250 mm Caja x 12 U.","sw":null},{"c":"20160","d":"Mechas 3/8\" Corta 250 mm Caja x 12 U.","sw":null},{"c":"20161","d":"Mechas 7/16\" Corta 250 mm Caja x 12 U.","sw":null},{"c":"20162","d":"Mechas 1/2\" Corta 250 mm Caja x 12 U.","sw":null},{"c":"20163","d":"Mechas 9/16\" Corta 250 mm Caja x 6 U.","sw":null},{"c":"20164","d":"Mechas 5/8\" Corta 250 mm Caja x 6 U.","sw":null},{"c":"20165","d":"Mechas 11/16\" Corta 250 mm Caja x 6 U.","sw":null},{"c":"20166","d":"Mechas 3/4\" Corta 250 mm Caja x 6 U.","sw":null},{"c":"20167","d":"Mechas 13/16\" Corta 250 mm Caja x 6 U.","sw":null},{"c":"20168","d":"Mechas 7/8\" Corta 250 mm Caja x 6 U.","sw":null},{"c":"20169","d":"Mechas 1\" Corta 250 mm Caja x 6 U.","sw":null},{"c":"20170","d":"Mechas 1/4\" Larga 300 mm Caja x 12 U.","sw":null},{"c":"20171","d":"Mechas 5/16\" Larga 300 mm Caja x 12 U.","sw":null},{"c":"20172","d":"Mechas 3/8\" Larga 300 mm Caja x 12 U.","sw":null},{"c":"20173","d":"Mechas 7/16\" Larga 300 mm Caja x 12 U.","sw":null},{"c":"20174","d":"Mechas 1/2\" Larga 300 mm Caja x 12 U.","sw":null},{"c":"20175","d":"Mechas 9/16\"  Larga 300 mm Caja x 6 U.","sw":null},{"c":"20176","d":"Mechas 5/8\"  Larga 300 mm Caja x 6 U.","sw":null},{"c":"20177","d":"Mechas 11/16\" Larga 300 mm Caja x 6 U.","sw":null},{"c":"20178","d":"Mechas 3/4\" Larga 300 mm Caja x 6 U.","sw":null},{"c":"20179","d":"Mechas 13/16\" Larga 300 mm Caja x 6 U.","sw":null},{"c":"20180","d":"Mechas 7/8\" Larga 300 mm Caja x 6 U.","sw":null},{"c":"20181","d":"Mechas 1\" Larga 300 mm Caja x 6 U.","sw":null}],"liq":false},{"s":"corte","t":"Mechas para madera - taladro eléctrico BYB","img":"12_9126","br":[["BYB","95_9703"]],"rows":[{"c":"20182","d":"Mechas 1/4\" Corta 250 mm Caja x 12 U.","sw":null},{"c":"20183","d":"Mechas 5/16\" Corta 250 mm Caja x 12 U.","sw":null},{"c":"20184","d":"Mechas 3/8\" Corta 250 mm Caja x 12 U.","sw":null},{"c":"20185","d":"Mechas 7/16\" Corta 250 mm Caja x 12 U.","sw":null},{"c":"20186","d":"Mechas 1/2\" Corta 250 mm Caja x 12 U.","sw":null},{"c":"20187","d":"Mechas 9/16\" Corta 250 mm Caja x 6 U.","sw":null},{"c":"20189","d":"Mecha 5/8\" Corta 250mm Caja x 6 U.","sw":null},{"c":"20188","d":"Mechas 11/16\" Corta 250mm Caja x 6 U.","sw":null},{"c":"20190","d":"Mechas 3/4\" Corta 250mm Caja x 6 U.","sw":null},{"c":"20191","d":"Mechas 1/4\" Larga 300 mm Caja x 12 U.","sw":null},{"c":"20192","d":"Mechas 5/16\" Larga 300 mm Caja x 12 U.","sw":null},{"c":"20193","d":"Mechas 3/8 Larga 300 mm Caja x 12 U.","sw":null},{"c":"20194","d":"Mechas 7/16\" Larga 300 mm Caja x 12 U.","sw":null},{"c":"20195","d":"Mechas 1/2\" Larga 300 mm Caja x 12 U.","sw":null},{"c":"20196","d":"Mechas 9/16\" Larga 300 mm Caja x 6 U.","sw":null},{"c":"20197","d":"Mechas 5/8\" Larga 300 mm Caja x 6 U.","sw":null},{"c":"20198","d":"Mechas 11/16\" Larga 300 mm Caja x 6 U.","sw":null},{"c":"20199","d":"Mechas 3/4\" Larga 300 mm Caja x 6 U.","sw":null}],"liq":false},{"s":"corte","t":"Extra cortas (varillera)","img":"12_9126","br":[["BYB","95_9703"]],"rows":[{"c":"20200","d":"Mechas 1/4 Corta 127 mm Caja x 12 U.","sw":null},{"c":"20201","d":"Mechas 5/16 Corta 127 mm Caja x 12 U.","sw":null},{"c":"20202","d":"Mechas 3/8 Corta 127 mm Caja x 12 U.","sw":null}],"liq":false},{"s":"corte","t":"MECHA ESCALONADA","img":"27_1823","br":[["Toolmak","95_9702"]],"rows":[{"c":"21417","d":"Mecha Escalonada de Titanio 4mm a 20mm (TMK19641)","sw":null}],"liq":false},{"s":"corte","t":"Sierras sin fin","img":"13_9111","br":[],"rows":[{"c":"30001","d":"Sierra Sin Fin 240","sw":null},{"c":"30002","d":"Sierra Sin Fin 300","sw":null},{"c":"40468","d":"Sierra Sin Fin 350","sw":null}],"liq":false},{"s":"corte","t":"Repuestos para sierras sin fin","img":"13_1543","br":[],"rows":[{"c":"30005","d":"Rep. Hoja 230 (157,5 cm)","sw":null},{"c":"30006","d":"Rep. Hoja 240 (174 cm)","sw":null},{"c":"30007","d":"Rep. Hoja 300 (182 cm)","sw":null},{"c":"30008","d":"Rep. Hoja 350 (248 cm)","sw":null},{"c":"30009","d":"Rep. Hoja 350 (254 cm)","sw":null},{"c":"30010","d":"Rep. Hoja 400 (283 cm)","sw":null},{"c":"30011","d":"Rep. Hoja 300 (2.06 cm)","sw":null},{"c":"30014","d":"Motor para Sin Fin 1 hp","sw":null}],"liq":false},{"s":"corte","t":"TALADROS MANUALES ByE","img":"6_9127","br":[["BYB","95_9703"]],"rows":[{"c":"20203","d":"Taladro Carpintero S/Criquet Negro","sw":null},{"c":"20204","d":"Taladro Carpintero c/Criquet Negro","sw":null}],"liq":false},{"s":"corte","t":"Repuesto para taladro","img":"6_9128","br":[],"rows":[{"c":"20207","d":"Boquilla p/ taladro negro","sw":null},{"c":"20209","d":"Cabo partido centrales","sw":null},{"c":"20208","d":"Conjunto galleta (madera)","sw":null},{"c":"20206","d":"Mordaza p/ taladro","sw":null}],"liq":false},{"s":"toolmak","t":"BOCALLAVE","img":"91_9301","br":[["Braco","95_9701"]],"rows":[{"c":"21408","d":"Bocallave Magnetica 3/8 - Blister x 5 (BRBM002)","sw":null}],"liq":false},{"s":"toolmak","t":"CEPILLO ACERO","img":"26_9118","br":[],"rows":[{"c":"21409","d":"Cepillo Naranja Cabo Plastico c/Mango 6x15mm Caja x 12 U. (BRCO33)","sw":null},{"c":"21411","d":"Cepillo Bronceado Cabo Plastico c/Mango Caja x 12 U. (TMK19095)","sw":null},{"c":"21412","d":"Cepillo Acero de Madera c/Cabo 6 x16mm Caja x 12 U. (TMK19094)","sw":null},{"c":"21413","d":"Cepillo Acero de Madera s/Cabo 6 x 19mm Caja x 12 U. (TMK19093)","sw":null}],"liq":false},{"s":"toolmak","t":"CUTTER","img":"26_1793","br":[["Toolmak","95_9702"]],"rows":[{"c":"21415","d":"Cutter Guia Metalica 18mm Caja x 12 U. (TMK19123)","sw":null},{"c":"21414","d":"Cutter Profesional Pesado 18mm Caja x 12 U. (TMK19120)","sw":null}],"liq":false},{"s":"toolmak","t":"JUEGO DE LLAVE","img":"26_1787","br":[["Toolmak","95_9702"]],"rows":[{"c":"21416","d":"Juego Llave Allen Cabeza Bola 9 pcs Larga mm (TMK19033)","sw":null}],"liq":false},{"s":"toolmak","t":"LAPIZ CARPINTERO","img":"26_1809","br":[["Toolmak","95_9702"]],"rows":[{"c":"20606","d":"Lapiz Carpintero Profesional (x12 Unidades) (TMK19586)","sw":null}],"liq":false},{"s":"toolmak","t":"LLAVE CALIFORNIA","img":"90_9201","br":[],"rows":[{"c":"201","d":"Llave California Chica 13 cm","sw":null},{"c":"219","d":"Llave California Grande 24.5 cm","sw":null}],"liq":false},{"s":"toolmak","t":"MASCARA PARA SOLDAR FOTOSENSIBLE","img":"5_9112","br":[],"rows":[{"c":"00315","d":"Masacara p/Soldar Fotosensible","sw":null},{"c":"00506","d":"Masacara p/Soldar Fotosensible (TOOLMAK) (TMK19784)","sw":null},{"c":"00800","d":"Gafas p/Soldar Fotosensible (BR25057)","sw":null}],"liq":false},{"s":"toolmak","t":"PINZA PORTA ELECTRODO","img":"26_9119","br":[["Toolmak","95_9702"]],"rows":[{"c":"21419","d":"Pinza 600 Amp. Eco. (TMK19721)","sw":null},{"c":"21418","d":"Pinza 600 Amp. Reforzada (TMK19211)","sw":null}],"liq":false},{"s":"toolmak","t":"PISTOLA APLICADORA","img":"91_9302","br":[],"rows":[{"c":"20619","d":"Pistola Aplicadora Nacional","sw":null}],"liq":false},{"s":"toolmak","t":"PISTOLA DE SOPLETEAR","img":"27_1824","br":[["Toolmak","95_9702"]],"rows":[{"c":"21420","d":"Pistola de Sopletear Pico Corto-Largo","sw":null}],"liq":false},{"s":"toolmak","t":"REMACHADORA","img":"27_1837","br":[["Toolmak","95_9702"]],"rows":[{"c":"200218","d":"Remachadora Profesional","sw":null}],"liq":false},{"s":"toolmak","t":"TENAZA","img":"27_9120","br":[["Toolmak","95_9702"]],"rows":[{"c":"21422","d":"Tenaza Carpintero 8\" x 6 U.","sw":null},{"c":"21421","d":"Tenaza Armador 10\" x 6 U.","sw":null}],"liq":false},{"s":"toolmak","t":"Tijera","img":"27_9121","br":[],"rows":[{"c":"21423","d":"Tijera Corta Cerco 12\" Mango Madera (TMK19329)","sw":null},{"c":"21424","d":"Tijera Corta Cerco 12\" Mango Metalico (TMK19339)","sw":null},{"c":"21425","d":"Tijera Multiuso 8 1/2 (T8)","sw":null}],"liq":false},{"s":"pintureria","t":"PINTURA AEROSOL 160 GR","img":"23_1736","br":[],"rows":[{"c":"50300","d":"Pintura en Aerosol (160gr/240ml) NEGRO BRILLANTE","sw":null},{"c":"50303","d":"Pintura en Aerosol (160gr/240ml) BLANCO BRILLANTE","sw":null},{"c":"50305","d":"Pintura en Aerosol (160gr/240ml) BLANCO SATINADO","sw":null},{"c":"50304","d":"Pintura en Aerosol (160gr/240ml) BLANCO MATE","sw":null}],"liq":false},{"s":"pintureria","t":"CINTA ENMASCARAR PROTECTORA CON FILM NYLON","img":"92_9401","br":[],"rows":[{"c":"22030","d":"550mm x 20mts","sw":null},{"c":"22031","d":"1500mm x 20mts","sw":null},{"c":"22032","d":"2400mm x 20mts","sw":null},{"c":"22033","d":"3200mm x 20mts","sw":null}],"liq":false},{"s":"pintureria","t":"ESCALERAS DE MADERA","img":"22_9122","br":[],"rows":[{"c":"00049","d":"Familiar N°3 x 0.80 mts","sw":null},{"c":"00050","d":"Familiar N°4 x 1.10 mts","sw":null},{"c":"00051","d":"Familiar N°5 x 1.40 mts","sw":null},{"c":"00052","d":"Familiar N°6 x 1.70 mts","sw":null},{"c":"00053","d":"Familiar N°7 x 2.00 mts","sw":null},{"c":"00054","d":"Familiar N°8 x 2.30 mts","sw":null},{"c":"00055","d":"Familiar N°9 x 2.60 mts","sw":null},{"c":"00056","d":"Familiar N°10 x 2.90 mts","sw":null},{"c":"00057","d":"Pintor N°6 x 2.00 mts","sw":null},{"c":"00058","d":"Pintor N°7 x 2.30 mts","sw":null},{"c":"00059","d":"Pintor N°8 x 2.60 mts","sw":null},{"c":"00060","d":"Pintor N°9 x 2.90 mts","sw":null},{"c":"00061","d":"Pintor N°10 x 3.20 mts","sw":null},{"c":"00062","d":"Pintor N°12 x 3.80 mts","sw":null}],"liq":false},{"s":"pintureria","t":"ESTOPA","img":"13_9115","br":[],"rows":[{"c":"40017","d":"Estopa Limpieza 300 gr. Bolson x 30 U.","sw":null},{"c":"40018","d":"Estopa Lustre 300 gr. Bolson x 30 U.","sw":null},{"c":"40453","d":"Trapo Industrial 400 gr. Bolson x 30 U.","sw":null},{"c":"40603","d":"Trapo Algodón Blanco 500 gr. Bolson x 30 U.","sw":null}],"liq":false},{"s":"pintureria","t":"PINTURA AEROSOL MOTA","img":"90_9207","br":[],"rows":[{"c":"850","d":"Aerosol 450cc Negro Brillante","sw":"#0b0b0c"},{"c":"851","d":"Aerosol 450cc Negro Mate","sw":"#2b2b2b"},{"c":"852","d":"Aerosol 450cc Negro Satinado","sw":"#1a1a1a"},{"c":"853","d":"Aerosol 450cc Blanco Brillante","sw":"#ffffff"},{"c":"854","d":"Aerosol 450cc Blanco Mate","sw":"#efede6"},{"c":"855","d":"Aerosol 450cc Blanco Satinado","sw":"#f7f6f1"},{"c":"856","d":"Aerosol 450cc Rojo Diablo","sw":"#c8102e"},{"c":"857","d":"Aerosol 450cc Amarillo Mota","sw":"#ffd100"},{"c":"858","d":"Aerosol 450cc Azul Francia","sw":"#1f4fa3"},{"c":"859","d":"Aerosol 450cc Amarillo Oceano","sw":"#f4c20d"},{"c":"860","d":"Aerosol 450cc Celeste Cielo","sw":"#7ec8e8"},{"c":"861","d":"Aerosol 450cc Naranja Tarde","sw":"#f28a1d"},{"c":"862","d":"Aerosol 450cc Verde Mota","sw":"#2e8b3d"},{"c":"863","d":"Aerosol 450cc Verde Lima","sw":"#9acd32"},{"c":"864","d":"Aerosol 450cc Rosa Pantera","sw":"#f06ba8"},{"c":"865","d":"Aerosol 450cc Marron Café","sw":"#5a3825"},{"c":"866","d":"Aerosol 450cc Gris Acero","sw":"#7d8187"},{"c":"867","d":"Aerosol 450cc Dorado Sol","sw":"#c9a227"},{"c":"868","d":"Aerosol 450cc Plateado Luna","sw":"#c0c0c0"},{"c":"869","d":"Aerosol 450cc Alta Temp. Plata","sw":"#b0b3b8"},{"c":"870","d":"Aerosol 450cc Alta Temp. Negro","sw":"#202020"},{"c":"871","d":"Aerosol 450cc Amarillo Fluo","sw":"#e8ff1a"},{"c":"872","d":"Aerosol 450cc Naranja Fluo","sw":"#ff7a00"},{"c":"873","d":"Aerosol 450cc Rojo Fluo","sw":"#ff2a2a"},{"c":"874","d":"Aerosol 450cc Laca Brillante","sw":"#f2f2f2"}],"liq":false},{"s":"quimicos","t":"CARBURO de Calcio","img":"25_9116","br":[],"rows":[{"c":"20601","d":"Carburo Tacho x 20 kg (Precio x kg)","sw":null},{"c":"20614","d":"Carburo Tacho x 50 kg (Precio x kg)","sw":null}],"liq":false},{"s":"quimicos","t":"MEMBRANA en FRÍO (PREMIUM)","img":"6_1398","br":[],"rows":[{"c":"206","d":"10 cm x 10 mts Autoadhesiva Smartfix Caja x 18 U.","sw":null},{"c":"207","d":"15 cm x 10 mts Autoadhesiva Smartfix Caja x 12 U.","sw":null},{"c":"208","d":"25 cm x 10 mts Autoadhesiva Smartfix Caja x 6 U.","sw":null},{"c":"212","d":"50 cm x 10 mts Autoadhesiva Smartfix x U.","sw":null}],"liq":false},{"s":"quimicos","t":"QUÍMICOS","img":"25_9130","br":[],"rows":[{"c":"40180","d":"Ácido Muriático x 1 lts Caja x 12 U.","sw":null},{"c":"40901","d":"Ácido Muriático x 5 lts Caja x 4 U.","sw":null},{"c":"40182","d":"Soda Cáustica x 1 kg Caja x 12 U.","sw":null},{"c":"00080","d":"Removedor Gel x 1/2 kg Caja x 12 U.","sw":null}],"liq":false},{"s":"quimicos","t":"SOLVENTES","img":"23_9131","br":[["JMG","95_9707"]],"rows":[{"c":"00086","d":"Thinner Estandar x 900 cc Caja x 30 U.","sw":null},{"c":"00087","d":"Aguarrás x 900 cc Caja x 30 U.","sw":null}],"liq":false},{"s":"brogas","t":"ANAFES PARA GAS BUTANO","img":"28_1847","br":[],"rows":[{"c":"100221","d":"Anafe BROGAS 1 Hornalla","sw":null},{"c":"00238","d":"Anafe Color Azul 1 Hornalla","sw":null},{"c":"00239","d":"Anafe Color Negra 1 Hornalla","sw":null}],"liq":false},{"s":"brogas","t":"CARTUCHO GAS BUTANO","img":"28_1851","br":[],"rows":[{"c":"00237","d":"Cartucho Gas Butano 227gr. BROGAS - Blister x 4 U. (Caja x 28 U.)","sw":null},{"c":"70032","d":"Cartucho Gas Butano 227gr. BRACO - Blister x 4 U. (Caja x 28 U.)","sw":null}],"liq":false},{"s":"brogas","t":"SOPLETES para GAS BUTANO","img":"28_9101","br":[],"rows":[{"c":"100220","d":"Soplete BROGAS c/ Encendido Electronico 360º","sw":null},{"c":"100219","d":"Soplete BROGAS c/ Encendido Electronico","sw":null},{"c":"100218","d":"Soplete BROGAS Boca Ancha","sw":null},{"c":"00246","d":"Soplete BRACO c/Encendido Electronico (BR25006)","sw":null}],"liq":false},{"s":"aguagas","t":"Antisarro","img":"29_9102","br":[],"rows":[{"c":"500221","d":"Antisarro p/Artefacto Rosca 3/4\" COD AF01","sw":null},{"c":"500222","d":"Antisarro p/Tanque ( rosca 1\")(Tamaño 10\") COD AF30+AF50G","sw":null},{"c":"500223","d":"Repuesto Cartucho Antisarro","sw":null}],"liq":false},{"s":"aguagas","t":"Submarino antisarro","img":"29_1870","br":[],"rows":[{"c":"500218","d":"Submarino p/Tanque 500 Litros","sw":null},{"c":"500219","d":"Submarino p/Tanque 1000 Litros","sw":null},{"c":"500220","d":"Submarino p/Tanque 2400 Litros","sw":null}],"liq":false},{"s":"aguagas","t":"Calefones lavarmin","img":"3_9001","br":[],"rows":[{"c":"30035","d":"Ducha Eléctrica","sw":null},{"c":"30036","d":"Canilla p/Cocina","sw":null}],"liq":false},{"s":"aguagas","t":"Repuestos para calefones lavarmin","img":"3_9124","br":[],"rows":[{"c":"00111","d":"Rep. Resistencia 10 amp.","sw":null},{"c":"00112","d":"Rep. Resistencia 20 amp.","sw":null},{"c":"37","d":"Rep. Gomita Diafragma","sw":null},{"c":"213","d":"Rep. Brazo 3/4 Calefon 3 Tº","sw":null},{"c":"214","d":"Rep. Flor Articulada","sw":null}],"liq":false},{"s":"aguagas","t":"REGULADORES de GAS","img":"30_9103","br":[],"rows":[{"c":"40411","d":"Regulador s/Manguera","sw":null},{"c":"20262","d":"Regulador c/Manguera de 1,00 mto","sw":null}],"liq":false}]};
 const WA = '5493434052237';
 const KEY = 'donroy-pedido-v1';
+// Supabase: pedidos guardados y cuentas de clientes (la tienda funciona igual si no carga)
+const SUPA_URL = 'https://egjhfipqzwvizqnodggw.supabase.co';
+const SUPA_KEY = 'sb_publishable_1kO0JyJzuksMIU31_v8qag__C4eiRtJ';
+const SUPA_JS = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js';
+const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+const ACC_KEY = 'donroy-cuenta';
+const CODE_KEY = 'donroy-codigo';
+let sb = null, user = null;
+const newCode = () => { const a = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let s = ''; crypto.getRandomValues(new Uint8Array(6)).forEach(x => { s += a[x % a.length]; }); return 'DR-' + s; };
+let orderCode = ''; try { orderCode = localStorage.getItem(CODE_KEY) || ''; } catch (e) {}
+if (!/^DR-[A-Z0-9]{6}$/.test(orderCode)) { orderCode = newCode(); try { localStorage.setItem(CODE_KEY, orderCode); } catch (e) {} }
 const $ = s => document.querySelector(s);
 const PLUS = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
 const MINUS = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/></svg>';
@@ -426,8 +490,8 @@ function orderedIds() {
 }
 function message() {
   const ids = orderedIds();
-  const name = $('#nombre').value.trim(), loc = $('#loc').value.trim(), nota = $('#nota').value.trim();
-  let m = 'Hola Don Roy, quiero hacer este pedido desde el catálogo web:\n';
+  const name = $('#nombre').value.trim(), loc = $('#loc').value.trim(), nota = $('#nota').value.trim(), mail = $('#email').value.trim();
+  let m = `Hola Don Roy, quiero hacer este pedido desde el catálogo web (Pedido ${orderCode}):\n`;
   let lastSec = '';
   ids.forEach(id => {
     const it = ITEMS[id];
@@ -437,6 +501,7 @@ function message() {
   m += `\nTotal: ${ids.length} artículo${ids.length === 1 ? '' : 's'} · ${units()} unidad${units() === 1 ? '' : 'es'}\n`;
   if (name) m += `Nombre / comercio: ${name}\n`;
   if (loc) m += `Localidad: ${loc}\n`;
+  if (mail) m += `Correo: ${mail}\n`;
   if (nota) m += `Nota: ${nota}\n`;
   m += '\n¿Me confirman precio y disponibilidad? Gracias.';
   return m;
@@ -458,11 +523,11 @@ function renderCart() {
   else { send.href = '#'; send.setAttribute('aria-disabled', 'true'); }
 }
 
-function clientOk() { return !!($('#nombre').value.trim() && $('#loc').value.trim()); }
+function clientOk() { return !!($('#nombre').value.trim() && $('#loc').value.trim() && EMAIL_RE.test($('#email').value.trim())); }
 function markBad() {
   let first = null;
-  ['nombre', 'loc'].forEach(id => {
-    const inp = $('#' + id), bad = !inp.value.trim();
+  ['email', 'nombre', 'loc'].forEach(id => {
+    const inp = $('#' + id), bad = id === 'email' ? !EMAIL_RE.test(inp.value.trim()) : !inp.value.trim();
     inp.closest('label').classList.toggle('bad', bad); inp.setAttribute('aria-invalid', bad ? 'true' : 'false');
     if (bad && !first) first = inp;
   });
@@ -471,7 +536,8 @@ function markBad() {
 $('#send').addEventListener('click', e => {
   if (!Object.keys(cart).length) { e.preventDefault(); return; }
   const first = markBad();
-  if (first) { e.preventDefault(); toast('Completá nombre y localidad para enviar'); first.scrollIntoView({block: 'center', behavior: 'smooth'}); first.focus({preventScroll: true}); }
+  if (first) { e.preventDefault(); toast(first.id === 'email' ? 'Revisá tu correo electrónico' : 'Completá nombre y localidad para enviar'); first.scrollIntoView({block: 'center', behavior: 'smooth'}); first.focus({preventScroll: true}); return; }
+  submitOrder();
 });
 function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.add('show'); clearTimeout(toast.h); toast.h = setTimeout(() => el.classList.remove('show'), 1800); }
 
@@ -502,10 +568,10 @@ document.addEventListener('click', e => {
 document.addEventListener('change', e => { if (e.target.matches('.step input')) setQty(e.target.dataset.id, e.target.value); });
 document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('.step input')) { e.preventDefault(); e.target.blur(); } });
 const CKEY = 'donroy-cliente-v1';
-try { const c = JSON.parse(localStorage.getItem(CKEY) || '{}') || {}; if (c.nombre) $('#nombre').value = c.nombre; if (c.loc) $('#loc').value = c.loc; } catch (e) {}
-['nombre', 'loc', 'nota'].forEach(id => $('#' + id).addEventListener('input', e => {
-  const l = e.target.closest('label'); if (l.classList.contains('bad') && e.target.value.trim()) { l.classList.remove('bad'); e.target.setAttribute('aria-invalid', 'false'); }
-  if (id !== 'nota') { try { localStorage.setItem(CKEY, JSON.stringify({nombre: $('#nombre').value.trim(), loc: $('#loc').value.trim()})); } catch (err) {} }
+try { const c = JSON.parse(localStorage.getItem(CKEY) || '{}') || {}; if (c.nombre) $('#nombre').value = c.nombre; if (c.loc) $('#loc').value = c.loc; if (c.email) $('#email').value = c.email; } catch (e) {}
+['email', 'nombre', 'loc', 'nota'].forEach(id => $('#' + id).addEventListener('input', e => {
+  const l = e.target.closest('label'); if (l.classList.contains('bad') && (id === 'email' ? EMAIL_RE.test(e.target.value.trim()) : e.target.value.trim())) { l.classList.remove('bad'); e.target.setAttribute('aria-invalid', 'false'); }
+  if (id !== 'nota') { try { localStorage.setItem(CKEY, JSON.stringify({nombre: $('#nombre').value.trim(), loc: $('#loc').value.trim(), email: $('#email').readOnly ? '' : $('#email').value.trim()})); } catch (err) {} }
   renderCart();
 }));
 renderCart();
@@ -661,6 +727,7 @@ function renderSugg(raw) {
     html += `<a class="sgwa" data-sg="wa" href="${waAsk(q, true)}" target="_blank" rel="noopener noreferrer">${WAI}<span>¿No es lo que buscás? <b>Consultar con WhatsApp de ventas</b></span></a>`;
   } else {
     const dym = didYouMean(q);
+    logMissing(q);
     html += `<div class="sgnone"><b>No encontramos “${esc(q)}” en el catálogo.</b>`;
     if (dym) html += `<span>¿Quisiste decir <button type="button" class="sgdym" data-sg="dym" data-q="${esc(dym)}">${esc(dym)}</button>?</span>`;
     html += `<span>Puede que lo tengamos igual: consultalo directamente con ventas.</span></div>`;
@@ -750,6 +817,303 @@ renderCatalog(); renderCart();
 })();
 
 document.getElementById('yr').textContent = new Date().getFullYear();
+
+// ===== Cuenta DonRoy (Supabase): pedidos guardados, cuenta del cliente, factura y remito =====
+const PERSON = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>';
+const XI = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+const OKI = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>';
+const fmtFecha = d => new Date(d).toLocaleDateString('es-AR', {day: '2-digit', month: '2-digit', year: 'numeric'});
+const plural = (n, a, b) => `${n} ${n === 1 ? a : b}`;
+
+// --- modal helpers ---
+let modalFrom = null;
+function openModal(id) {
+  modalFrom = document.activeElement;
+  $('#' + id).hidden = false; document.body.classList.add('mdlopen');
+  const f = $('#' + id).querySelector('input:not([readonly]),button.mcl'); if (f) setTimeout(() => f.focus({preventScroll: true}), 30);
+}
+function closeModal(id) {
+  $('#' + id).hidden = true;
+  if (!document.querySelector('.mdl:not([hidden])')) document.body.classList.remove('mdlopen');
+  if (modalFrom && modalFrom.focus) modalFrom.focus({preventScroll: true});
+}
+document.addEventListener('click', e => {
+  const c = e.target.closest('[data-close]'); if (c) { closeModal(c.dataset.close); return; }
+  if (e.target.classList && e.target.classList.contains('mdl')) closeModal(e.target.id);
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { const m = [...document.querySelectorAll('.mdl:not([hidden])')].pop(); if (m) closeModal(m.id); } });
+
+// --- Supabase client (loaded on demand: the shop works without it) ---
+const FROM_LINK = /[#&?](access_token|code|token_hash)=|[?&]cuenta=1/.test(location.href);
+let verifying = false;
+function loadSupabase() {
+  if (!SUPA_URL || !SUPA_KEY) return;
+  const s = document.createElement('script');
+  s.src = SUPA_JS; s.async = true;
+  s.onload = () => {
+    try {
+      sb = window.supabase.createClient(SUPA_URL, SUPA_KEY, {
+        auth: {persistSession: true, autoRefreshToken: true, detectSessionInUrl: true},
+        global: {fetch: (u, o) => fetch(u, Object.assign({}, o, {keepalive: true}))}
+      });
+    } catch (e) { sb = null; return; }
+    $('#accBtn').hidden = false;
+    sb.auth.onAuthStateChange((ev, session) => {
+      const was = user;
+      user = session ? session.user : null;
+      if ((was && was.id) !== (user && user.id)) pedidosCache = null;
+      if (user) { try { localStorage.setItem(ACC_KEY, user.email.toLowerCase()); } catch (e) {} }
+      applyUser();
+      // came back from the email link, or just verified a code without a password yet
+      if (user && !was && !verifying && !hasPassword() && (ev === 'SIGNED_IN' || (ev === 'INITIAL_SESSION' && FROM_LINK))) { accView = 'pass'; renderAcc(); openModal('acc'); }
+    });
+    if (/[?&]cuenta=1/.test(location.search)) { history.replaceState(null, '', location.pathname + location.hash); setTimeout(() => { renderAcc(); openModal('acc'); }, 400); }
+  };
+  s.onerror = () => { sb = null; };
+  document.body.appendChild(s);
+}
+const hasPassword = () => !!(user && user.user_metadata && user.user_metadata.tiene_clave);
+function applyUser() {
+  const b = $('#accBtn'), em = $('#email');
+  b.classList.toggle('on', !!user);
+  b.setAttribute('aria-label', user ? 'Mi cuenta (sesión iniciada)' : 'Ingresar o crear cuenta');
+  b.title = user ? 'Mi cuenta' : 'Ingresar o crear cuenta';
+  if (user) { em.value = user.email; em.readOnly = true; $('#emailHint').textContent = 'Tu pedido queda guardado en tu cuenta.'; }
+  else { em.readOnly = false; $('#emailHint').textContent = 'Para guardar tu pedido. Después podés crear tu cuenta y ver tus pedidos.'; }
+  renderCart();
+  if (!$('#acc').hidden) renderAcc();
+}
+
+// --- sending an order: save a copy, send the account code, show the confirmation ---
+let post = {};
+function submitOrder() {
+  const email = $('#email').value.trim().toLowerCase(), ids = orderedIds();
+  const p = {
+    codigo: orderCode, email, nombre: $('#nombre').value.trim(), localidad: $('#loc').value.trim(), nota: $('#nota').value.trim(),
+    items: ids.map(id => { const it = ITEMS[id]; return {c: it.c, d: it.d, q: cart[id], s: SECNAME[it.s].short}; }),
+    articulos: ids.length, unidades: units()
+  };
+  let known = ''; try { known = localStorage.getItem(ACC_KEY) || ''; } catch (e) {}
+  post = {code: orderCode, email, saved: sb ? 'saving' : 'off', otp: 'none', known: known === email};
+  if (sb) {
+    sb.rpc('crear_pedido', {p}).then(({error}) => { post.saved = error ? 'error' : 'ok'; renderPost(); }, () => { post.saved = 'error'; renderPost(); });
+    if (!user && !post.known) {
+      post.otp = 'sending';
+      sb.auth.signInWithOtp({email, options: {shouldCreateUser: true, emailRedirectTo: location.origin + location.pathname + '?cuenta=1'}})
+        .then(({error}) => { post.otp = error ? 'error' : 'ok'; renderPost(); }, () => { post.otp = 'error'; renderPost(); });
+    }
+  }
+  // the WhatsApp link already carries this code: change it only after the link has opened
+  setTimeout(() => { orderCode = newCode(); try { localStorage.setItem(CODE_KEY, orderCode); } catch (e) {} renderCart(); }, 800);
+  renderPost(); openModal('post');
+}
+function renderPost() {
+  const P = post; let h = `<div class="mok">${OKI}</div><h2 id="postT">¡Pedido ${esc(P.code)} enviado!</h2>
+    <p class="msub">Se abrió WhatsApp con tu pedido. Revisalo y tocá enviar para que le llegue a ventas.</p>`;
+  if (P.saved === 'ok') h += `<p class="mline ok">✓ Guardamos una copia asociada a <b>${esc(P.email)}</b>.</p>`;
+  else if (P.saved === 'saving') h += `<p class="mline">Guardando una copia de tu pedido…</p>`;
+  else if (P.saved === 'error') h += `<p class="mline warn">No pudimos guardar la copia, pero tu pedido por WhatsApp no se ve afectado.</p>`;
+  if (sb && user) {
+    h += `<div class="mcard"><b>Tu pedido queda en “Mis pedidos”.</b><span>Desde ahí podés pedir la factura o el remito.</span><button type="button" class="mbtn" data-accopen="1">Ver mis pedidos</button></div>`;
+  } else if (sb && P.known) {
+    h += `<div class="mcard"><b>Ya tenés una cuenta con este correo.</b><span>Ingresá para ver este pedido y pedir factura o remito.</span><button type="button" class="mbtn" data-accopen="1">Ingresar a mi cuenta</button></div>`;
+  } else if (sb) {
+    h += `<div class="mcard"><b>Creá tu cuenta (opcional)</b><span>Para ver tus pedidos anteriores y pedir la factura o el remito.</span>`;
+    if (P.otp === 'sending') h += `<span class="mline">Enviando un código a ${esc(P.email)}…</span>`;
+    else if (P.otp === 'error') h += `<span class="mline warn">No pudimos enviar el código ahora. Podés crear tu cuenta más tarde desde el ícono de cuenta, arriba a la derecha.</span>`;
+    else if (P.otp === 'ok') h += `<span class="mline">Te enviamos un <b>código de 6 dígitos</b> a ${esc(P.email)}. Si ahora no podés, el correo también trae un enlace para crear tu contraseña después.</span>
+      <form class="mform" id="postForm"><label>Código del correo<input id="pCode" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="123456"></label>
+      <label>Elegí una contraseña<input id="pPass" type="password" autocomplete="new-password" minlength="8" placeholder="Mínimo 8 caracteres"></label>
+      <p class="merr" id="pErr" hidden></p><button class="mbtn" type="submit">Crear mi cuenta</button></form>`;
+    h += `</div>`;
+  }
+  h += `<div class="mfoot"><button type="button" class="ghost" id="newOrder">Empezar un pedido nuevo</button><button type="button" class="ghost" data-close="post">Seguir con este pedido</button></div>`;
+  $('#postBody').innerHTML = h;
+  const f = $('#postForm');
+  if (f) f.addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = f.querySelector('button'); btn.disabled = true; btn.textContent = 'Creando tu cuenta…';
+    const err = await codeAndPassword(P.email, $('#pCode').value, $('#pPass').value);
+    if (err) { $('#pErr').textContent = err; $('#pErr').hidden = false; btn.disabled = false; btn.textContent = 'Crear mi cuenta'; return; }
+    closeModal('post'); toast('Cuenta creada'); accView = 'main'; renderAcc(); openModal('acc');
+  });
+}
+document.addEventListener('click', e => {
+  if (e.target.closest('#newOrder')) {
+    const ids = Object.keys(cart); cart = {}; save(); ids.forEach(markRow); $('#nota').value = ''; renderCart(); closeModal('post'); closeCart(); toast('Listo para un pedido nuevo');
+  }
+  if (e.target.closest('[data-accopen]')) { closeModal('post'); accView = user ? 'main' : 'login'; renderAcc(); openModal('acc'); }
+});
+
+// verify the emailed code, then save the password on the account
+async function codeAndPassword(email, code, pass) {
+  code = String(code).replace(/\D/g, '');
+  if (code.length < 6) return 'Escribí el código de 6 dígitos que te llegó por correo.';
+  if (String(pass).length < 8) return 'La contraseña tiene que tener al menos 8 caracteres.';
+  verifying = true;
+  const v = await sb.auth.verifyOtp({email, token: code, type: 'email'});
+  if (v.error) { verifying = false; return 'El código no es correcto o ya venció. Pedí uno nuevo.'; }
+  const u = await sb.auth.updateUser({password: pass, data: {tiene_clave: true}});
+  verifying = false;
+  if (u.error) return 'Entraste, pero no pudimos guardar la contraseña: ' + u.error.message;
+  user = u.data.user; applyUser();
+  return '';
+}
+
+// --- account panel ---
+let accView = 'login', accEmail = '', pedidosCache = null, factFor = null, lastNotice = null;
+function renderAcc() {
+  const B = $('#accBody');
+  if (!sb) { B.innerHTML = `<h2 id="accT">Tu cuenta</h2><p class="msub">La cuenta no está disponible en este momento. Podés seguir haciendo pedidos normalmente.</p>`; return; }
+  if (!user) {
+    if (!accEmail) accEmail = $('#email').value.trim();
+    if (accView === 'code') {
+      B.innerHTML = `<h2 id="accT">Revisá tu correo</h2><p class="msub">Te enviamos un código de 6 dígitos a <b>${esc(accEmail)}</b>. Escribilo y elegí tu contraseña.</p>
+        <form class="mform" id="codeForm"><label>Código del correo<input id="aCode" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="123456"></label>
+        <label>Contraseña nueva<input id="aPass2" type="password" autocomplete="new-password" minlength="8" placeholder="Mínimo 8 caracteres"></label>
+        <p class="merr" id="aErr" hidden></p><button class="mbtn" type="submit">Entrar y guardar contraseña</button></form>
+        <p class="mlinks"><button type="button" class="lnk" id="aBack">Volver</button><button type="button" class="lnk" id="aResend">Reenviar el código</button></p>`;
+    } else {
+      B.innerHTML = `<h2 id="accT">Tu cuenta DonRoy</h2><p class="msub">Mirá tus pedidos anteriores y pedí la factura o el remito. <b>No hace falta una cuenta para hacer pedidos.</b></p>
+        <form class="mform" id="loginForm"><label>Correo electrónico<input id="aEmail" type="email" autocomplete="email" value="${esc(accEmail)}" placeholder="tu@correo.com"></label>
+        <label>Contraseña<input id="aPass" type="password" autocomplete="current-password" placeholder="Tu contraseña"></label>
+        <p class="merr" id="aErr" hidden></p><button class="mbtn" type="submit">Ingresar</button></form>
+        <div class="mcard soft"><b>¿Primera vez o no tenés contraseña?</b><span>Te mandamos un código al correo para entrar y crear tu contraseña. Sirve también si la olvidaste.</span><button type="button" class="mbtn line" id="aSend">Recibir un código por correo</button></div>`;
+    }
+    bindAccForms(); return;
+  }
+  let h = `<div class="ahead"><div><h2 id="accT">Mis pedidos</h2><p class="msub">${esc(user.email)}</p></div><button type="button" class="lnk" id="aOut">Cerrar sesión</button></div>`;
+  if (!hasPassword() || accView === 'pass') h += `<form class="mcard soft" id="passForm"><b>Creá tu contraseña</b><span>Así la próxima vez entrás con tu correo y tu contraseña.</span>
+      <label class="mfield">Contraseña<input id="aNew" type="password" autocomplete="new-password" minlength="8" placeholder="Mínimo 8 caracteres"></label><p class="merr" id="aErr" hidden></p><button class="mbtn" type="submit">Guardar contraseña</button></form>`;
+  if (lastNotice) h += `<div class="mcard ok"><b>${esc(lastNotice.title)}</b><span>Avisale a ventas para que lo preparen:</span><a class="mbtn wa" href="${lastNotice.href}" target="_blank" rel="noopener noreferrer">${WAI}Avisar por WhatsApp</a></div>`;
+  h += `<div id="plist">${pedidosHTML()}</div>`;
+  B.innerHTML = h; bindAccForms();
+  if (pedidosCache === null) loadPedidos();
+}
+function pedidosHTML() {
+  if (pedidosCache === null) return '<p class="mline">Cargando tus pedidos…</p>';
+  if (pedidosCache === 'error') return '<p class="mline warn">No pudimos cargar tus pedidos. Probá de nuevo en un rato.</p>';
+  if (!pedidosCache.length) return '<p class="mline">Todavía no hay pedidos guardados con este correo. Los próximos que hagas van a aparecer acá.</p>';
+  return pedidosCache.map(p => {
+    const cps = Object.fromEntries((p.comprobantes || []).map(c => [c.tipo, c]));
+    const btn = tipo => {
+      const c = cps[tipo], name = tipo === 'factura' ? 'factura' : 'remito';
+      if (!c) return `<button type="button" class="chipb" data-pide="${tipo}" data-pid="${p.id}">Pedir ${name}</button>`;
+      if (c.estado === 'enviado' && c.archivo) return `<button type="button" class="chipb dl" data-dl="${esc(c.archivo)}">Descargar ${name}</button>`;
+      return `<span class="chipb wait">${tipo === 'factura' ? 'Factura' : 'Remito'} solicitado${tipo === 'factura' ? 'a' : ''}</span>`;
+    };
+    const ff = factFor === p.id ? `<form class="mform fact" data-fact="${p.id}"><label>CUIT<input name="cuit" inputmode="numeric" maxlength="13" placeholder="20-12345678-9"></label>
+      <label>Razón social<input name="razon" maxlength="120" placeholder="Como figura en AFIP"></label>
+      <label>Condición frente al IVA<select name="iva"><option>Responsable inscripto</option><option>Monotributista</option><option>Exento</option><option>Consumidor final</option></select></label>
+      <p class="merr" hidden></p><div class="mrow"><button class="mbtn" type="submit">Solicitar factura</button><button type="button" class="lnk" data-factx="1">Cancelar</button></div></form>` : '';
+    return `<article class="ped"><div class="pedh"><b>${esc(p.codigo)}</b><span>${fmtFecha(p.created_at)} · ${plural(p.articulos, 'artículo', 'artículos')} · ${p.unidades} u.</span></div>
+      <details><summary>Ver detalle</summary><ul>${(p.items || []).map(i => `<li><b>${esc(i.q)} ×</b> ${esc(i.c)} · ${esc(i.d)}</li>`).join('')}</ul></details>
+      <div class="pacts">${btn('factura')}${btn('remito')}<button type="button" class="chipb line" data-repeat="${p.id}">Repetir pedido</button></div>${ff}</article>`;
+  }).join('');
+}
+async function loadPedidos() {
+  const r = await sb.from('pedidos').select('id,codigo,created_at,articulos,unidades,items,comprobantes(tipo,estado,archivo)').order('created_at', {ascending: false}).limit(50);
+  pedidosCache = r.error ? 'error' : r.data;
+  const L = $('#plist'); if (L) L.innerHTML = pedidosHTML();
+}
+function bindAccForms() {
+  const err = m => { const e = $('#aErr'); if (e) { e.textContent = m; e.hidden = !m; } };
+  const lf = $('#loginForm');
+  if (lf) lf.addEventListener('submit', async e => {
+    e.preventDefault(); accEmail = $('#aEmail').value.trim().toLowerCase();
+    if (!EMAIL_RE.test(accEmail)) return err('Revisá el correo.');
+    if (!$('#aPass').value) return err('Escribí tu contraseña, o pedí un código por correo.');
+    const b = lf.querySelector('button'); b.disabled = true; b.textContent = 'Ingresando…';
+    const r = await sb.auth.signInWithPassword({email: accEmail, password: $('#aPass').value});
+    b.disabled = false; b.textContent = 'Ingresar';
+    if (r.error) return err('Correo o contraseña incorrectos. Si no tenés contraseña, pedí un código por correo.');
+    accView = 'main'; pedidosCache = null; renderAcc();
+  });
+  const sendCode = async () => {
+    const em = ($('#aEmail') ? $('#aEmail').value : accEmail).trim().toLowerCase();
+    if (!EMAIL_RE.test(em)) return err('Escribí tu correo para enviarte el código.');
+    accEmail = em;
+    const r = await sb.auth.signInWithOtp({email: em, options: {shouldCreateUser: true, emailRedirectTo: location.origin + location.pathname + '?cuenta=1'}});
+    if (r.error) return err(/rate|seconds/i.test(r.error.message) ? 'Ya te enviamos un código hace instantes. Esperá un minuto y probá de nuevo.' : 'No pudimos enviar el código ahora. Probá de nuevo en un rato.');
+    accView = 'code'; renderAcc(); toast('Código enviado');
+  };
+  if ($('#aSend')) $('#aSend').addEventListener('click', sendCode);
+  if ($('#aResend')) $('#aResend').addEventListener('click', sendCode);
+  if ($('#aBack')) $('#aBack').addEventListener('click', () => { accView = 'login'; renderAcc(); });
+  const cf = $('#codeForm');
+  if (cf) cf.addEventListener('submit', async e => {
+    e.preventDefault(); const b = cf.querySelector('button'); b.disabled = true;
+    const m = await codeAndPassword(accEmail, $('#aCode').value, $('#aPass2').value);
+    b.disabled = false; if (m) return err(m);
+    accView = 'main'; pedidosCache = null; renderAcc(); toast('Contraseña guardada');
+  });
+  const pf2 = $('#passForm');
+  if (pf2) pf2.addEventListener('submit', async e => {
+    e.preventDefault(); const v = $('#aNew').value;
+    if (v.length < 8) return err('La contraseña tiene que tener al menos 8 caracteres.');
+    const r = await sb.auth.updateUser({password: v, data: {tiene_clave: true}});
+    if (r.error) return err('No pudimos guardarla: ' + r.error.message);
+    user = r.data.user; accView = 'main'; renderAcc(); toast('Contraseña guardada');
+  });
+  if ($('#aOut')) $('#aOut').addEventListener('click', async () => { await sb.auth.signOut(); pedidosCache = null; lastNotice = null; accView = 'login'; renderAcc(); toast('Sesión cerrada'); });
+}
+const waComp = (tipo, p, extra) => `https://wa.me/${WA}?text=${encodeURIComponent(`Hola Don Roy, pedí ${tipo === 'factura' ? 'la factura' : 'el remito'} del pedido ${p.codigo} desde mi cuenta web (${user.email}).${extra || ''}`)}`;
+async function pedirComprobante(pid, tipo, datos) {
+  const p = pedidosCache.find(x => x.id === pid);
+  const r = await sb.rpc('solicitar_comprobante', {p_pedido: pid, p_tipo: tipo, p_datos: datos || {}});
+  if (r.error) { toast('No pudimos enviar la solicitud'); return false; }
+  const extra = datos && datos.cuit ? ` CUIT ${datos.cuit} · ${datos.razon} · ${datos.iva}.` : '';
+  lastNotice = {title: `${tipo === 'factura' ? 'Factura solicitada' : 'Remito solicitado'} · ${p.codigo}`, href: waComp(tipo, p, extra)};
+  factFor = null; pedidosCache = null; renderAcc(); return true;
+}
+document.addEventListener('click', async e => {
+  const pide = e.target.closest('[data-pide]');
+  if (pide) {
+    const pid = Number(pide.dataset.pid);
+    if (pide.dataset.pide === 'factura') { factFor = pid; $('#plist').innerHTML = pedidosHTML(); const f = document.querySelector(`[data-fact="${pid}"] input`); if (f) f.focus(); }
+    else { pide.disabled = true; pide.textContent = 'Enviando…'; await pedirComprobante(pid, 'remito'); }
+    return;
+  }
+  if (e.target.closest('[data-factx]')) { factFor = null; $('#plist').innerHTML = pedidosHTML(); return; }
+  const dl = e.target.closest('[data-dl]');
+  if (dl) {
+    const w = window.open('', '_blank');
+    const r = await sb.storage.from('comprobantes').createSignedUrl(dl.dataset.dl, 600);
+    if (r.error) { if (w) w.close(); toast('No pudimos abrir el archivo'); return; }
+    if (w) w.location = r.data.signedUrl; else location.href = r.data.signedUrl;
+    return;
+  }
+  const rep = e.target.closest('[data-repeat]');
+  if (rep) {
+    const p = pedidosCache.find(x => x.id === Number(rep.dataset.repeat)); let n = 0;
+    (p.items || []).forEach(i => { const id = Object.keys(ITEMS).find(k => ITEMS[k].c === i.c); if (id) { setQty(id, (cart[id] || 0) + Number(i.q || 1)); n++; } });
+    closeModal('acc'); if (matchMedia('(min-width:1080px)').matches) $('#pt').scrollIntoView({behavior: 'smooth'}); else openCart(); toast(n ? `Sumamos ${plural(n, 'artículo', 'artículos')} a tu pedido` : 'Esos artículos ya no están en el catálogo');
+  }
+});
+document.addEventListener('submit', async e => {
+  const f = e.target.closest('[data-fact]'); if (!f) return;
+  e.preventDefault();
+  const d = {cuit: f.cuit.value.replace(/\D/g, ''), razon: f.razon.value.trim(), iva: f.iva.value};
+  const er = f.querySelector('.merr');
+  if (d.cuit.length !== 11) { er.textContent = 'El CUIT tiene 11 números.'; er.hidden = false; return; }
+  if (!d.razon) { er.textContent = 'Completá la razón social.'; er.hidden = false; return; }
+  d.cuit = d.cuit.replace(/^(\d{2})(\d{8})(\d)$/, '$1-$2-$3');
+  f.querySelector('button').disabled = true;
+  await pedirComprobante(Number(f.dataset.fact), 'factura', d);
+});
+$('#accBtn').addEventListener('click', () => { if (!user) accView = 'login'; else if (accView !== 'pass') accView = 'main'; renderAcc(); openModal('acc'); });
+
+// searches with no result: what customers ask for that the catalog lacks
+const LOGGED = new Set(); let logT;
+function logMissing(q) {
+  clearTimeout(logT);
+  logT = setTimeout(() => {
+    const t = q.trim().toLowerCase();
+    if (!sb || t.length < 3 || LOGGED.has(t) || $('#q').value.trim().toLowerCase() !== t) return;
+    LOGGED.add(t); sb.rpc('registrar_busqueda', {t}).then(() => {}, () => {});
+  }, 1500);
+}
+loadSupabase();
 </script>
 
 </body>
