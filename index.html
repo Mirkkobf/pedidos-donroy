@@ -55,12 +55,23 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:va
 .how span{display:inline-flex;align-items:center;gap:6px}
 .how b{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:11px;background:var(--surface);border:1px solid var(--line);font-size:12px;color:var(--ink)}
 
-.sec{scroll-margin-top:130px;margin-top:28px}
-.sech{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px;padding:10px 16px;border-radius:10px;background:var(--navy);color:var(--white)}
-.sech small{color:rgba(255,255,255,.75)!important}
-.sech h2{margin:0;font-family:var(--f-display);font-weight:800;font-size:20px;text-transform:uppercase;letter-spacing:.02em}
-.sech small{color:var(--ink-2);font-size:13px;font-variant-numeric:tabular-nums}
-.sec.liq .sech{background:var(--red)}
+.sec{scroll-margin-top:130px;margin-top:14px}
+.sech{margin:0}
+.sech button{width:100%;display:flex;align-items:center;gap:12px;flex-wrap:wrap;min-height:52px;padding:10px 16px;border:0;border-radius:10px;background:var(--navy);color:var(--white);text-align:left;cursor:pointer}
+.sech button:hover{filter:brightness(1.12)}
+.sech .nm{font-family:var(--f-display);font-weight:800;font-size:20px;text-transform:uppercase;letter-spacing:.02em}
+.sech .short{display:none}
+@media (max-width:640px){.sech .full{display:none}.sech .short{display:inline}.sech .nm{font-size:17px}.sech button{gap:8px 10px}}
+.sech small{color:rgba(255,255,255,.78);font-size:13px;font-weight:500;font-variant-numeric:tabular-nums}
+.sech .selc{display:none;align-items:center;height:24px;padding:0 10px;border-radius:12px;background:var(--white);color:var(--navy);font-size:12px;font-weight:700}
+.sech .selc.on{display:inline-flex}
+.sech .chev{margin-left:auto;flex:none;width:32px;height:32px;border-radius:16px;background:rgba(255,255,255,.16);display:inline-flex;align-items:center;justify-content:center;transition:transform .2s}
+.sech button[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.secb{padding-top:14px}
+.sec.liq .sech button{background:var(--red)}
+.sec.liq .sech .selc{color:var(--red)}
+.tog{display:flex;gap:8px;margin-top:4px}
+.tog button{height:34px;padding:0 14px;border-radius:17px;border:1.5px solid var(--navy);background:transparent;color:var(--navy);font-family:var(--f-display);font-weight:700;font-size:12px;letter-spacing:.03em;text-transform:uppercase;cursor:pointer}
 
 .card{display:grid;grid-template-columns:minmax(0,1fr);background:var(--surface);border:0;border-radius:14px;box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden}
 @media (min-width:640px){.card.hasimg{grid-template-columns:180px minmax(0,1fr)}}
@@ -171,6 +182,7 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:va
         <span><b>2</b>Ajustá las cantidades</span>
         <span><b>3</b>Enviá el pedido por WhatsApp</span>
       </div>
+      <div class="tog"><button type="button" id="openAll">Abrir todas</button><button type="button" id="closeAll">Cerrar todas</button></div>
       <div id="cat"></div>
       <div class="noresult hide" id="nores">No encontramos artículos con esa búsqueda. Probá con el código o una palabra más corta.</div>
     </main>
@@ -203,6 +215,7 @@ const KEY = 'donroy-pedido-v1';
 const $ = s => document.querySelector(s);
 const PLUS = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
 const MINUS = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/></svg>';
+const CHEV = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
 const TAGI = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12V4h8l10 10-8 8L3 12zM7.5 8h.01"/></svg>';
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const DARK_BRANDS = new Set(['Braco','Brogas']);
@@ -225,6 +238,17 @@ function stepper(id, q, small) {
 }
 
 // render catalog
+function setOpen(k, open) {
+  const btn = document.querySelector(`[data-tog="${k}"]`), body = document.getElementById('b-' + k);
+  if (!btn || !body) return;
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  body.hidden = !open;
+}
+function updateSecCounts() {
+  const per = {};
+  Object.keys(cart).forEach(id => { const s = ITEMS[id].s; per[s] = (per[s] || 0) + 1; });
+  DATA.sections.forEach(s => { const el = document.getElementById('sc-' + s.k); if (!el) return; const n = per[s.k] || 0; el.textContent = n ? `${n} en tu pedido` : ''; el.classList.toggle('on', n > 0); });
+}
 function renderCatalog() {
   const bySec = {};
   DATA.blocks.forEach((b, bi) => (bySec[b.s] = bySec[b.s] || []).push(bi));
@@ -233,7 +257,8 @@ function renderCatalog() {
     const list = bySec[s.k] || [];
     const n = list.reduce((a, bi) => a + DATA.blocks[bi].rows.length, 0);
     rail += `<button class="chip${s.k === 'liquidacion' ? ' liq' : ''}" type="button" data-go="${s.k}">${esc(s.short)}</button>`;
-    html += `<section class="sec${s.k === 'liquidacion' ? ' liq' : ''}" id="s-${s.k}" data-sec="${s.k}"><div class="sech"><h2>${esc(s.name)}</h2><small>${n} artículos</small></div>`;
+    const open = s.k === 'liquidacion';
+    html += `<section class="sec${s.k === 'liquidacion' ? ' liq' : ''}" id="s-${s.k}" data-sec="${s.k}"><h2 class="sech"><button type="button" data-tog="${s.k}" aria-expanded="${open}" aria-controls="b-${s.k}"><span class="nm full">${esc(s.name)}</span><span class="nm short">${esc(s.short)}</span><small>${n} artículos</small><span class="selc" id="sc-${s.k}"></span><span class="chev" aria-hidden="true">${CHEV}</span></button></h2><div class="secb" id="b-${s.k}"${open ? '' : ' hidden'}>`;
     list.forEach(bi => {
       const b = DATA.blocks[bi];
       const brands = b.br.map(([alt, im]) => `<span class="brand${DARK_BRANDS.has(alt) ? ' dk' : ''}"><img src="img/img_${im}.webp" alt="${esc(alt)}" loading="lazy"></span>`).join('');
@@ -244,7 +269,7 @@ function renderCatalog() {
           return `<div class="row" data-id="${id}"><span class="code">${esc(r.c)}</span><span class="det">${r.sw ? `<span class="sw" style="background:${r.sw}"></span>` : ''}${esc(r.d)}</span><span class="ctl">${stepper(id, cart[id] || 0)}</span></div>`;
         }).join('') + `</div></div></article>`;
     });
-    html += `</section>`;
+    html += `</div></section>`;
   });
   $('#cat').innerHTML = html;
   $('#rail').innerHTML = rail;
@@ -291,6 +316,7 @@ function message() {
 }
 function renderCart() {
   const ids = orderedIds(), u = units();
+  updateSecCounts();
   $('#badge').textContent = u;
   $('#tot').textContent = `${ids.length} artículo${ids.length === 1 ? '' : 's'} · ${u} u.`;
   $('#barTxt').textContent = ids.length ? `Ver pedido · ${ids.length} artículo${ids.length === 1 ? '' : 's'} · ${u} u.` : 'Ver pedido';
@@ -317,8 +343,10 @@ document.addEventListener('click', e => {
     if (q === 0 && next === 1) toast(`Agregado: ${ITEMS[id].c}`);
     return;
   }
+  const tg = e.target.closest('[data-tog]');
+  if (tg) { setOpen(tg.dataset.tog, tg.getAttribute('aria-expanded') !== 'true'); return; }
   const go = e.target.closest('[data-go]');
-  if (go) { const el = document.getElementById('s-' + go.dataset.go); if (el) el.scrollIntoView({behavior: 'smooth', block: 'start'}); }
+  if (go) { setOpen(go.dataset.go, true); const el = document.getElementById('s-' + go.dataset.go); if (el) el.scrollIntoView({behavior: 'smooth', block: 'start'}); }
 });
 document.addEventListener('change', e => { if (e.target.matches('.step input')) setQty(e.target.dataset.id, e.target.value); });
 document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('.step input')) { e.preventDefault(); e.target.blur(); } });
@@ -347,7 +375,11 @@ $('#copy').addEventListener('click', () => {
   if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(() => toast('Pedido copiado'), fallback); else fallback();
 });
 
+$('#openAll').addEventListener('click', () => DATA.sections.forEach(x => setOpen(x.k, true)));
+$('#closeAll').addEventListener('click', () => DATA.sections.forEach(x => setOpen(x.k, false)));
+
 // search
+let searchState = null;
 $('#q').addEventListener('input', e => {
   const q = e.target.value.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
   const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -364,6 +396,10 @@ $('#q').addEventListener('input', e => {
     card.classList.toggle('hide', !vis); if (vis) any = true;
   });
   document.querySelectorAll('.sec').forEach(s => s.classList.toggle('hide', !s.querySelector('.card:not(.hide)')));
+  if (q) {
+    if (!searchState) { searchState = {}; DATA.sections.forEach(x => { searchState[x.k] = !document.getElementById('b-' + x.k).hidden; }); }
+    DATA.sections.forEach(x => setOpen(x.k, true));
+  } else if (searchState) { Object.entries(searchState).forEach(([k, o]) => setOpen(k, o)); searchState = null; }
   $('#nores').classList.toggle('hide', any);
 });
 
