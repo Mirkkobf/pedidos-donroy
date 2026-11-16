@@ -139,7 +139,7 @@ table.t td.num{text-align:right;font-variant-numeric:tabular-nums}
 
   <section id="v-pedidos" hidden>
     <div class="kpis">
-      <button class="kpi warn" type="button" data-go="recibido"><b id="kNew">0</b><span>Pedidos nuevos sin atender</span></button>
+      <button class="kpi warn" type="button" data-go="recibido"><b id="kNew">0</b><span>Pedidos recibidos sin atender</span></button>
       <button class="kpi" type="button" data-go="activos"><b id="kAct">0</b><span>En preparación o listos</span></button>
       <button class="kpi warn" type="button" data-go="comp"><b id="kComp">0</b><span>Facturas o remitos pendientes</span></button>
       <button class="kpi" type="button" data-go="hoy"><b id="kHoy">0</b><span>Pedidos de hoy</span></button>
@@ -147,7 +147,8 @@ table.t td.num{text-align:right;font-variant-numeric:tabular-nums}
     <div class="tool">
       <div class="chips" id="chips">
         <button class="chip" type="button" data-f="gestion" aria-pressed="true">Para gestionar</button>
-        <button class="chip" type="button" data-f="recibido" aria-pressed="false">Nuevos</button>
+        <button class="chip" type="button" data-f="nuevos" aria-pressed="false">Nuevos desde mi último ingreso</button>
+        <button class="chip" type="button" data-f="recibido" aria-pressed="false">Recibidos</button>
         <button class="chip" type="button" data-f="preparacion" aria-pressed="false">En preparación</button>
         <button class="chip" type="button" data-f="listo" aria-pressed="false">Listos</button>
         <button class="chip" type="button" data-f="comp" aria-pressed="false">Con comprobante pendiente</button>
@@ -159,6 +160,7 @@ table.t td.num{text-align:right;font-variant-numeric:tabular-nums}
       <button class="btn line sm" type="button" id="refresh">Actualizar</button>
       <span class="upd" id="upd"></span>
     </div>
+    <p class="upd" id="desde" style="margin:-4px 0 12px"></p>
     <div class="list" id="list"></div>
   </section>
 
@@ -179,13 +181,13 @@ table.t td.num{text-align:right;font-variant-numeric:tabular-nums}
 const SUPA_URL = 'https://egjhfipqzwvizqnodggw.supabase.co';
 const SUPA_KEY = 'sb_publishable_1kO0JyJzuksMIU31_v8qag__C4eiRtJ';
 const SUPA_JS = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js';
-const ESTADOS = [['recibido', 'Nuevo'], ['preparacion', 'En preparación'], ['listo', 'Listo para entregar'], ['entregado', 'Entregado'], ['cancelado', 'Cancelado']];
+const ESTADOS = [['recibido', 'Recibido'], ['preparacion', 'En preparación'], ['listo', 'Listo para entregar'], ['entregado', 'Entregado'], ['cancelado', 'Cancelado']];
 const $ = s => document.querySelector(s);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
 const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 const fecha = d => new Date(d).toLocaleString('es-AR', {day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'});
 const dia = d => new Date(d).toLocaleDateString('es-AR', {day: '2-digit', month: '2-digit', year: 'numeric'});
-let sb, pedidos = [], filtro = 'gestion', upTarget = null, timer = null;
+let sb, pedidos = [], filtro = 'gestion', upTarget = null, timer = null, desde = null;
 let tt; const toast = m => { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 2400); };
 
 function show(view) {
@@ -205,8 +207,12 @@ async function enter(user) {
   $('#who').textContent = user.email;
   const r = await sb.rpc('es_admin');
   if (r.error || !r.data) { $('#noaccMsg').textContent = `La cuenta ${user.email} no tiene permisos de administrador.`; show('noacc'); return; }
+  // "NUEVO" = llegó después del ingreso anterior (una visita nueva empieza tras 30 min sin usar el panel)
+  const ing = await sb.rpc('admin_ingreso');
+  desde = !ing.error && ing.data ? new Date(ing.data) : null;
+  $('#desde').textContent = desde ? `Marcamos como NUEVO lo que llegó desde tu último ingreso (${fecha(desde)}).` : 'Primer ingreso: marcamos como NUEVO todos los pedidos recibidos.';
   show('pedidos'); await loadPedidos();
-  clearInterval(timer); timer = setInterval(() => { if (!document.hidden && !$('#v-pedidos').hidden) loadPedidos(true); }, 60000);
+  clearInterval(timer); timer = setInterval(() => { if (!document.hidden && !$('#v-pedidos').hidden) { sb.rpc('admin_ingreso').then(() => {}, () => {}); loadPedidos(true); } }, 60000);
 }
 $('#login').addEventListener('submit', async e => {
   e.preventDefault(); const b = e.target.querySelector('button'); b.disabled = true;
@@ -245,6 +251,7 @@ function pasa(p) {
     case 'comp': return p.estado !== 'cancelado' && compPend(p);
     case 'hoy': return new Date(p.created_at).toDateString() === new Date().toDateString();
     case 'activos': return p.estado === 'preparacion' || p.estado === 'listo';
+    case 'nuevos': return p.estado !== 'cancelado' && (desde ? new Date(p.created_at) > desde : p.estado === 'recibido');
     case 'todos': return true;
     default: return p.estado === filtro;
   }
@@ -259,7 +266,7 @@ function compHTML(p, tipo) {
   return `<div class="comp pend"><div class="t">${name}${d.letra ? ' ' + esc(d.letra) : ''} · ${tipo === 'factura' ? 'solicitada' : 'solicitado'}</div>${datos}<div class="d">Pedida el ${dia(c.created_at)}.</div><div class="acts">${up}</div></div>`;
 }
 function ordHTML(p) {
-  const nuevo = p.estado === 'recibido' && Date.now() - new Date(p.created_at) < 6 * 3600e3;
+  const nuevo = p.estado !== 'cancelado' && (desde ? new Date(p.created_at) > desde : p.estado === 'recibido');
   const sel = `<select class="est s-${p.estado}" data-est="${p.id}" aria-label="Estado del pedido ${esc(p.codigo)}">${ESTADOS.map(([k, l]) => `<option value="${k}"${k === p.estado ? ' selected' : ''}>${l}</option>`).join('')}</select>`;
   return `<article class="ord s-${p.estado}" data-id="${p.id}">
     <div class="oh"><span class="code">${esc(p.codigo)}</span><span class="when">${fecha(p.created_at)}</span>${nuevo ? '<span class="new">Nuevo</span>' : ''}<span class="sp"></span>${sel}</div>
