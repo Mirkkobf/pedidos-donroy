@@ -1037,7 +1037,8 @@ function pedidosHTML() {
   }).join('');
 }
 async function loadPedidos() {
-  const r = await sb.from('pedidos').select('id,codigo,created_at,articulos,unidades,items,estado,comprobantes(tipo,estado,archivo,datos)').order('created_at', {ascending: false}).limit(50);
+  // always the account's own orders (an administrator can read every order, but this list is personal)
+  const r = await sb.from('pedidos').select('id,codigo,created_at,articulos,unidades,items,estado,comprobantes(tipo,estado,archivo,datos)').eq('email', user.email.toLowerCase()).order('created_at', {ascending: false}).limit(50);
   pedidosCache = r.error ? 'error' : r.data;
   const L = $('#plist'); if (L) L.innerHTML = pedidosHTML();
 }
