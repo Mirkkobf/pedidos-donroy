@@ -242,6 +242,12 @@ body.lbopen{overflow:hidden}
 .fl:hover span{text-decoration:underline;text-underline-offset:3px}
 .foot :focus-visible{outline-color:#fff}
 .fbot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-top:32px;padding-top:18px;border-top:1px solid rgba(255,255,255,.14);font-size:12px;color:rgba(255,255,255,.55)}
+
+/* v10: section header stays on one row; long names wrap inside their own box */
+.sech button{flex-wrap:nowrap}
+.sech .nm{flex:0 1 auto;min-width:0;line-height:1.15;overflow-wrap:anywhere}
+.sech small,.sech .selc{flex:none;white-space:nowrap}
+@media (max-width:420px){.sech .selc.on~.chev{margin-left:auto}.sech button:has(.selc.on) small{display:none}}
 </style>
 
 </head>
@@ -366,7 +372,7 @@ function renderCatalog() {
     const n = list.reduce((a, bi) => a + DATA.blocks[bi].rows.length, 0);
     rail += `<button class="chip${s.k === 'liquidacion' ? ' liq' : ''}" type="button" data-go="${s.k}">${esc(s.short)}</button>`;
     const open = s.k === 'liquidacion';
-    html += `<section class="sec${s.k === 'liquidacion' ? ' liq' : ''}" id="s-${s.k}" data-sec="${s.k}"><h2 class="sech"><button type="button" data-tog="${s.k}" aria-expanded="${open}" aria-controls="b-${s.k}"><span class="nm full">${esc(s.name)}</span><span class="nm short">${esc(s.short)}</span><small>${n} artículos</small><span class="selc" id="sc-${s.k}"></span><span class="chev" aria-hidden="true">${CHEV}</span></button></h2><div class="secb" id="b-${s.k}"${open ? '' : ' hidden'}>`;
+    html += `<section class="sec${s.k === 'liquidacion' ? ' liq' : ''}" id="s-${s.k}" data-sec="${s.k}"><h2 class="sech"><button type="button" data-tog="${s.k}" aria-expanded="${open}" aria-controls="b-${s.k}"><span class="nm full">${esc(s.name.replace(/\s*\(.*\)\s*$/, ''))}</span><span class="nm short">${esc(s.short)}</span><small>${n} artículos</small><span class="selc" id="sc-${s.k}"></span><span class="chev" aria-hidden="true">${CHEV}</span></button></h2><div class="secb" id="b-${s.k}"${open ? '' : ' hidden'}>`;
     list.forEach(bi => {
       const b = DATA.blocks[bi];
       const brands = b.br.map(([alt, im]) => `<span class="brand${DARK_BRANDS.has(alt) ? ' dk' : ''}"><img src="img/img_${im}.webp" alt="${esc(alt)}" loading="lazy"></span>`).join('');
