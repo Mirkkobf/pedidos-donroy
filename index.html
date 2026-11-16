@@ -309,6 +309,12 @@ body.mdlopen{overflow:hidden}
 .mform.fact{padding:12px;border-radius:10px;background:var(--surface-2)}
 @media (max-width:520px){.hrow .cartbtn{display:none}.hrow{gap:10px}}
 .mdet{font-size:12px;color:var(--ink-2);word-break:break-word}
+.chipb.red{background:#fff;color:var(--red);border:1.5px solid var(--red)}
+.cbox{display:grid;gap:8px;padding:12px;border-radius:10px;border:1.5px solid var(--red);background:var(--red-soft)}
+.cbox b{font-size:14.5px;color:var(--navy)}.cbox span{font-size:13px;line-height:1.45;color:var(--ink-2)}
+.mbtn.redb{background:var(--red)}
+.ped.cancel{background:var(--surface-2)}.ped.cancel .pedh b{text-decoration:line-through;color:var(--ink-2)}
+.ptag{font-style:normal;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--red);border:1.5px solid var(--red);border-radius:10px;padding:1px 8px}
 </style>
 
 </head>
@@ -962,7 +968,7 @@ async function codeAndPassword(email, code, pass) {
 }
 
 // --- account panel ---
-let accView = 'login', accEmail = '', pedidosCache = null, factFor = null, lastNotice = null;
+let accView = 'login', accEmail = '', pedidosCache = null, factFor = null, lastNotice = null, cancelFor = null;
 function renderAcc() {
   const B = $('#accBody');
   if (!sb) { B.innerHTML = `<h2 id="accT">Tu cuenta</h2><p class="msub">La cuenta no está disponible en este momento. Podés seguir haciendo pedidos normalmente.</p>`; return; }
@@ -986,7 +992,7 @@ function renderAcc() {
   let h = `<div class="ahead"><div><h2 id="accT">Mis pedidos</h2><p class="msub">${esc(user.email)}</p></div><button type="button" class="lnk" id="aOut">Cerrar sesión</button></div>`;
   if (!hasPassword() || accView === 'pass') h += `<form class="mcard soft" id="passForm"><b>Creá tu contraseña</b><span>Así la próxima vez entrás con tu correo y tu contraseña.</span>
       <label class="mfield">Contraseña<input id="aNew" type="password" autocomplete="new-password" minlength="8" placeholder="Mínimo 8 caracteres"></label><p class="merr" id="aErr" hidden></p><button class="mbtn" type="submit">Guardar contraseña</button></form>`;
-  if (lastNotice) h += `<div class="mcard ok"><b>${esc(lastNotice.title)}</b><span>Avisale a ventas para que lo preparen:</span><a class="mbtn wa" href="${lastNotice.href}" target="_blank" rel="noopener noreferrer">${WAI}Avisar por WhatsApp</a></div>`;
+  if (lastNotice) h += `<div class="mcard ok"><b>${esc(lastNotice.title)}</b><span>${esc(lastNotice.text || 'Avisale a ventas para que lo preparen:')}</span><a class="mbtn wa" href="${lastNotice.href}" target="_blank" rel="noopener noreferrer">${WAI}Avisar por WhatsApp</a></div>`;
   h += `<div id="plist">${pedidosHTML()}</div>`;
   B.innerHTML = h; bindAccForms();
   if (pedidosCache === null) loadPedidos();
@@ -1007,13 +1013,19 @@ function pedidosHTML() {
       <label>Razón social<input name="razon" maxlength="120" placeholder="Como figura en AFIP"></label>
       <label>Condición frente al IVA<select name="iva"><option>Responsable inscripto</option><option>Monotributista</option><option>Exento</option><option>Consumidor final</option></select></label>
       <p class="merr" hidden></p><div class="mrow"><button class="mbtn" type="submit">Solicitar factura</button><button type="button" class="lnk" data-factx="1">Cancelar</button></div></form>` : '';
-    return `<article class="ped"><div class="pedh"><b>${esc(p.codigo)}</b><span>${fmtFecha(p.created_at)} · ${plural(p.articulos, 'artículo', 'artículos')} · ${p.unidades} u.</span></div>
+    const canc = p.estado === 'cancelado', emitido = (p.comprobantes || []).some(c => c.estado === 'enviado');
+    const acts = canc ? `<button type="button" class="chipb line" data-repeat="${p.id}">Repetir pedido</button>`
+      : `${btn('factura')}${btn('remito')}<button type="button" class="chipb line" data-repeat="${p.id}">Repetir pedido</button>${emitido ? '' : `<button type="button" class="chipb red" data-cancel="${p.id}">Cancelar pedido</button>`}`;
+    const cbox = !canc && cancelFor === p.id ? `<div class="cbox" role="alertdialog" aria-labelledby="cq${p.id}"><b id="cq${p.id}">¿Seguro que querés cancelar el pedido ${esc(p.codigo)}?</b>
+      <span>Ventas va a dejar de prepararlo y se anulan las solicitudes de factura o remito pendientes. No se puede deshacer.</span>
+      <div class="mrow"><button type="button" class="mbtn redb" data-cancelyes="${p.id}">Sí, cancelar pedido</button><button type="button" class="lnk" data-cancelno="1">No, volver</button></div></div>` : '';
+    return `<article class="ped${canc ? ' cancel' : ''}"><div class="pedh"><b>${esc(p.codigo)}</b><span>${fmtFecha(p.created_at)} · ${plural(p.articulos, 'artículo', 'artículos')} · ${p.unidades} u.</span>${canc ? '<em class="ptag">Cancelado</em>' : ''}</div>
       <details><summary>Ver detalle</summary><ul>${(p.items || []).map(i => `<li><b>${esc(i.q)} ×</b> ${esc(i.c)} · ${esc(i.d)}</li>`).join('')}</ul></details>
-      <div class="pacts">${btn('factura')}${btn('remito')}<button type="button" class="chipb line" data-repeat="${p.id}">Repetir pedido</button></div>${ff}</article>`;
+      <div class="pacts">${acts}</div>${ff}${cbox}</article>`;
   }).join('');
 }
 async function loadPedidos() {
-  const r = await sb.from('pedidos').select('id,codigo,created_at,articulos,unidades,items,comprobantes(tipo,estado,archivo)').order('created_at', {ascending: false}).limit(50);
+  const r = await sb.from('pedidos').select('id,codigo,created_at,articulos,unidades,items,estado,comprobantes(tipo,estado,archivo)').order('created_at', {ascending: false}).limit(50);
   pedidosCache = r.error ? 'error' : r.data;
   const L = $('#plist'); if (L) L.innerHTML = pedidosHTML();
 }
@@ -1076,6 +1088,18 @@ document.addEventListener('click', async e => {
     return;
   }
   if (e.target.closest('[data-factx]')) { factFor = null; $('#plist').innerHTML = pedidosHTML(); return; }
+  const cn = e.target.closest('[data-cancel]');
+  if (cn) { cancelFor = Number(cn.dataset.cancel); factFor = null; $('#plist').innerHTML = pedidosHTML(); const y = document.querySelector('[data-cancelyes]'); if (y) { y.closest('.cbox').scrollIntoView({block: 'nearest', behavior: 'smooth'}); y.focus({preventScroll: true}); } return; }
+  if (e.target.closest('[data-cancelno]')) { cancelFor = null; $('#plist').innerHTML = pedidosHTML(); return; }
+  const cy = e.target.closest('[data-cancelyes]');
+  if (cy) {
+    const pid = Number(cy.dataset.cancelyes), p = pedidosCache.find(x => x.id === pid);
+    cy.disabled = true; cy.textContent = 'Cancelando…';
+    const r = await sb.rpc('cancelar_pedido', {p_pedido: pid});
+    if (r.error) { toast(/emitido/.test(r.error.message) ? 'Ya tiene factura o remito: comunicate con ventas' : 'No pudimos cancelar el pedido'); cancelFor = null; pedidosCache = null; renderAcc(); return; }
+    lastNotice = {title: `Pedido ${p.codigo} cancelado`, text: 'Avisale a ventas para que no lo preparen:', href: `https://wa.me/${WA}?text=${encodeURIComponent(`Hola Don Roy, cancelé el pedido ${p.codigo} desde mi cuenta web (${user.email}). Por favor no lo preparen. Gracias.`)}`};
+    cancelFor = null; pedidosCache = null; renderAcc(); toast('Pedido cancelado'); return;
+  }
   const dl = e.target.closest('[data-dl]');
   if (dl) {
     const w = window.open('', '_blank');
