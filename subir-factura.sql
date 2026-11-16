@@ -1,7 +1,7 @@
 -- Cómo entregar una factura o un remito a un cliente (panel de Supabase)
 --
 -- 1) Ver las solicitudes pendientes y el número de pedido (pedido_id) de cada una (SQL Editor):
-select c.tipo, c.datos, c.created_at, p.id as pedido_id, p.codigo, p.email, p.nombre, p.localidad
+select c.tipo, c.datos->>'letra' as letra, c.datos, c.created_at, p.id as pedido_id, p.codigo, p.email, p.nombre, p.localidad
 from public.comprobantes c join public.pedidos p on p.id = c.pedido_id
 where c.estado = 'pendiente' and p.estado = 'recibido'
 order by c.created_at;

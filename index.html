@@ -315,6 +315,7 @@ body.mdlopen{overflow:hidden}
 .mbtn.redb{background:var(--red)}
 .ped.cancel{background:var(--surface-2)}.ped.cancel .pedh b{text-decoration:line-through;color:var(--ink-2)}
 .ptag{font-style:normal;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--red);border:1.5px solid var(--red);border-radius:10px;padding:1px 8px}
+.letra{margin:0;font-size:14px;color:var(--navy);background:#fff;border:1.5px dashed var(--line);border-radius:10px;padding:8px 12px}
 </style>
 
 </head>
@@ -406,6 +407,9 @@ const SUPA_JS = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 const ACC_KEY = 'donroy-cuenta';
 const CODE_KEY = 'donroy-codigo';
+// Condición de DonRoy frente al IVA: 'RI' (Responsable Inscripto) o 'MONO' (Monotributo). Define la letra de la factura.
+const EMISOR_IVA = 'RI';
+const letraFactura = iva => EMISOR_IVA === 'MONO' ? 'C' : (iva === 'Responsable inscripto' || iva === 'Monotributista' ? 'A' : 'B');
 let sb = null, user = null;
 const newCode = () => { const a = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let s = ''; crypto.getRandomValues(new Uint8Array(6)).forEach(x => { s += a[x % a.length]; }); return 'DR-' + s; };
 let orderCode = ''; try { orderCode = localStorage.getItem(CODE_KEY) || ''; } catch (e) {}
@@ -1007,11 +1011,13 @@ function pedidosHTML() {
       const c = cps[tipo], name = tipo === 'factura' ? 'factura' : 'remito';
       if (!c) return `<button type="button" class="chipb" data-pide="${tipo}" data-pid="${p.id}">Pedir ${name}</button>`;
       if (c.estado === 'enviado' && c.archivo) return `<button type="button" class="chipb dl" data-dl="${esc(c.archivo)}">Descargar ${name}</button>`;
-      return `<span class="chipb wait">${tipo === 'factura' ? 'Factura' : 'Remito'} solicitado${tipo === 'factura' ? 'a' : ''}</span>`;
+      return `<span class="chipb wait">${tipo === 'factura' ? `Factura${c.datos && c.datos.letra ? ' ' + esc(c.datos.letra) : ''} solicitada` : 'Remito solicitado'}</span>`;
     };
-    const ff = factFor === p.id ? `<form class="mform fact" data-fact="${p.id}"><label>CUIT<input name="cuit" inputmode="numeric" maxlength="13" placeholder="20-12345678-9"></label>
-      <label>Razón social<input name="razon" maxlength="120" placeholder="Como figura en AFIP"></label>
-      <label>Condición frente al IVA<select name="iva"><option>Responsable inscripto</option><option>Monotributista</option><option>Exento</option><option>Consumidor final</option></select></label>
+    const ff = factFor === p.id ? `<form class="mform fact" data-fact="${p.id}">
+      <label>Tu condición frente al IVA<select name="iva"><option>Responsable inscripto</option><option>Monotributista</option><option>Exento</option><option>Consumidor final</option></select></label>
+      <p class="letra" aria-live="polite">Te corresponde <b>Factura ${letraFactura('Responsable inscripto')}</b></p>
+      <label><span class="ldoc">CUIT</span><input name="cuit" inputmode="numeric" maxlength="13" placeholder="20-12345678-9"></label>
+      <label><span class="lraz">Razón social</span><input name="razon" maxlength="120" placeholder="Como figura en ARCA"></label>
       <p class="merr" hidden></p><div class="mrow"><button class="mbtn" type="submit">Solicitar factura</button><button type="button" class="lnk" data-factx="1">Cancelar</button></div></form>` : '';
     const canc = p.estado === 'cancelado', emitido = (p.comprobantes || []).some(c => c.estado === 'enviado');
     const acts = canc ? `<button type="button" class="chipb line" data-repeat="${p.id}">Repetir pedido</button>`
@@ -1025,7 +1031,7 @@ function pedidosHTML() {
   }).join('');
 }
 async function loadPedidos() {
-  const r = await sb.from('pedidos').select('id,codigo,created_at,articulos,unidades,items,estado,comprobantes(tipo,estado,archivo)').order('created_at', {ascending: false}).limit(50);
+  const r = await sb.from('pedidos').select('id,codigo,created_at,articulos,unidades,items,estado,comprobantes(tipo,estado,archivo,datos)').order('created_at', {ascending: false}).limit(50);
   pedidosCache = r.error ? 'error' : r.data;
   const L = $('#plist'); if (L) L.innerHTML = pedidosHTML();
 }
@@ -1075,8 +1081,8 @@ async function pedirComprobante(pid, tipo, datos) {
   const p = pedidosCache.find(x => x.id === pid);
   const r = await sb.rpc('solicitar_comprobante', {p_pedido: pid, p_tipo: tipo, p_datos: datos || {}});
   if (r.error) { toast('No pudimos enviar la solicitud'); return false; }
-  const extra = datos && datos.cuit ? ` CUIT ${datos.cuit} · ${datos.razon} · ${datos.iva}.` : '';
-  lastNotice = {title: `${tipo === 'factura' ? 'Factura solicitada' : 'Remito solicitado'} · ${p.codigo}`, href: waComp(tipo, p, extra)};
+  const extra = datos && datos.cuit ? ` Factura ${datos.letra} · ${datos.iva} · ${datos.cuit.length > 10 ? 'CUIT' : 'DNI'} ${datos.cuit} · ${datos.razon}.` : '';
+  lastNotice = {title: `${tipo === 'factura' ? `Factura ${datos && datos.letra ? datos.letra + ' ' : ''}solicitada` : 'Remito solicitado'} · ${p.codigo}`, href: waComp(tipo, p, extra)};
   factFor = null; pedidosCache = null; renderAcc(); return true;
 }
 document.addEventListener('click', async e => {
@@ -1115,14 +1121,24 @@ document.addEventListener('click', async e => {
     closeModal('acc'); if (matchMedia('(min-width:1080px)').matches) $('#pt').scrollIntoView({behavior: 'smooth'}); else openCart(); toast(n ? `Sumamos ${plural(n, 'artículo', 'artículos')} a tu pedido` : 'Esos artículos ya no están en el catálogo');
   }
 });
+document.addEventListener('change', e => {
+  const f = e.target.closest('[data-fact]'); if (!f || e.target.name !== 'iva') return;
+  const cf = e.target.value === 'Consumidor final';
+  f.querySelector('.letra b').textContent = 'Factura ' + letraFactura(e.target.value);
+  f.querySelector('.ldoc').textContent = cf ? 'DNI o CUIT' : 'CUIT';
+  f.querySelector('.lraz').textContent = cf ? 'Nombre y apellido' : 'Razón social';
+  f.cuit.placeholder = cf ? 'Ej.: 30123456' : '20-12345678-9';
+  f.razon.placeholder = cf ? 'Ej.: Juan Pérez' : 'Como figura en ARCA';
+});
 document.addEventListener('submit', async e => {
   const f = e.target.closest('[data-fact]'); if (!f) return;
   e.preventDefault();
-  const d = {cuit: f.cuit.value.replace(/\D/g, ''), razon: f.razon.value.trim(), iva: f.iva.value};
+  const cf = f.iva.value === 'Consumidor final';
+  const d = {letra: letraFactura(f.iva.value), iva: f.iva.value, cuit: f.cuit.value.replace(/\D/g, ''), razon: f.razon.value.trim()};
   const er = f.querySelector('.merr');
-  if (d.cuit.length !== 11) { er.textContent = 'El CUIT tiene 11 números.'; er.hidden = false; return; }
-  if (!d.razon) { er.textContent = 'Completá la razón social.'; er.hidden = false; return; }
-  d.cuit = d.cuit.replace(/^(\d{2})(\d{8})(\d)$/, '$1-$2-$3');
+  if (cf ? !(d.cuit.length >= 7 && d.cuit.length <= 11) : d.cuit.length !== 11) { er.textContent = cf ? 'Escribí tu DNI o CUIT, solo números.' : 'El CUIT tiene 11 números.'; er.hidden = false; return; }
+  if (!d.razon) { er.textContent = cf ? 'Completá tu nombre y apellido.' : 'Completá la razón social.'; er.hidden = false; return; }
+  if (d.cuit.length === 11) d.cuit = d.cuit.replace(/^(\d{2})(\d{8})(\d)$/, '$1-$2-$3');
   f.querySelector('button').disabled = true;
   await pedirComprobante(Number(f.dataset.fact), 'factura', d);
 });
