@@ -114,12 +114,12 @@ body.short{--top:46px;--bot:0px}body.short .bot{display:none}body.short .side{di
 <script>
 const N = 36;
 const $ = s => document.querySelector(s);
-// book sequence: hard cover, cloth inside cover + flyleaf, catalog pages 2..51, flyleaf + inside back cover, hard back cover
-const SEQ = [{n: 1, hard: 1, cls: 'cover front'}, {tx: 'inside', hard: 1, cls: 'hinge-r'}, {tx: 'fly', cls: 'hinge-l'}];
+// revista abrochada: tapa, páginas 2..35 y contratapa (sin forro interno)
+const SEQ = [{n: 1, hard: 1, cls: 'cover front'}];
 for (let n = 2; n < N; n++) SEQ.push({n});
-SEQ.push({tx: 'fly', cls: 'hinge-r'}, {tx: 'inside', hard: 1, cls: 'hinge-l'}, {n: N, hard: 1, cls: 'cover back'});
+SEQ.push({n: N, hard: 1, cls: 'cover back'});
 const T = SEQ.length;
-const pgIdx = n => n <= 1 ? 0 : n >= N ? T - 1 : n + 1;
+const pgIdx = n => Math.max(0, Math.min(T - 1, n - 1));
 const idxPg = i => SEQ[i] && SEQ[i].n;
 let LINKS = [], pf = null, mode = null;
 
