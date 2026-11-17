@@ -463,7 +463,7 @@ function renderCatalog() {
     const list = bySec[s.k] || [];
     const n = list.reduce((a, bi) => a + DATA.blocks[bi].rows.length, 0);
     rail += `<button class="chip${s.k === 'liquidacion' ? ' liq' : ''}" type="button" data-go="${s.k}">${esc(s.short)}</button>`;
-    const open = s.k === 'liquidacion';
+    const open = false;   // todas las secciones arrancan cerradas
     html += `<section class="sec${s.k === 'liquidacion' ? ' liq' : ''}" id="s-${s.k}" data-sec="${s.k}"><h2 class="sech"><button type="button" data-tog="${s.k}" aria-expanded="${open}" aria-controls="b-${s.k}"><span class="nm full">${esc(s.name.replace(/\s*\(.*\)\s*$/, ''))}</span><span class="nm short">${esc(s.short)}</span><small>${n} artículos</small><span class="selc" id="sc-${s.k}"></span><span class="chev" aria-hidden="true">${CHEV}</span></button></h2><div class="secb" id="b-${s.k}"${open ? '' : ' hidden'}>`;
     list.forEach(bi => {
       const b = DATA.blocks[bi];
@@ -818,7 +818,7 @@ $('#home').addEventListener('click', e => {
   $('#q').value = ''; filterCatalog(''); closeSugg(); $('#q').blur();
   if (!$('#lb').hidden) closeZoom();
   closeCart();
-  DATA.sections.forEach(x => setOpen(x.k, x.k === 'liquidacion'));
+  DATA.sections.forEach(x => setOpen(x.k, false));
   window.scrollTo({top: 0, behavior: 'smooth'});
 });
 
