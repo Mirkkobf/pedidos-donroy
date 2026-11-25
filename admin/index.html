@@ -62,10 +62,12 @@ label.f input:focus,select.f:focus{border-color:var(--navy);outline:none}
 .pfh{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .pimg{width:72px;height:72px;border-radius:10px;border:1.5px dashed var(--line);background:var(--surface-2) center/contain no-repeat;display:flex;align-items:flex-end;justify-content:center;cursor:pointer;flex:none;padding:0}
 .pimg span{font-size:10.5px;font-weight:700;background:rgba(255,255,255,.9);color:var(--navy);border-radius:6px;padding:1px 5px;margin-bottom:4px}
-.pfh .ftitle{flex:1 1 220px;height:40px;border:1.5px solid var(--line);border-radius:10px;padding:0 12px;font-size:15px;font-weight:700;color:var(--navy)}
+.pfh .ftitle{flex:1 1 140px;height:40px;border:1.5px solid var(--line);border-radius:10px;padding:0 12px;font-size:15px;font-weight:700;color:var(--navy)}
 .pfh select,.prow select{height:36px;border:1.5px solid var(--line);border-radius:8px;background:var(--white);padding:0 8px;font-size:13px;color:var(--navy)}
 .prows{display:grid;gap:6px}
-.prow{display:grid;grid-template-columns:110px 1fr 130px 36px;gap:6px;align-items:center}
+.prow{display:grid;gap:6px;align-items:center}
+.pex{display:contents}.prow>.ix{order:9}
+.pex input{width:100%}
 .prow input{height:36px;border:1.5px solid var(--line);border-radius:8px;padding:0 10px;font-size:14px;color:var(--navy);min-width:0}
 .prow.st-sin_stock input{background:var(--amber-soft)}
 .prow.st-oculto input{background:var(--surface-2);color:var(--ink-2)}
@@ -73,7 +75,27 @@ label.f input:focus,select.f:focus{border-color:var(--navy);outline:none}
 .ix{width:36px;height:36px;border-radius:8px;border:1.5px solid var(--line);background:var(--white);color:var(--red);font-weight:800;cursor:pointer}
 .ix:hover{border-color:var(--red)}
 .dirty{border-color:var(--amber)!important}
-@media (max-width:640px){.prow{grid-template-columns:86px 1fr 36px}.prow select{grid-column:1/3}}
+.prow{grid-template-columns:22px 110px 1fr auto 130px 36px}
+.prow.liq{grid-template-columns:22px 110px 1fr 84px auto 130px 36px}
+.hd{width:22px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--ink-2);cursor:grab;font-size:16px;user-select:none;flex:none}
+.hd[draggable="false"]{opacity:.25;cursor:not-allowed}
+.drag{opacity:.4}.over{outline:2px dashed var(--navy);outline-offset:2px}
+.eye{width:36px;height:34px;border-radius:8px;border:1.5px solid var(--line);background:var(--white);color:var(--navy);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.eye[aria-pressed="false"]{color:var(--ink-2);background:var(--surface-2)}
+.psh .eye{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.4);color:#fff}
+.psh .eye[aria-pressed="false"]{opacity:.55}
+.nwb{height:34px;border-radius:8px;border:1.5px solid var(--line);background:var(--white);color:var(--ink-2);font-weight:800;font-size:12px;padding:0 10px;cursor:pointer;white-space:nowrap}
+.nwb[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff}
+.prow .nwb{height:36px;padding:0 8px}
+dialog.sum{border:0;border-radius:14px;padding:20px;max-width:560px;width:calc(100% - 32px);color:var(--ink)}
+dialog.sum::backdrop{background:rgba(10,20,40,.45)}
+dialog.sum h2{margin:0 0 4px;font-size:18px;color:var(--navy)}
+dialog.sum .sl{max-height:55vh;overflow:auto;margin:12px 0;display:grid;gap:10px}
+dialog.sum h3{margin:0 0 4px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-2)}
+dialog.sum ul{margin:0;padding-left:18px;font-size:14px;display:grid;gap:3px}
+dialog.sum h3.d{color:var(--red)}
+dialog.sum .acts{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+@media (max-width:640px){.prow,.prow.liq{grid-template-columns:22px 86px 1fr 36px}.prow>.ix{order:0}.prow .pex{grid-column:2/-1;display:flex;gap:6px;order:10}.prow .pex select{flex:1}.prow .pex input{width:84px}}
 .lnk{justify-self:center;border:0;background:none;padding:6px 0;font-size:13.5px;font-weight:600;color:var(--navy);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 /* KPIs */
 .hrow .tag,.who{}
@@ -254,10 +276,16 @@ tr.crow:focus-visible{outline:3px solid var(--navy);outline-offset:-3px}
       <button class="btn line sm" type="button" id="pUndo" hidden>Descartar cambios</button>
       <button class="btn green" type="button" id="pSave" disabled>Guardar cambios</button>
     </div>
-    <p class="upd" style="margin:0 0 12px"><b>Activo</b>: se ve y se puede pedir. <b>Sin stock</b>: se ve pero no se puede pedir. <b>Oculto</b>: no aparece en la web. Los cambios se publican en la web al tocar <b>Guardar cambios</b>.</p>
+    <p class="upd" style="margin:0 0 12px"><b>Activo</b>: se ve y se puede pedir. <b>Sin stock</b>: se ve pero no se puede pedir. <b>Oculto</b>: no aparece en la web. <b>⠿</b>: arrastrá para cambiar el orden. <b>Stock</b> (solo en Liquidación): limita cuánto se puede pedir; vacío = sin límite. Los cambios se publican en la web al tocar <b>Guardar cambios</b>.</p>
     <div id="plist" class="plist"></div>
   </section>
 </main>
+<dialog class="sum" id="sumDlg" aria-labelledby="sumT">
+  <h2 id="sumT">Revisá los cambios antes de guardar</h2>
+  <p class="upd" style="margin:0">Si algo no está bien, tocá “Volver” y corregilo.</p>
+  <div class="sl" id="sumList"></div>
+  <div class="acts"><button type="button" class="btn line" id="sumBack">Volver</button><button type="button" class="btn green" id="sumOk">Guardar</button></div>
+</dialog>
 <input type="file" id="pfile" accept="image/jpeg,image/png,image/webp" hidden>
 <input type="file" id="file" accept="application/pdf" hidden>
 <div class="cpov" id="cpov" hidden><aside class="cpanel" role="dialog" aria-modal="true" aria-labelledby="cpT">
@@ -518,8 +546,8 @@ async function loadBusquedas() {
 // ===== Productos: secciones > familias > productos. Se editan en memoria y se publican con "Guardar cambios" =====
 const ESTADO_P = [['activo', 'Activo'], ['sin_stock', 'Sin stock'], ['oculto', 'Oculto']];
 const IMG = x => !x ? '' : x.includes('/') ? x : `/img/img_${x}.webp`;
-const SC = ['k', 'nombre', 'corto', 'orden', 'visible'], FC = ['seccion', 'titulo', 'imagen', 'marcas', 'liquidacion', 'orden', 'visible'], PC = ['familia_id', 'codigo', 'detalle', 'color', 'estado', 'orden'];
-let P = null, tmpId = -1, picFor = null;
+const SC = ['k', 'nombre', 'corto', 'orden', 'visible'], FC = ['seccion', 'titulo', 'imagen', 'marcas', 'liquidacion', 'orden', 'visible', 'nuevo'], PC = ['familia_id', 'codigo', 'detalle', 'color', 'estado', 'orden', 'nuevo', 'stock'];
+let P = null, P0 = null, tmpId = -1, picFor = null;
 const pOpen = new Set();
 const pick = (o, cols) => Object.fromEntries(cols.map(c => [c, o[c]]));
 const pFind = (t, id) => t === 's' ? P.s.find(x => x.k === id) : P[t].find(x => String(x.id) === String(id));
@@ -541,25 +569,38 @@ async function loadProductos(force) {
     sb.from('productos').select('*').order('orden').order('id')]);
   if (s.error || f.error || p.error) { $('#plist').innerHTML = '<div class="empty">No pudimos cargar los productos. Recargá la página.</div>'; return; }
   P = {s: s.data, f: f.data, p: p.data};
+  P0 = structuredClone(P);   // copia original para el resumen de cambios
   renderProductos();
 }
+const EYE = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+const EYE_OFF = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18M10.6 5.1A10.6 10.6 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6C3.9 8.4 2 12 2 12s3.5 7 10 7c1.9 0 3.5-.6 4.9-1.4M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>';
+const eyeBtn = (t, id, on, name) => `<button type="button" class="eye" data-vis="${t}" data-id="${id}" aria-pressed="${!!on}" title="${on ? 'Visible en la web. Tocá para ocultar' : 'Oculta en la web. Tocá para mostrar'}" aria-label="${on ? 'Ocultar' : 'Mostrar'} ${esc(name)} en la web">${on ? EYE : EYE_OFF}</button>`;
+const nwBtn = (t, id, on, name) => `<button type="button" class="nwb" data-nw="${t}" data-id="${id}" aria-pressed="${!!on}" title="Marcar como Nuevo !" aria-label="Marcar ${esc(name)} como Nuevo">Nuevo !</button>`;
+const handle = (t, id, name) => `<span class="hd" draggable="${!dragOff()}" data-drag="${t}" data-id="${id}" title="${dragOff() ? 'Borrá la búsqueda para reordenar' : 'Arrastrá para cambiar el orden'}" aria-label="Mover ${esc(name)}">⠿</span>`;
+const dragOff = () => !!$('#qp').value.trim();
+const byOrden = (a, b) => (a.orden ?? 0) - (b.orden ?? 0) || a.id - b.id;
 function famHtml(f, prods) {
   const img = IMG(f.imagen), id = f.id;
   const secs = P.s.filter(s => !s._del).map(s => `<option value="${esc(s.k)}"${s.k === f.seccion ? ' selected' : ''}>${esc(s.corto)}</option>`).join('');
-  return `<div class="pfam${f.visible ? '' : ' off'}${f._del ? ' del' : ''}">
+  return `<div class="pfam${f.visible ? '' : ' off'}${f._del ? ' del' : ''}" data-fam="${id}">
     <div class="pfh">
+      ${handle('f', id, f.titulo)}
       <button type="button" class="pimg" data-pic="${id}"${img ? ` style="background-image:url('${esc(img)}')"` : ''} aria-label="Cambiar la foto de ${esc(f.titulo)}"><span>${img ? 'Cambiar foto' : 'Agregar foto'}</span></button>
       <input class="ftitle" data-t="f" data-id="${id}" data-f="titulo" value="${esc(f.titulo)}" aria-label="Nombre de la familia">
       <select data-t="f" data-id="${id}" data-f="seccion" aria-label="Sección de la familia">${secs}</select>
       <label class="ck"><input type="checkbox" data-t="f" data-id="${id}" data-f="liquidacion"${f.liquidacion ? ' checked' : ''}> Liquidación</label>
-      <label class="ck"><input type="checkbox" data-t="f" data-id="${id}" data-f="visible"${f.visible ? ' checked' : ''}> Visible</label>
+      ${nwBtn('f', id, f.nuevo, f.titulo)}
+      ${eyeBtn('f', id, f.visible, f.titulo)}
       <button type="button" class="btn line sm" data-addprod="${id}">+ Producto</button>
       <button type="button" class="ix" data-delfam="${id}" title="${f._del ? 'Deshacer borrado' : 'Borrar familia'}" aria-label="${f._del ? 'Deshacer borrado de' : 'Borrar'} la familia ${esc(f.titulo)}">${f._del ? '↺' : '✕'}</button>
     </div>
-    <div class="prows">${prods.map(p => `<div class="prow st-${p.estado}${p._del ? ' del' : ''}">
+    <div class="prows">${prods.map(p => `<div class="prow st-${p.estado}${p._del ? ' del' : ''}${f.liquidacion ? ' liq' : ''}" data-prod="${p.id}">
+      ${handle('p', p.id, p.codigo || 'artículo')}
       <input data-t="p" data-id="${p.id}" data-f="codigo" value="${esc(p.codigo)}" placeholder="Código" aria-label="Código">
       <input data-t="p" data-id="${p.id}" data-f="detalle" value="${esc(p.detalle)}" placeholder="Detalle del artículo" aria-label="Detalle de ${esc(p.codigo)}">
-      <select data-t="p" data-id="${p.id}" data-f="estado" aria-label="Estado de ${esc(p.codigo)}">${ESTADO_P.map(([v, l]) => `<option value="${v}"${v === p.estado ? ' selected' : ''}>${l}</option>`).join('')}</select>
+      <div class="pex">${f.liquidacion ? `<input type="number" min="0" step="1" inputmode="numeric" data-t="p" data-id="${p.id}" data-f="stock" value="${p.stock ?? ''}" placeholder="Stock" title="Unidades disponibles. Vacío = sin límite" aria-label="Stock de ${esc(p.codigo)}">` : ''}
+      ${nwBtn('p', p.id, p.nuevo, p.codigo || 'artículo')}
+      <select data-t="p" data-id="${p.id}" data-f="estado" aria-label="Estado de ${esc(p.codigo)}">${ESTADO_P.map(([v, l]) => `<option value="${v}"${v === p.estado ? ' selected' : ''}>${l}</option>`).join('')}</select></div>
       <button type="button" class="ix" data-delprod="${p.id}" title="${p._del ? 'Deshacer borrado' : 'Borrar'}" aria-label="${p._del ? 'Deshacer borrado de' : 'Borrar'} ${esc(p.codigo)}">${p._del ? '↺' : '✕'}</button>
     </div>`).join('')}</div></div>`;
 }
@@ -569,8 +610,8 @@ function renderProductos() {
   let h = '';
   P.s.forEach(s => {
     let fh = '', shown = 0, n = 0;
-    P.f.filter(f => f.seccion === s.k).forEach(f => {
-      const prods = P.p.filter(p => p.familia_id === f.id);
+    P.f.filter(f => f.seccion === s.k).sort(byOrden).forEach(f => {
+      const prods = P.p.filter(p => p.familia_id === f.id).sort(byOrden);
       n += prods.filter(p => !p._del).length;
       const famHit = tk.every(t => has(f.titulo, t));
       const list = famHit ? prods : prods.filter(p => tk.every(t => has(p.codigo + ' ' + p.detalle + ' ' + f.titulo, t)));
@@ -584,7 +625,7 @@ function renderProductos() {
         <button type="button" class="tg" data-tog="${k}" aria-expanded="${open}" aria-label="${open ? 'Cerrar' : 'Abrir'} la sección ${esc(s.corto)}">${open ? '▾' : '▸'}</button>
         <input class="sname" data-t="s" data-id="${k}" data-f="nombre" value="${esc(s.nombre)}" aria-label="Nombre de la sección">
         <input class="sshort" data-t="s" data-id="${k}" data-f="corto" value="${esc(s.corto)}" aria-label="Nombre corto de la sección">
-        <label><input type="checkbox" data-t="s" data-id="${k}" data-f="visible"${s.visible ? ' checked' : ''}> Visible</label>
+        ${eyeBtn('s', k, s.visible, s.corto)}
         <span class="n">${n} artículos</span>
         <button type="button" class="btn line sm" data-addfam="${k}">+ Familia</button>
         <button type="button" class="ix" data-delsec="${k}" title="${s._del ? 'Deshacer borrado' : 'Borrar sección'}" aria-label="${s._del ? 'Deshacer borrado de' : 'Borrar'} la sección ${esc(s.corto)}">${s._del ? '↺' : '✕'}</button>
@@ -598,8 +639,38 @@ $('#qp').addEventListener('input', () => renderProductos());
 $('#plist').addEventListener('input', e => {
   const el = e.target.closest('[data-t]');
   if (!el || el.type === 'checkbox' || el.tagName === 'SELECT') return;
-  const o = pFind(el.dataset.t, el.dataset.id); o[el.dataset.f] = el.value; o._dirty = true; el.classList.add('dirty'); pCount();
+  const o = pFind(el.dataset.t, el.dataset.id);
+  o[el.dataset.f] = el.dataset.f === 'stock' ? (el.value === '' ? null : Math.max(0, Math.floor(Number(el.value)) || 0)) : el.value;
+  o._dirty = true; el.classList.add('dirty'); pCount();
 });
+// arrastrar para reordenar: solo entre hermanos (familias de la misma sección o artículos de la misma familia)
+let dragging = null;
+const sibs = o => dragging.t === 'f' ? P.f.filter(f => f.seccion === o.seccion) : P.p.filter(p => p.familia_id === o.familia_id);
+const dropTarget = e => { const el = e.target.closest(dragging && dragging.t === 'f' ? '[data-fam]' : '[data-prod]'); if (!el) return null; const o = pFind(dragging.t, dragging.t === 'f' ? el.dataset.fam : el.dataset.prod); return o && o !== dragging.o && sibs(dragging.o).includes(o) ? {el, o} : null; };
+$('#plist').addEventListener('dragstart', e => {
+  const h = e.target.closest && e.target.closest('[data-drag]');
+  if (!h || dragOff()) { if (h) e.preventDefault(); return; }
+  const box = h.closest(h.dataset.drag === 'f' ? '[data-fam]' : '[data-prod]');
+  dragging = {t: h.dataset.drag, o: pFind(h.dataset.drag, h.dataset.id), box};
+  e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', h.dataset.id);
+  e.dataTransfer.setDragImage(box, 20, 20); requestAnimationFrame(() => box.classList.add('drag'));
+});
+$('#plist').addEventListener('dragover', e => {
+  if (!dragging) return;
+  document.querySelectorAll('.over').forEach(x => x.classList.remove('over'));
+  const d = dropTarget(e); if (!d) return;
+  e.preventDefault(); d.el.classList.add('over');
+});
+$('#plist').addEventListener('drop', e => {
+  if (!dragging) return;
+  const d = dropTarget(e); if (!d) return;
+  e.preventDefault();
+  const list = sibs(dragging.o).sort(byOrden), from = list.indexOf(dragging.o), to = list.indexOf(d.o);
+  list.splice(from, 1); list.splice(to, 0, dragging.o);
+  list.forEach((x, i) => { if (x.orden !== i) { x.orden = i; x._dirty = true; } });
+  renderProductos();
+});
+$('#plist').addEventListener('dragend', () => { if (dragging) dragging.box.classList.remove('drag'); dragging = null; document.querySelectorAll('.over').forEach(x => x.classList.remove('over')); });
 $('#plist').addEventListener('change', e => {
   const el = e.target.closest('[data-t]');
   if (!el || (el.type !== 'checkbox' && el.tagName !== 'SELECT')) return;
@@ -608,12 +679,15 @@ $('#plist').addEventListener('change', e => {
   renderProductos();
 });
 // borrar marca el elemento (se aplica al guardar); lo nuevo sin guardar se quita directamente
+// doble confirmación para evitar borrados accidentales
+const sure = q => confirm(q) && confirm('¿Seguro? Se elimina definitivamente al tocar “Guardar cambios”.');
 const toggleDel = (arr, o) => { if (o._new) arr.splice(arr.indexOf(o), 1); else o._del = !o._del; renderProductos(); };
 $('#plist').addEventListener('click', e => {
-  const t = e.target.closest('[data-tog],[data-addfam],[data-addprod],[data-delprod],[data-delfam],[data-delsec],[data-pic]');
+  const t = e.target.closest('[data-tog],[data-addfam],[data-addprod],[data-delprod],[data-delfam],[data-delsec],[data-pic],[data-vis],[data-nw]');
   if (!t) return;
   const d = t.dataset;
   if (d.tog) { pOpen.has(d.tog) ? pOpen.delete(d.tog) : pOpen.add(d.tog); renderProductos(); return; }
+  if (d.vis || d.nw) { const o = pFind(d.vis || d.nw, d.id), f = d.vis ? 'visible' : 'nuevo'; o[f] = !o[f]; o._dirty = true; renderProductos(); return; }
   if (d.addfam) {
     const f = {id: tmpId--, seccion: d.addfam, titulo: 'Familia nueva', imagen: null, marcas: [], liquidacion: false, orden: nextOrden(P.f), visible: true, _new: true};
     P.f.push(f); pOpen.add(d.addfam); $('#qp').value = ''; renderProductos(); focusIn(`[data-t="f"][data-id="${f.id}"][data-f="titulo"]`); return;
@@ -622,15 +696,20 @@ $('#plist').addEventListener('click', e => {
     const fid = Number(d.addprod), p = {id: tmpId--, familia_id: fid, codigo: '', detalle: '', color: null, estado: 'activo', orden: nextOrden(P.p.filter(x => x.familia_id === fid)), _new: true};
     P.p.push(p); renderProductos(); focusIn(`[data-t="p"][data-id="${p.id}"][data-f="codigo"]`); return;
   }
-  if (d.delprod) { toggleDel(P.p, pFind('p', d.delprod)); return; }
+  if (d.delprod) {
+    const p = pFind('p', d.delprod);
+    if (!p._del && !sure(`¿Borrar el artículo ${p.codigo || '(sin código)'} ${p.detalle}?`)) return;
+    toggleDel(P.p, p); return;
+  }
   if (d.delfam) {
     const f = pFind('f', d.delfam), n = P.p.filter(p => p.familia_id === f.id).length;
-    if (!f._del && !f._new && !confirm(`¿Borrar la familia “${f.titulo}” y sus ${n} artículos? Se aplica al guardar.`)) return;
+    if (!f._del && !sure(`¿Borrar la familia “${f.titulo}” y sus ${n} artículos?`)) return;
     toggleDel(P.f, f); return;
   }
   if (d.delsec) {
     const s = pFind('s', d.delsec);
     if (!s._del && P.f.some(f => f.seccion === s.k && !f._del)) { toast('Primero mové o borrá las familias de esta sección'); return; }
+    if (!s._del && !sure(`¿Borrar la sección “${s.nombre}”?`)) return;
     toggleDel(P.s, s); return;
   }
   if (d.pic) { picFor = d.pic; $('#pfile').click(); }
@@ -662,6 +741,34 @@ $('#pSave').onclick = async () => {
   const empty = P.p.find(p => !p._del && !famGone(p) && (!String(p.codigo).trim() || !String(p.detalle).trim()));
   if (empty) { toast('Completá código y detalle de todos los productos, o borrá los vacíos'); return; }
   if (P.f.some(f => !f._del && !String(f.titulo).trim())) { toast('Hay una familia sin nombre'); return; }
+  $('#sumList').innerHTML = resumen(); $('#sumDlg').showModal(); $('#sumOk').focus();
+};
+// resumen legible de lo que se va a publicar, comparado con la copia original P0
+const LBL = {nombre: 'Nombre', corto: 'Nombre corto', titulo: 'Nombre', seccion: 'Sección', imagen: 'Foto', liquidacion: 'Liquidación', visible: 'Visible', nuevo: 'Nuevo !', codigo: 'Código', detalle: 'Detalle', estado: 'Estado', stock: 'Stock', familia_id: 'Familia'};
+const fmtV = (k, v) => k === 'imagen' ? (v ? 'nueva foto' : 'sin foto') : typeof v === 'boolean' ? (v ? 'sí' : 'no') : k === 'estado' ? (ESTADO_P.find(x => x[0] === v) || [, v])[1] : k === 'seccion' ? ((P.s.find(s => s.k === v) || {}).corto || v) : k === 'familia_id' ? ((P.f.find(f => f.id === v) || {}).titulo || v) : v == null || v === '' ? 'sin límite' : v;
+function resumen() {
+  const add = [], del = [], chg = [], ord = new Set();
+  const famName = id => (P.f.find(f => f.id === id) || {}).titulo || '';
+  const secName = k => (P.s.find(s => s.k === k) || {}).corto || k;
+  const name = (t, o) => t === 's' ? `Sección “${o.corto || o.nombre}”` : t === 'f' ? `Familia “${o.titulo}”` : `${o.codigo} ${o.detalle} (${famName(o.familia_id)})`;
+  [['s', SC, 'k'], ['f', FC, 'id'], ['p', PC, 'id']].forEach(([t, cols, key]) => P[t].forEach(o => {
+    if (t === 'p' && famGone(o) && !o._del) return;   // se va con su familia
+    if (o._new && o._del) return;
+    if (o._new) { add.push(name(t, o)); return; }
+    if (o._del) { del.push(name(t, o)); return; }
+    if (!o._dirty) return;
+    const a = P0[t].find(x => x[key] === o[key]); if (!a) return;
+    const diffs = cols.filter(c => c !== 'k' && c !== 'marcas' && JSON.stringify(a[c] ?? null) !== JSON.stringify(o[c] ?? null));
+    if (diffs.includes('orden')) ord.add(t === 's' ? 'Orden de las secciones' : t === 'f' ? `Orden de las familias en ${secName(o.seccion)}` : `Orden de los artículos en ${famName(o.familia_id)}`);
+    const rest = diffs.filter(c => c !== 'orden');
+    if (rest.length) chg.push(`${esc(name(t, o))}: ${rest.map(c => `${LBL[c] || c} ${esc(String(fmtV(c, a[c])))} → <b>${esc(String(fmtV(c, o[c])))}</b>`).join(', ')}`);
+  }));
+  const grp = (h, arr, cls, raw) => arr.length ? `<div><h3${cls ? ` class="${cls}"` : ''}>${h} (${arr.length})</h3><ul>${arr.map(x => `<li>${raw ? x : esc(x)}</li>`).join('')}</ul></div>` : '';
+  return grp('Agregado', add) + grp('Cambiado', chg, '', true) + grp('Nuevo orden', [...ord]) + grp('Se borra', del, 'd') || '<p class="upd">No hay cambios para guardar.</p>';
+}
+$('#sumBack').onclick = () => $('#sumDlg').close();
+$('#sumOk').onclick = async () => {
+  $('#sumDlg').close();
   const b = $('#pSave'); b.disabled = true; b.textContent = 'Guardando…';
   const ok = r => { if (r.error) throw r.error; return r; };
   try {

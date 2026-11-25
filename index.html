@@ -104,6 +104,9 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:va
 /* stepper */
 .pk{display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin-top:2px}
 .cx{display:block;text-align:center;font-size:11.5px;font-weight:700;color:var(--red);margin-top:3px;white-space:nowrap}
+.tag.nw{background:var(--green);color:#fff}
+.nwr{display:inline-block;margin-left:6px;padding:1px 6px;border-radius:6px;background:var(--green);color:#fff;font-family:var(--f-display);font-weight:800;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;vertical-align:2px}
+.lst{display:block;font-size:12px;font-weight:800;color:var(--red);margin-top:2px}
 .nost{font-size:12.5px;font-weight:700;color:var(--ink-2);white-space:nowrap}
 .add{width:44px;height:44px;border-radius:22px;border:1.5px solid var(--navy);background:transparent;color:var(--navy);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
 .add:hover{background:var(--navy);color:var(--white)}
@@ -440,17 +443,20 @@ const DARK_BRANDS = new Set(['Braco','Brogas']);
 // item index: id = clave estable del producto (o block.row en la copia de respaldo)
 const ITEMS = {};
 let ORD = 0;
-DATA.blocks.forEach((b, bi) => b.rows.forEach((r, ri) => { ITEMS[keyOf(r, bi, ri)] = {b: bi, o: ORD++, c: r.c, d: r.d, sw: r.sw, t: b.t, s: b.s, st: r.st, p: r.p || 1, bx: r.bx || 0}; }));
-const noStock = id => ITEMS[id].st === 'sin_stock';
+DATA.blocks.forEach((b, bi) => b.rows.forEach((r, ri) => { ITEMS[keyOf(r, bi, ri)] = {b: bi, o: ORD++, c: r.c, d: r.d, sw: r.sw, t: b.t, s: b.s, st: r.st, p: r.p || 1, bx: r.bx || 0, nw: !!r.nw, stk: r.q ?? null}; }));
+const noStock = id => ITEMS[id].st === 'sin_stock' || (ITEMS[id].stk != null && ITEMS[id].stk < ITEMS[id].p);
 // venta por múltiplos (ej. mechas: de a 4 u., caja de 12): redondea a un múltiplo del paso, mínimo un paso
 const snap = (id, q) => { const p = ITEMS[id].p; return q <= 0 ? 0 : Math.max(p, Math.round(q / p) * p); };
 const cajas = (id, q) => { const bx = ITEMS[id].bx; if (!bx || q < bx) return ''; const c = Math.floor(q / bx), r = q % bx; return `${c} caja${c === 1 ? '' : 's'}${r ? ` + ${r} u.` : ''}`; };
+// stock de liquidación: no deja pedir más de lo que hay (múltiplo del paso)
+const cap = (id, q) => { const {stk, p} = ITEMS[id]; return stk != null && q > stk ? Math.floor(stk / p) * p : q; };
+const lastHint = id => { const k = ITEMS[id].stk; return k == null || k > 5 || noStock(id) ? '' : k === 1 ? 'Última unidad' : `Últimas ${k} unidades`; };
 const packHint = id => ITEMS[id].p > 1 ? `Se vende de a ${ITEMS[id].p} u.${ITEMS[id].bx ? ` · ${ITEMS[id].bx} u. = 1 caja` : ''}` : '';
 const SECNAME = Object.fromEntries(DATA.sections.map(s => [s.k, s]));
 
 let cart = {};
 try { cart = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { cart = {}; }
-Object.keys(cart).forEach(k => { if (!ITEMS[k] || noStock(k) || !(cart[k] > 0)) delete cart[k]; else cart[k] = snap(k, cart[k]); });
+Object.keys(cart).forEach(k => { if (!ITEMS[k] || noStock(k) || !(cart[k] > 0)) delete cart[k]; else cart[k] = cap(k, snap(k, cart[k])); });
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(cart)); } catch (e) {} };
 
 function stepper(id, q, small) {
@@ -489,11 +495,11 @@ function renderCatalog() {
       const b = DATA.blocks[bi];
       const brands = b.br.map(([alt, im]) => `<span class="brand${DARK_BRANDS.has(alt) ? ' dk' : ''}"><img src="${IMG(im)}" alt="${esc(alt)}" loading="lazy"></span>`).join('');
       const img = b.img ? `<button type="button" class="ph" data-zoom="${bi}" aria-label="Ver imagen de ${esc(b.t)} en grande"><img src="${IMG(b.img)}" alt="${esc(b.t)}" loading="lazy"><span class="zm" aria-hidden="true">${ZOOMI}</span></button>` : '';
-      html += `<article class="card${b.img ? ' hasimg' : ''}${b.liq ? ' liq' : ''}" data-b="${bi}">${img}<div class="body"><div class="ct"><h3>${esc(b.t)}</h3>${b.liq ? `<span class="tag">${TAGI}Hasta agotar stock</span>` : ''}${brands}</div><div class="thd"><span>Código</span><span>Detalle</span><span>Cantidad</span></div><div class="rows">` +
+      html += `<article class="card${b.img ? ' hasimg' : ''}${b.liq ? ' liq' : ''}" data-b="${bi}">${img}<div class="body"><div class="ct"><h3>${esc(b.t)}</h3>${b.nw ? '<span class="tag nw">Nuevo !</span>' : ''}${b.liq ? `<span class="tag">${TAGI}Hasta agotar stock</span>` : ''}${brands}</div><div class="thd"><span>Código</span><span>Detalle</span><span>Cantidad</span></div><div class="rows">` +
         b.rows.map((r, ri) => {
           const id = keyOf(r, bi, ri);
-          const ph = packHint(id);
-          return `<div class="row" data-id="${id}"><span class="code">${esc(r.c)}</span><span class="det">${r.sw ? `<span class="sw" style="background:${r.sw}"></span>` : ''}${ph ? `<span>${esc(r.d)}<small class="pk">${ph}</small></span>` : esc(r.d)}</span><span class="ctl">${stepper(id, cart[id] || 0)}</span></div>`;
+          const ph = packHint(id), lh = lastHint(id);
+          return `<div class="row" data-id="${id}"><span class="code">${esc(r.c)}${r.nw ? '<span class="nwr">Nuevo !</span>' : ''}</span><span class="det">${r.sw ? `<span class="sw" style="background:${r.sw}"></span>` : ''}${ph || lh ? `<span>${esc(r.d)}${ph ? `<small class="pk">${ph}</small>` : ''}${lh ? `<small class="lst">${lh}</small>` : ''}</span>` : esc(r.d)}</span><span class="ctl">${stepper(id, cart[id] || 0)}</span></div>`;
         }).join('') + `</div></div></article>`;
     });
     html += `</div></section>`;
@@ -513,9 +519,11 @@ function markRow(id) {
 
 function setQty(id, q, focusSel) {
   const asked = Math.max(0, Math.min(9999, Math.floor(Number(q) || 0)));
-  q = snap(id, asked);
+  const sn = snap(id, asked);
+  q = cap(id, sn);
   if (q && noStock(id)) return;
-  if (q !== asked && q) toast(`Se vende de a ${ITEMS[id].p} u.: quedó en ${q}`);
+  if (q < sn) toast(`Quedan solo ${ITEMS[id].stk} u.: quedó en ${q}`);
+  else if (q !== asked && q) toast(`Se vende de a ${ITEMS[id].p} u.: quedó en ${q}`);
   if (q) cart[id] = q; else delete cart[id];
   save(); markRow(id); renderCart();
   if (focusSel) { const el = document.querySelector(focusSel); if (el) el.focus(); }
