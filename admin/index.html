@@ -43,6 +43,38 @@ label.f{display:grid;gap:5px;font-size:12px;font-weight:600;color:var(--ink-2)}
 label.f input,select.f{height:44px;border:1.5px solid var(--line);border-radius:10px;background:var(--white);padding:0 12px;font-size:15px;color:var(--navy)}
 label.f input:focus,select.f:focus{border-color:var(--navy);outline:none}
 .err{margin:0;color:var(--red);font-weight:600;font-size:13.5px}
+/* productos */
+.pbar{position:sticky;top:64px;z-index:5;background:var(--bg);padding:8px 0}
+.plist{display:grid;gap:12px;padding-bottom:40px}
+.psec{background:var(--white);border-radius:14px;overflow:hidden}
+.psh{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px 14px;background:var(--navy);color:#fff}
+.psh .tg{width:34px;height:34px;border-radius:8px;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:15px;cursor:pointer}
+.psh input:not([type]){height:34px;border:0;border-radius:8px;padding:0 10px;font-size:14px;color:var(--navy);min-width:0}
+.psh .sname{flex:2 1 220px;font-weight:700}
+.psh .sshort{flex:1 1 140px}
+.psh label,.pfam label.ck{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;white-space:nowrap}
+.psh .n{font-size:12px;opacity:.8}
+.psh .ix{background:transparent;border-color:rgba(255,255,255,.4);color:#fff}
+.psec .btn.sm{height:32px}
+.pbody{padding:12px;display:grid;gap:12px}
+.pfam{border:1.5px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:10px}
+.pfam.off{opacity:.6}
+.pfh{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.pimg{width:72px;height:72px;border-radius:10px;border:1.5px dashed var(--line);background:var(--surface-2) center/contain no-repeat;display:flex;align-items:flex-end;justify-content:center;cursor:pointer;flex:none;padding:0}
+.pimg span{font-size:10.5px;font-weight:700;background:rgba(255,255,255,.9);color:var(--navy);border-radius:6px;padding:1px 5px;margin-bottom:4px}
+.pfh .ftitle{flex:1 1 220px;height:40px;border:1.5px solid var(--line);border-radius:10px;padding:0 12px;font-size:15px;font-weight:700;color:var(--navy)}
+.pfh select,.prow select{height:36px;border:1.5px solid var(--line);border-radius:8px;background:var(--white);padding:0 8px;font-size:13px;color:var(--navy)}
+.prows{display:grid;gap:6px}
+.prow{display:grid;grid-template-columns:110px 1fr 130px 36px;gap:6px;align-items:center}
+.prow input{height:36px;border:1.5px solid var(--line);border-radius:8px;padding:0 10px;font-size:14px;color:var(--navy);min-width:0}
+.prow.st-sin_stock input{background:var(--amber-soft)}
+.prow.st-oculto input{background:var(--surface-2);color:var(--ink-2)}
+.prow.del input,.pfam.del,.psec.del{text-decoration:line-through;opacity:.5}
+.ix{width:36px;height:36px;border-radius:8px;border:1.5px solid var(--line);background:var(--white);color:var(--red);font-weight:800;cursor:pointer}
+.ix:hover{border-color:var(--red)}
+.dirty{border-color:var(--amber)!important}
+@media (max-width:640px){.prow{grid-template-columns:86px 1fr 36px}.prow select{grid-column:1/3}}
+.lnk{justify-self:center;border:0;background:none;padding:6px 0;font-size:13.5px;font-weight:600;color:var(--navy);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 /* KPIs */
 .hrow .tag,.who{}
 @media (max-width:640px){.hrow .tag,.who{display:none}}
@@ -146,6 +178,7 @@ tr.crow:focus-visible{outline:3px solid var(--navy);outline-offset:-3px}
     <button class="tab" role="tab" aria-selected="true" data-tab="pedidos">Pedidos<span class="n" id="nPend" hidden></span></button>
     <button class="tab" role="tab" aria-selected="false" data-tab="clientes">Clientes</button>
     <button class="tab" role="tab" aria-selected="false" data-tab="busquedas">Búsquedas sin resultado</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="productos">Productos</button>
   </div>
 </header>
 
@@ -157,6 +190,18 @@ tr.crow:focus-visible{outline:3px solid var(--navy);outline-offset:-3px}
     <label class="f">Contraseña<input id="lPass" type="password" autocomplete="current-password" required></label>
     <p class="err" id="lErr" hidden></p>
     <button class="btn" type="submit">Ingresar</button>
+    <button class="lnk" type="button" id="lForgot">¿Olvidaste tu contraseña?</button>
+  </form>
+  <form class="login" id="reset" hidden>
+    <h1>Nueva contraseña</h1>
+    <p>Te mandamos un código de 6 dígitos al correo para que elijas una contraseña nueva.</p>
+    <label class="f">Correo electrónico<input id="rEmail" type="email" autocomplete="email" required></label>
+    <button class="btn line" type="button" id="rSend">Enviar código</button>
+    <label class="f" hidden>Código del correo<input id="rCode" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="123456"></label>
+    <label class="f" hidden>Contraseña nueva<input id="rPass" type="password" autocomplete="new-password" minlength="8" placeholder="Mínimo 8 caracteres"></label>
+    <p class="err" id="rErr" hidden></p>
+    <button class="btn" type="submit" id="rSave" hidden>Guardar contraseña e ingresar</button>
+    <button class="lnk" type="button" id="rBack">Volver a ingresar</button>
   </form>
   <div class="login" id="noacc" hidden>
     <h1>Sin acceso</h1>
@@ -200,7 +245,20 @@ tr.crow:focus-visible{outline:3px solid var(--navy);outline-offset:-3px}
     <p class="upd" style="margin:0 0 12px">Lo que los clientes buscaron en la web y no encontraron. Sirve para decidir qué productos sumar al catálogo.</p>
     <div class="card"><table class="t"><thead><tr><th>Búsqueda</th><th class="num">Veces</th><th>Última vez</th></tr></thead><tbody id="btb"></tbody></table></div>
   </section>
+
+  <section id="v-productos" hidden>
+    <div class="tool pbar">
+      <input class="q" id="qp" type="search" placeholder="Buscar por código, artículo o familia" autocomplete="off">
+      <button class="btn line sm" type="button" id="pAddSec">+ Sección</button>
+      <span class="upd" id="pDirty"></span>
+      <button class="btn line sm" type="button" id="pUndo" hidden>Descartar cambios</button>
+      <button class="btn green" type="button" id="pSave" disabled>Guardar cambios</button>
+    </div>
+    <p class="upd" style="margin:0 0 12px"><b>Activo</b>: se ve y se puede pedir. <b>Sin stock</b>: se ve pero no se puede pedir. <b>Oculto</b>: no aparece en la web. Los cambios se publican en la web al tocar <b>Guardar cambios</b>.</p>
+    <div id="plist" class="plist"></div>
+  </section>
 </main>
+<input type="file" id="pfile" accept="image/jpeg,image/png,image/webp" hidden>
 <input type="file" id="file" accept="application/pdf" hidden>
 <div class="cpov" id="cpov" hidden><aside class="cpanel" role="dialog" aria-modal="true" aria-labelledby="cpT">
   <div class="cph"><div><h2 id="cpT"></h2><p id="cpSub"></p></div><button type="button" class="btn line sm" id="cpX" aria-label="Cerrar">✕</button></div>
@@ -223,10 +281,10 @@ let sb, pedidos = [], filtro = 'gestion', upTarget = null, timer = null, desde =
 let tt; const toast = m => { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 2400); };
 
 function show(view) {
-  ['login', 'noacc'].forEach(id => $('#' + id).hidden = view !== id);
-  const inPanel = !['login', 'noacc'].includes(view);
+  ['login', 'reset', 'noacc'].forEach(id => $('#' + id).hidden = view !== id);
+  const inPanel = !['login', 'reset', 'noacc'].includes(view);
   $('#tabs').hidden = !inPanel; $('#out').hidden = !inPanel && view !== 'noacc';
-  ['pedidos', 'clientes', 'busquedas'].forEach(v => $('#v-' + v).hidden = view !== v);
+  ['pedidos', 'clientes', 'busquedas', 'productos'].forEach(v => $('#v-' + v).hidden = view !== v);
   document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', String(t.dataset.tab === view)));
 }
 
@@ -252,6 +310,33 @@ $('#login').addEventListener('submit', async e => {
   b.disabled = false;
   if (r.error) { $('#lErr').textContent = 'Correo o contraseña incorrectos.'; $('#lErr').hidden = false; return; }
   enter(r.data.user);
+});
+// olvidé mi contraseña: código por correo + contraseña nueva (no crea cuentas nuevas)
+const rErr = m => { $('#rErr').textContent = m; $('#rErr').hidden = !m; };
+$('#lForgot').onclick = () => { $('#rEmail').value = $('#lEmail').value.trim(); rErr(''); show('reset'); $('#rEmail').focus(); };
+$('#rBack').onclick = () => { $('#lErr').hidden = true; show('login'); };
+$('#rSend').onclick = async () => {
+  const em = $('#rEmail').value.trim().toLowerCase(), b = $('#rSend');
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) return rErr('Escribí tu correo.');
+  b.disabled = true; b.textContent = 'Enviando…';
+  const r = await sb.auth.signInWithOtp({email: em, options: {shouldCreateUser: false}});
+  b.disabled = false; b.textContent = 'Reenviar código';
+  if (r.error) return rErr(/seconds/i.test(r.error.message) ? 'Ya te enviamos un código. Esperá un minuto y probá de nuevo.' : 'No pudimos enviar el código a ese correo. (Detalle: ' + r.error.message + ')');
+  rErr(''); ['rCode', 'rPass'].forEach(id => $('#' + id).closest('label').hidden = false); $('#rSave').hidden = false; $('#rCode').focus();
+  toast('Código enviado');
+};
+$('#reset').addEventListener('submit', async e => {
+  e.preventDefault();
+  const em = $('#rEmail').value.trim().toLowerCase(), code = $('#rCode').value.replace(/\D/g, ''), pass = $('#rPass').value;
+  if (code.length < 6) return rErr('Escribí el código de 6 dígitos del correo.');
+  if (pass.length < 8) return rErr('La contraseña tiene que tener al menos 8 caracteres.');
+  const b = $('#rSave'); b.disabled = true;
+  const v = await sb.auth.verifyOtp({email: em, token: code, type: 'email'});
+  if (v.error) { b.disabled = false; return rErr('El código no es correcto o ya venció. Pedí uno nuevo.'); }
+  const u = await sb.auth.updateUser({password: pass, data: {tiene_clave: true}});
+  b.disabled = false;
+  if (u.error) return rErr('Entraste, pero no pudimos guardar la contraseña: ' + u.error.message);
+  toast('Contraseña guardada'); enter(u.data.user);
 });
 const logout = async () => { await sb.auth.signOut(); clearInterval(timer); $('#who').textContent = ''; show('login'); };
 $('#out').onclick = logout; $('#out2').onclick = logout;
@@ -349,7 +434,7 @@ document.addEventListener('click', async e => {
     try { await navigator.clipboard.writeText(txt); toast('Lista copiada'); } catch (er) { toast('No se pudo copiar'); }
   }
   const tb = e.target.closest('[data-tab]');
-  if (tb) { const t = tb.dataset.tab; show(t); if (t === 'pedidos') render(); if (t === 'clientes') loadClientes(); if (t === 'busquedas') loadBusquedas(); }
+  if (tb) { const t = tb.dataset.tab; show(t); if (t === 'pedidos') render(); if (t === 'clientes') loadClientes(); if (t === 'busquedas') loadBusquedas(); if (t === 'productos') loadProductos(); }
 });
 $('#file').addEventListener('change', async () => {
   const f = $('#file').files[0]; if (!f || !upTarget) return;
@@ -429,6 +514,186 @@ async function loadBusquedas() {
   const rows = [...m.values()].sort((a, b) => b.n - a.n).slice(0, 100);
   $('#btb').innerHTML = rows.length ? rows.map(x => `<tr><td>${esc(x.t)}</td><td class="num">${x.n}</td><td>${dia(x.last)}</td></tr>`).join('') : '<tr><td colspan="3" style="color:var(--ink-2)">Todavía no hay búsquedas sin resultado.</td></tr>';
 }
+
+// ===== Productos: secciones > familias > productos. Se editan en memoria y se publican con "Guardar cambios" =====
+const ESTADO_P = [['activo', 'Activo'], ['sin_stock', 'Sin stock'], ['oculto', 'Oculto']];
+const IMG = x => !x ? '' : x.includes('/') ? x : `/img/img_${x}.webp`;
+const SC = ['k', 'nombre', 'corto', 'orden', 'visible'], FC = ['seccion', 'titulo', 'imagen', 'marcas', 'liquidacion', 'orden', 'visible'], PC = ['familia_id', 'codigo', 'detalle', 'color', 'estado', 'orden'];
+let P = null, tmpId = -1, picFor = null;
+const pOpen = new Set();
+const pick = (o, cols) => Object.fromEntries(cols.map(c => [c, o[c]]));
+const pFind = (t, id) => t === 's' ? P.s.find(x => x.k === id) : P[t].find(x => String(x.id) === String(id));
+const famGone = p => { const f = P.f.find(x => x.id === p.familia_id); return !f || f._del; };
+const nextOrden = arr => arr.reduce((m, x) => Math.max(m, x.orden || 0), -1) + 1;
+const pDirtyN = () => P ? [...P.s, ...P.f, ...P.p].filter(x => x._new || x._dirty || x._del).length : 0;
+const focusIn = sel => requestAnimationFrame(() => { const el = document.querySelector(sel); if (el) { el.focus(); el.select(); } });
+function pCount() {
+  const n = pDirtyN();
+  $('#pSave').disabled = !n; $('#pUndo').hidden = !n;
+  $('#pDirty').textContent = n ? `${n} cambio${n === 1 ? '' : 's'} sin guardar` : '';
+}
+async function loadProductos(force) {
+  if (P && !force) return renderProductos();
+  $('#plist').innerHTML = '<div class="empty">Cargando productos…</div>';
+  const [s, f, p] = await Promise.all([
+    sb.from('secciones').select('*').order('orden').order('k'),
+    sb.from('familias').select('*').order('orden').order('id'),
+    sb.from('productos').select('*').order('orden').order('id')]);
+  if (s.error || f.error || p.error) { $('#plist').innerHTML = '<div class="empty">No pudimos cargar los productos. Recargá la página.</div>'; return; }
+  P = {s: s.data, f: f.data, p: p.data};
+  renderProductos();
+}
+function famHtml(f, prods) {
+  const img = IMG(f.imagen), id = f.id;
+  const secs = P.s.filter(s => !s._del).map(s => `<option value="${esc(s.k)}"${s.k === f.seccion ? ' selected' : ''}>${esc(s.corto)}</option>`).join('');
+  return `<div class="pfam${f.visible ? '' : ' off'}${f._del ? ' del' : ''}">
+    <div class="pfh">
+      <button type="button" class="pimg" data-pic="${id}"${img ? ` style="background-image:url('${esc(img)}')"` : ''} aria-label="Cambiar la foto de ${esc(f.titulo)}"><span>${img ? 'Cambiar foto' : 'Agregar foto'}</span></button>
+      <input class="ftitle" data-t="f" data-id="${id}" data-f="titulo" value="${esc(f.titulo)}" aria-label="Nombre de la familia">
+      <select data-t="f" data-id="${id}" data-f="seccion" aria-label="Sección de la familia">${secs}</select>
+      <label class="ck"><input type="checkbox" data-t="f" data-id="${id}" data-f="liquidacion"${f.liquidacion ? ' checked' : ''}> Liquidación</label>
+      <label class="ck"><input type="checkbox" data-t="f" data-id="${id}" data-f="visible"${f.visible ? ' checked' : ''}> Visible</label>
+      <button type="button" class="btn line sm" data-addprod="${id}">+ Producto</button>
+      <button type="button" class="ix" data-delfam="${id}" title="${f._del ? 'Deshacer borrado' : 'Borrar familia'}" aria-label="${f._del ? 'Deshacer borrado de' : 'Borrar'} la familia ${esc(f.titulo)}">${f._del ? '↺' : '✕'}</button>
+    </div>
+    <div class="prows">${prods.map(p => `<div class="prow st-${p.estado}${p._del ? ' del' : ''}">
+      <input data-t="p" data-id="${p.id}" data-f="codigo" value="${esc(p.codigo)}" placeholder="Código" aria-label="Código">
+      <input data-t="p" data-id="${p.id}" data-f="detalle" value="${esc(p.detalle)}" placeholder="Detalle del artículo" aria-label="Detalle de ${esc(p.codigo)}">
+      <select data-t="p" data-id="${p.id}" data-f="estado" aria-label="Estado de ${esc(p.codigo)}">${ESTADO_P.map(([v, l]) => `<option value="${v}"${v === p.estado ? ' selected' : ''}>${l}</option>`).join('')}</select>
+      <button type="button" class="ix" data-delprod="${p.id}" title="${p._del ? 'Deshacer borrado' : 'Borrar'}" aria-label="${p._del ? 'Deshacer borrado de' : 'Borrar'} ${esc(p.codigo)}">${p._del ? '↺' : '✕'}</button>
+    </div>`).join('')}</div></div>`;
+}
+function renderProductos() {
+  const tk = norm($('#qp').value).split(/\s+/).filter(Boolean);
+  const has = (txt, t) => norm(txt).includes(t);
+  let h = '';
+  P.s.forEach(s => {
+    let fh = '', shown = 0, n = 0;
+    P.f.filter(f => f.seccion === s.k).forEach(f => {
+      const prods = P.p.filter(p => p.familia_id === f.id);
+      n += prods.filter(p => !p._del).length;
+      const famHit = tk.every(t => has(f.titulo, t));
+      const list = famHit ? prods : prods.filter(p => tk.every(t => has(p.codigo + ' ' + p.detalle + ' ' + f.titulo, t)));
+      if (!list.length && !famHit) return;
+      shown++; fh += famHtml(f, list);
+    });
+    if (tk.length && !shown) return;
+    const open = tk.length > 0 || pOpen.has(s.k), k = esc(s.k);
+    h += `<div class="psec${s._del ? ' del' : ''}">
+      <div class="psh">
+        <button type="button" class="tg" data-tog="${k}" aria-expanded="${open}" aria-label="${open ? 'Cerrar' : 'Abrir'} la sección ${esc(s.corto)}">${open ? '▾' : '▸'}</button>
+        <input class="sname" data-t="s" data-id="${k}" data-f="nombre" value="${esc(s.nombre)}" aria-label="Nombre de la sección">
+        <input class="sshort" data-t="s" data-id="${k}" data-f="corto" value="${esc(s.corto)}" aria-label="Nombre corto de la sección">
+        <label><input type="checkbox" data-t="s" data-id="${k}" data-f="visible"${s.visible ? ' checked' : ''}> Visible</label>
+        <span class="n">${n} artículos</span>
+        <button type="button" class="btn line sm" data-addfam="${k}">+ Familia</button>
+        <button type="button" class="ix" data-delsec="${k}" title="${s._del ? 'Deshacer borrado' : 'Borrar sección'}" aria-label="${s._del ? 'Deshacer borrado de' : 'Borrar'} la sección ${esc(s.corto)}">${s._del ? '↺' : '✕'}</button>
+      </div>
+      ${open ? `<div class="pbody">${fh || '<p class="upd">Sin familias. Tocá “+ Familia” para empezar.</p>'}</div>` : ''}</div>`;
+  });
+  $('#plist').innerHTML = h || '<div class="empty">No hay resultados para esa búsqueda.</div>';
+  pCount();
+}
+$('#qp').addEventListener('input', () => renderProductos());
+$('#plist').addEventListener('input', e => {
+  const el = e.target.closest('[data-t]');
+  if (!el || el.type === 'checkbox' || el.tagName === 'SELECT') return;
+  const o = pFind(el.dataset.t, el.dataset.id); o[el.dataset.f] = el.value; o._dirty = true; el.classList.add('dirty'); pCount();
+});
+$('#plist').addEventListener('change', e => {
+  const el = e.target.closest('[data-t]');
+  if (!el || (el.type !== 'checkbox' && el.tagName !== 'SELECT')) return;
+  const o = pFind(el.dataset.t, el.dataset.id); o[el.dataset.f] = el.type === 'checkbox' ? el.checked : el.value; o._dirty = true;
+  if (el.dataset.f === 'seccion') pOpen.add(el.value);
+  renderProductos();
+});
+// borrar marca el elemento (se aplica al guardar); lo nuevo sin guardar se quita directamente
+const toggleDel = (arr, o) => { if (o._new) arr.splice(arr.indexOf(o), 1); else o._del = !o._del; renderProductos(); };
+$('#plist').addEventListener('click', e => {
+  const t = e.target.closest('[data-tog],[data-addfam],[data-addprod],[data-delprod],[data-delfam],[data-delsec],[data-pic]');
+  if (!t) return;
+  const d = t.dataset;
+  if (d.tog) { pOpen.has(d.tog) ? pOpen.delete(d.tog) : pOpen.add(d.tog); renderProductos(); return; }
+  if (d.addfam) {
+    const f = {id: tmpId--, seccion: d.addfam, titulo: 'Familia nueva', imagen: null, marcas: [], liquidacion: false, orden: nextOrden(P.f), visible: true, _new: true};
+    P.f.push(f); pOpen.add(d.addfam); $('#qp').value = ''; renderProductos(); focusIn(`[data-t="f"][data-id="${f.id}"][data-f="titulo"]`); return;
+  }
+  if (d.addprod) {
+    const fid = Number(d.addprod), p = {id: tmpId--, familia_id: fid, codigo: '', detalle: '', color: null, estado: 'activo', orden: nextOrden(P.p.filter(x => x.familia_id === fid)), _new: true};
+    P.p.push(p); renderProductos(); focusIn(`[data-t="p"][data-id="${p.id}"][data-f="codigo"]`); return;
+  }
+  if (d.delprod) { toggleDel(P.p, pFind('p', d.delprod)); return; }
+  if (d.delfam) {
+    const f = pFind('f', d.delfam), n = P.p.filter(p => p.familia_id === f.id).length;
+    if (!f._del && !f._new && !confirm(`¿Borrar la familia “${f.titulo}” y sus ${n} artículos? Se aplica al guardar.`)) return;
+    toggleDel(P.f, f); return;
+  }
+  if (d.delsec) {
+    const s = pFind('s', d.delsec);
+    if (!s._del && P.f.some(f => f.seccion === s.k && !f._del)) { toast('Primero mové o borrá las familias de esta sección'); return; }
+    toggleDel(P.s, s); return;
+  }
+  if (d.pic) { picFor = d.pic; $('#pfile').click(); }
+});
+$('#pfile').addEventListener('change', async () => {
+  const file = $('#pfile').files[0]; $('#pfile').value = '';
+  if (!file || picFor == null) return;
+  if (!/^image\/(jpeg|png|webp)$/.test(file.type)) { toast('Elegí una foto JPG, PNG o WEBP'); return; }
+  if (file.size > 5 * 1024 * 1024) { toast('La foto tiene que pesar menos de 5 MB'); return; }
+  // shortcut: la foto anterior queda en Storage; borrar huérfanas si el espacio empieza a importar
+  const path = `familias/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${file.type.split('/')[1].replace('jpeg', 'jpg')}`;
+  toast('Subiendo foto…');
+  const r = await sb.storage.from('productos').upload(path, file, {contentType: file.type, upsert: false});
+  if (r.error) { toast('No se pudo subir la foto: ' + r.error.message); return; }
+  const f = pFind('f', picFor); f.imagen = sb.storage.from('productos').getPublicUrl(path).data.publicUrl; f._dirty = true;
+  renderProductos(); toast('Foto lista. Tocá “Guardar cambios” para publicarla.');
+});
+$('#pAddSec').onclick = () => {
+  const nombre = (prompt('Nombre de la sección nueva') || '').trim();
+  if (!nombre) return;
+  let k = norm(nombre).replace(/[^a-z0-9]+/g, '').slice(0, 24) || 'seccion';
+  while (P.s.some(s => s.k === k)) k += '2';
+  P.s.push({k, nombre, corto: nombre, orden: nextOrden(P.s), visible: true, _new: true});
+  pOpen.add(k); $('#qp').value = ''; renderProductos();
+};
+$('#pUndo').onclick = () => { if (confirm('¿Descartar todos los cambios sin guardar?')) loadProductos(true); };
+addEventListener('beforeunload', e => { if (pDirtyN()) { e.preventDefault(); e.returnValue = ''; } });
+$('#pSave').onclick = async () => {
+  const empty = P.p.find(p => !p._del && !famGone(p) && (!String(p.codigo).trim() || !String(p.detalle).trim()));
+  if (empty) { toast('Completá código y detalle de todos los productos, o borrá los vacíos'); return; }
+  if (P.f.some(f => !f._del && !String(f.titulo).trim())) { toast('Hay una familia sin nombre'); return; }
+  const b = $('#pSave'); b.disabled = true; b.textContent = 'Guardando…';
+  const ok = r => { if (r.error) throw r.error; return r; };
+  try {
+    const sUp = P.s.filter(s => !s._del && (s._new || s._dirty));
+    if (sUp.length) ok(await sb.from('secciones').upsert(sUp.map(s => pick(s, SC))));
+    sUp.forEach(s => { s._new = s._dirty = false; });
+    for (const f of P.f.filter(x => x._new && !x._del)) {   // una por una para conocer su id real
+      const r = ok(await sb.from('familias').insert(pick(f, FC)).select('id').single());
+      P.p.forEach(p => { if (p.familia_id === f.id) p.familia_id = r.data.id; });
+      f.id = r.data.id; f._new = f._dirty = false;
+    }
+    const fUp = P.f.filter(x => x._dirty && !x._del);
+    if (fUp.length) ok(await sb.from('familias').upsert(fUp.map(f => ({id: f.id, ...pick(f, FC)}))));
+    fUp.forEach(f => { f._dirty = false; });
+    const pNew = P.p.filter(p => p._new && !p._del && !famGone(p));
+    if (pNew.length) {
+      const r = ok(await sb.from('productos').insert(pNew.map(p => pick(p, PC))).select('id'));
+      pNew.forEach((p, i) => { p.id = r.data[i].id; p._new = p._dirty = false; });
+    }
+    const pUp = P.p.filter(p => p._dirty && !p._new && !p._del && !famGone(p));
+    if (pUp.length) ok(await sb.from('productos').upsert(pUp.map(p => ({id: p.id, ...pick(p, PC)}))));
+    const ids = a => a.filter(x => x._del && !x._new).map(x => x.id);
+    if (ids(P.p).length) ok(await sb.from('productos').delete().in('id', ids(P.p)));
+    if (ids(P.f).length) ok(await sb.from('familias').delete().in('id', ids(P.f)));
+    const sDel = P.s.filter(s => s._del && !s._new).map(s => s.k);
+    if (sDel.length) ok(await sb.from('secciones').delete().in('k', sDel));
+    await loadProductos(true);
+    toast('Cambios guardados. Ya se ven en la web.');
+  } catch (er) {
+    toast('No se pudo guardar: ' + (er.message || er) + '. Revisá y probá de nuevo.');
+  } finally { b.textContent = 'Guardar cambios'; pCount(); }
+};
 
 const s = document.createElement('script'); s.src = SUPA_JS;
 s.onload = boot; s.onerror = () => { show('noacc'); $('#noaccMsg').textContent = 'No se pudo conectar. Revisá la conexión y recargá la página.'; };
