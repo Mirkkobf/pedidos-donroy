@@ -1,0 +1,32 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-25T14:37:03.656Z",
+        "reason": "Claude: #lbimg is the lightbox image, src is set by JS when a product photo opens"
+      },
+      {
+        "rule": "overused-font",
+        "value": "montserrat",
+        "createdAt": "2026-11-25T14:37:50.614Z",
+        "reason": "Claude: Montserrat is the Don Roy brand font used in the printed catalog PDF"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-25T14:37:50.759Z",
+        "reason": "Claude: #E7E3E1 background matches the Don Roy catalog page color"
+      }
+    ]
+  }
+}
